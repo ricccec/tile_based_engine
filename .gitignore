@@ -3,3 +3,11 @@
 
 # Ignore Gradle build output directory
 build
+
+immagini
+bin
+Requisiti funzionali v1.0.docx
+src/main/java/*.java
+*.lnd
+*.txr
+*.db
