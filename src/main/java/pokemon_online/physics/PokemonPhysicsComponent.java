@@ -51,13 +51,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	
 	public PokemonPhysicsComponent(GameObject obj) {
 		super(obj);
-		dir = Direction.DIR_DOWN;
 	}
-	
-	// FIXME Make these the return tipe of a method that computes tham based on speedX and speedY
-	private int speed; // In px/tick
-	
-	private Direction dir;
 	
 
 	@Override
@@ -65,15 +59,15 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		
 		// FIXME dtMillisec is ignored
 		
-		int residueDist = speed;
+		int residueDist = getSpeed();
 		if (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0)) {
-			assert(speed > 0);
+			assert(getSpeed() > 0);
 			// A movement from the previous tick is still ongoing
 			// Complete the movement
-			int prevPos = (dir.isAlongX() ? obj.getX() : obj.getY());
+			int prevPos = (getDirection().isAlongX() ? obj.getX() : obj.getY());
 			moveOneCell(world, residueDist);
 			resolveCollision(world);
-			int currPos = (dir.isAlongX() ? obj.getX() : obj.getY());
+			int currPos = (getDirection().isAlongX() ? obj.getX() : obj.getY());
 			residueDist -= Math.abs(prevPos - currPos);
 		}
 		
@@ -83,32 +77,29 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 			if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0)) {
 				// Player is right in the middle of a cell: update speed based on controllers
 				if (controller.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
-					speed = 0;
+					obj.setSpeedX(0);
+					obj.setSpeedY(0);
 				} else if (controller.isActive(MOVE_RIGHT) && (!isMovingRight())) {
-					speed = Configuration.PLAYER_SPEED;
-					dir = Direction.DIR_RIGHT;
+					setVelocity(Direction.DIR_RIGHT, Configuration.PLAYER_SPEED);
 				} else if (controller.isActive(MOVE_DWN) && (!isMovingDown())) {
-					speed = Configuration.PLAYER_SPEED;
-					dir = Direction.DIR_DOWN;
+					setVelocity(Direction.DIR_DOWN, Configuration.PLAYER_SPEED);
 				} else if (controller.isActive(MOVE_LEFT) && (!isMovingLeft())) {
-					speed = Configuration.PLAYER_SPEED;
-					dir = Direction.DIR_LEFT;
+					setVelocity(Direction.DIR_LEFT, Configuration.PLAYER_SPEED);
 				} else if (controller.isActive(MOVE_UP) && (!isMovingUp())) {
-					speed = Configuration.PLAYER_SPEED;
-					dir = Direction.DIR_UP;
+					setVelocity(Direction.DIR_UP, Configuration.PLAYER_SPEED);
 				}
 			}
 		}
 		
-		if ((speed == 0))
+		if ((getSpeed() == 0))
 			return;
 		
 		// Start a new cell-by-cell movement
 		while(residueDist > 0) {
-			int prevPos = (dir.isAlongX() ? obj.getX() : obj.getY());
+			int prevPos = (getDirection().isAlongX() ? obj.getX() : obj.getY());
 			moveOneCell(world, residueDist);
 			resolveCollision(world);
-			int currPos = (dir.isAlongX() ? obj.getX() : obj.getY());
+			int currPos = (getDirection().isAlongX() ? obj.getX() : obj.getY());
 			int dPxls = Math.abs(prevPos - currPos);
 			if (dPxls == 0) // Block
 				return;
@@ -119,10 +110,10 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	
 	private void resolveCollision(GameWorld world) {
 		int cornerX = obj.getX();
-		if ((dir.isAlongX() && (dir.sign > 0)))
+		if ((getDirection().isAlongX() && (getDirection().sign > 0)))
 			cornerX += 32;
 		int cornerY = obj.getY();
-		if ((dir.isAlongY() && (dir.sign > 0)))
+		if ((getDirection().isAlongY() && (getDirection().sign > 0)))
 			cornerY += 32;
 		
 		int cornerRow = world.getRow(cornerY);
@@ -132,8 +123,8 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 			return;
 		
 		// Cell is not walkable: resolve collision
-		int newRow = cornerRow - (dir.isAlongY() ? dir.sign : 0);
-		int newCol = cornerCol - (dir.isAlongX() ? dir.sign : 0);
+		int newRow = cornerRow - (getDirection().isAlongY() ? getDirection().sign : 0);
+		int newCol = cornerCol - (getDirection().isAlongX() ? getDirection().sign : 0);
 		
 		obj.setX(world.getX(newCol));
 		obj.setY(world.getY(newRow));
@@ -143,12 +134,12 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	private void moveOneCell(GameWorld world, int dPxlsMax) {
 		
 		// Compute distance from next cell
-		int currPos = (dir.isAlongX() ? obj.getX() : obj.getY());
+		int currPos = (getDirection().isAlongX() ? obj.getX() : obj.getY());
 		int dPxls = 0;
 		if ((currPos % 32) == 0) {
 			dPxls = 32;
 		} else {
-			if (dir.sign*currPos > 0) {
+			if (getDirection().sign*currPos > 0) {
 				dPxls = 32 - (Math.abs(currPos) % 32);
 			} else {
 				dPxls = (Math.abs(currPos) % 32);
@@ -157,29 +148,72 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		// Cannot move more than dPxlsMax
 		dPxls = Math.min(dPxlsMax, dPxls);
 		
-		if (dir.isAlongX()) {
-			obj.setX(obj.getX() + dir.sign*dPxls);
+		if (getDirection().isAlongX()) {
+			obj.setX(obj.getX() + getDirection().sign*dPxls);
 		} else {
-			obj.setY(obj.getY() + dir.sign*dPxls);
+			obj.setY(obj.getY() + getDirection().sign*dPxls);
 		}
 		
 	}
 
 	public boolean isMovingRight() {
-		return ((speed > 0) && (dir == Direction.DIR_RIGHT));
+		return ((getSpeed() > 0) && (getDirection() == Direction.DIR_RIGHT));
 	}
 	
 	public boolean isMovingDown() {
-		return ((speed > 0) && (dir == Direction.DIR_DOWN));
+		return ((getSpeed() > 0) && (getDirection() == Direction.DIR_DOWN));
 	}
 	
 	
 	public boolean isMovingLeft() {
-		return ((speed > 0) && (dir == Direction.DIR_LEFT));
+		return ((getSpeed() > 0) && (getDirection() == Direction.DIR_LEFT));
 	}
 	
 	public boolean isMovingUp() {
-		return ((speed > 0) && (dir == Direction.DIR_UP));
+		return ((getSpeed() > 0) && (getDirection() == Direction.DIR_UP));
+	}
+	
+	private Direction getDirection() {
+		double movingDir = obj.getMovingDirectionDegrees();
+		if (movingDir <= 45) {
+			return Direction.DIR_RIGHT;
+		}
+		if ((movingDir > 45) && (movingDir <= 135)) {
+			return Direction.DIR_UP;
+		}
+		if ((movingDir > 135) && (movingDir <= 225)) {
+			return Direction.DIR_LEFT;
+		}
+		if ((movingDir > 225) && (movingDir <= 315)) {
+			return Direction.DIR_DOWN;
+		}
+		// direction is > 315
+		return Direction.DIR_RIGHT;
+	}
+	
+	private void setVelocity(Direction dir, int speed) {
+		switch(dir) {
+			case DIR_DOWN:
+				obj.setSpeedX(0);
+				obj.setSpeedY(speed);
+				break;
+			case DIR_LEFT:
+				obj.setSpeedX(-speed);
+				obj.setSpeedY(0);
+				break;
+			case DIR_RIGHT:
+				obj.setSpeedX(speed);
+				obj.setSpeedY(0);
+				break;
+			case DIR_UP:
+				obj.setSpeedX(0);
+				obj.setSpeedY(-speed);
+				break;
+		}
+	}
+	
+	private int getSpeed() {
+		return (int)Math.ceil(Math.sqrt(Math.pow(obj.getSpeedX(), 2) + Math.pow( obj.getSpeedY(), 2)));
 	}
 	
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 import pokemon_online.Component;
 import pokemon_online.GameObject;
 import pokemon_online.ResourcesManager;
-import pokemon_online.game.rendering.Animation;
+import pokemon_online.game.rendering.StateAnimation;
 import pokemon_online.game.rendering.Viewport;
 
 /**
@@ -20,14 +20,17 @@ import pokemon_online.game.rendering.Viewport;
  */
 public class GraphicsComponent extends Component { // TODO Make abstract
 	
-	private final Map<String, Animation> animations;
+	private final Map<String, StateAnimation> animations;
 	
 	public GraphicsComponent(GameObject obj) {
 		super(obj);
 		animations = new HashMap<>();
 		
-		animations.put("IDLE", new Animation());
-		animations.get("IDLE").addSprite("F Allenatricel_S_Stop.gif");
+		animations.put("IDLE", new StateAnimation("IDLE"));
+		animations.get("IDLE").getAnimation(0).addSprite("F Allenatrice_E_Stop.gif");
+		animations.get("IDLE").getAnimation(90).addSprite("F Allenatrice_N_Stop.gif");
+		animations.get("IDLE").getAnimation(180).addSprite("F Allenatrice_O_Stop.gif");
+		animations.get("IDLE").getAnimation(270).addSprite("F Allenatrice_S_Stop.gif");
 	}
 	
 	public void render(Graphics2D grap, Viewport viewport) {
@@ -35,7 +38,9 @@ public class GraphicsComponent extends Component { // TODO Make abstract
 		int scrY = viewport.getScreenY() + obj.getY();
 		grap.fillOval(scrX, scrY, 32, 32); // Player is alwais at the center of the screen
 		
-		String imgName = animations.get("IDLE").getSprite(0);
+//		// Draw object sprite
+		int objDir = (int)(90*Math.round((obj.getMovingDirectionDegrees()/90)));
+		String imgName = animations.get("IDLE").getAnimation(objDir).getSprite(0);
 		Image tileImg = ResourcesManager.getMgr().getTileImage(imgName);
 		grap.drawImage(tileImg,scrX, scrY, null);
 	}

@@ -104,5 +104,8 @@ public class Game extends Thread {
 		grap.setColor(Color.RED);
 		grap.drawString("Player X: " + String.valueOf(getPlayer().getX()), 8, 16);
 		grap.drawString("Player Y: " + String.valueOf(getPlayer().getY()), 8, 32);
+		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 8, 48);
+		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 8, 64);
+		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirectionDegrees()), 8, 80);
 	}
 }
