@@ -71,6 +71,7 @@ public class Game extends Thread {
 		lag += elapsed;
 
 		while (lag >= Configuration.MS_PER_UPDATE) {
+			world.updateControllers();
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			
@@ -106,6 +107,6 @@ public class Game extends Thread {
 		grap.drawString("Player Y: " + String.valueOf(getPlayer().getY()), 8, 32);
 		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 8, 48);
 		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 8, 64);
-		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirectionDegrees()), 8, 80);
+		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirection()), 8, 80);
 	}
 }

@@ -174,7 +174,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	}
 	
 	private Direction getDirection() {
-		double movingDir = obj.getMovingDirectionDegrees();
+		double movingDir = obj.getMovingDirection();
 		if (movingDir <= 45) {
 			return Direction.DIR_RIGHT;
 		}
@@ -196,18 +196,22 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 			case DIR_DOWN:
 				obj.setSpeedX(0);
 				obj.setSpeedY(speed);
+				obj.setFacingDirection(270);
 				break;
 			case DIR_LEFT:
 				obj.setSpeedX(-speed);
 				obj.setSpeedY(0);
+				obj.setFacingDirection(180);
 				break;
 			case DIR_RIGHT:
 				obj.setSpeedX(speed);
 				obj.setSpeedY(0);
+				obj.setFacingDirection(0);
 				break;
 			case DIR_UP:
 				obj.setSpeedX(0);
 				obj.setSpeedY(-speed);
+				obj.setFacingDirection(90);
 				break;
 		}
 	}

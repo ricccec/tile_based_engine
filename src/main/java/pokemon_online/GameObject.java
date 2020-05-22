@@ -1,7 +1,5 @@
 package pokemon_online;
 
-import org.apache.commons.io.filefilter.AndFileFilter;
-
 import pokemon_online.game.Controller;
 import pokemon_online.game.GraphicsComponent;
 import pokemon_online.game.PhysicsComponent;
@@ -30,7 +28,10 @@ public abstract class GameObject {
 
 	protected int speedY; // In pxl/tick
 	
-
+	/**
+	 * The direction the object is facing. Doesn't have to match the moving direction;
+	 */
+	protected double direction;
 
 	/**
 	 * @return the object's X coordinate in the world's space
@@ -49,12 +50,23 @@ public abstract class GameObject {
 	/**
 	 * @return the moving direction, in degrees
 	 */
-	public double getMovingDirectionDegrees() {
+	public double getMovingDirection() {
 		double angRad = Math.atan2(-speedY, speedX);
 		double angNorm = angRad/Math.PI;
 		double angDegr = ((angNorm < 0) ? 360 : 0) + 180*angNorm;
 		
 		return angDegr;
+	}
+	
+	/**
+	 * @return the direction the object is facing, in degrees
+	 */
+	public double getFacingDirection() {
+		return direction;
+	}
+	
+	public void setFacingDirection(int dirDegree) {
+		direction = dirDegree;
 	}
 	
 	public Controller getController() {

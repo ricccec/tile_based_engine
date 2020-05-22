@@ -142,4 +142,14 @@ public class GameWorld {
 		}
 	}
 
+	public void updateControllers() {
+		for (GameObject obj : gameObjects) {
+			// FIXME Only update active objects
+			Controller controller = obj.getController();
+			if (controller != null) {
+				controller.updateController();
+			}
+		}
+	}
+
 }

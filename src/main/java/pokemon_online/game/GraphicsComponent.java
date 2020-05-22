@@ -39,7 +39,7 @@ public class GraphicsComponent extends Component { // TODO Make abstract
 		grap.fillOval(scrX, scrY, 32, 32); // Player is alwais at the center of the screen
 		
 //		// Draw object sprite
-		int objDir = (int)(90*Math.round((obj.getMovingDirectionDegrees()/90)));
+		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
 		String imgName = animations.get("IDLE").getAnimation(objDir).getSprite(0);
 		Image tileImg = ResourcesManager.getMgr().getTileImage(imgName);
 		grap.drawImage(tileImg,scrX, scrY, null);
