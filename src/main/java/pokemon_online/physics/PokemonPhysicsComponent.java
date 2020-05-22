@@ -49,13 +49,16 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		}
 	}
 	
+	private Direction controllerDirection;
+	
 	public PokemonPhysicsComponent(GameObject obj) {
 		super(obj);
 	}
-	
 
 	@Override
 	public void update(GameWorld world, long dtMillisec) {
+		
+		updateControllerDirection();
 		
 		// FIXME dtMillisec is ignored
 		
@@ -72,24 +75,32 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		}
 		
 		// The object's controller state is read only when the object reach the next cell
-		Controller controller = obj.getController();
-		if (controller != null) {
-			if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0)) {
-				// Player is right in the middle of a cell: update speed based on controllers
-				if (controller.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
-					obj.setSpeedX(0);
-					obj.setSpeedY(0);
-				} else if (controller.isActive(MOVE_RIGHT) && (!isMovingRight())) {
-					setVelocity(Direction.DIR_RIGHT, Configuration.PLAYER_SPEED);
-				} else if (controller.isActive(MOVE_DWN) && (!isMovingDown())) {
-					setVelocity(Direction.DIR_DOWN, Configuration.PLAYER_SPEED);
-				} else if (controller.isActive(MOVE_LEFT) && (!isMovingLeft())) {
-					setVelocity(Direction.DIR_LEFT, Configuration.PLAYER_SPEED);
-				} else if (controller.isActive(MOVE_UP) && (!isMovingUp())) {
-					setVelocity(Direction.DIR_UP, Configuration.PLAYER_SPEED);
-				}
+		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  {
+			if (controllerDirection == null) {
+				obj.setSpeedX(0);
+				obj.setSpeedY(0);
+			} else {
+				setVelocity(controllerDirection, Configuration.PLAYER_SPEED);
 			}
 		}
+//		Controller controller = obj.getController();
+//		if (controller != null) {
+//			if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0)) {
+//				// Player is right in the middle of a cell: update speed based on controllers
+//				if (controller.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
+//					obj.setSpeedX(0);
+//					obj.setSpeedY(0);
+//				} else if (controller.isActive(MOVE_RIGHT) && (!isMovingRight())) {
+//					setVelocity(Direction.DIR_RIGHT, Configuration.PLAYER_SPEED);
+//				} else if (controller.isActive(MOVE_DWN) && (!isMovingDown())) {
+//					setVelocity(Direction.DIR_DOWN, Configuration.PLAYER_SPEED);
+//				} else if (controller.isActive(MOVE_LEFT) && (!isMovingLeft())) {
+//					setVelocity(Direction.DIR_LEFT, Configuration.PLAYER_SPEED);
+//				} else if (controller.isActive(MOVE_UP) && (!isMovingUp())) {
+//					setVelocity(Direction.DIR_UP, Configuration.PLAYER_SPEED);
+//				}
+//			}
+//		}
 		
 		if ((getSpeed() == 0))
 			return;
@@ -108,6 +119,66 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		
 	}
 	
+	private void updateControllerDirection() {
+		
+		Controller ctrl = obj.getController();
+		if (ctrl == null) {
+			return;
+		}
+		
+		if (ctrl.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
+			controllerDirection = null;
+		} else if (ctrl.isStatusChanged(MOVE_RIGHT)) {
+			if (ctrl.isActive(MOVE_RIGHT)) {
+				// RIGHT pressed
+				controllerDirection = Direction.DIR_RIGHT;
+			} else {
+				// RIGHT released
+				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
+			}
+		} else if (ctrl.isStatusChanged(MOVE_DWN)) {
+			if (ctrl.isActive(MOVE_DWN)) {
+				// DOWN pressed
+				controllerDirection = Direction.DIR_DOWN;
+			} else {
+				// DOWN released
+				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
+			}
+		} else if (ctrl.isStatusChanged(MOVE_LEFT)) {
+			if (ctrl.isActive(MOVE_LEFT)) {
+				// LEFT pressed
+				controllerDirection = Direction.DIR_LEFT;
+			} else {
+				// LEFT released
+				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
+			}
+		} else if (ctrl.isStatusChanged(MOVE_UP)) {
+			if (ctrl.isActive(MOVE_UP)) {
+				// UP pressed
+				controllerDirection = Direction.DIR_UP;
+			} else {
+				// UP released
+				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
+			}
+		} 
+	}
+	
+	private Direction getHighestPriorityActiveCntrl(Controller ctrl) {
+		if (ctrl.isActive(MOVE_RIGHT)) {
+			return Direction.DIR_RIGHT;
+		}
+		if (ctrl.isActive(MOVE_DWN)) {
+			return Direction.DIR_DOWN;
+		}
+		if (ctrl.isActive(MOVE_LEFT)) {
+			return Direction.DIR_LEFT;
+		}
+		if (ctrl.isActive(MOVE_UP)) {
+			return Direction.DIR_UP;
+		}
+		return null;
+	}
+
 	private void resolveCollision(GameWorld world) {
 		int cornerX = obj.getX();
 		if ((getDirection().isAlongX() && (getDirection().sign > 0)))
