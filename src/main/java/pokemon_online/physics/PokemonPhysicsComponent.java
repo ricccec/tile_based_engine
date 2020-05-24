@@ -3,14 +3,8 @@
  */
 package pokemon_online.physics;
 
-import static pokemon_online.game.Control.MOVE_DWN;
-import static pokemon_online.game.Control.MOVE_LEFT;
-import static pokemon_online.game.Control.MOVE_RIGHT;
-import static pokemon_online.game.Control.MOVE_UP;
-
 import pokemon_online.Configuration;
 import pokemon_online.GameObject;
-import pokemon_online.game.Controller;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.PhysicsComponent;
 
@@ -19,46 +13,19 @@ import pokemon_online.game.PhysicsComponent;
  *
  */
 public class PokemonPhysicsComponent extends PhysicsComponent {
-
-	private enum Axis {
-		AXIS_X,
-		AXIS_Y;
-	}
 	
-	private enum Direction {
-		// FIXME Move somewhere else
-		DIR_UP(-1, Axis.AXIS_Y),
-		DIR_DOWN(1, Axis.AXIS_Y),
-		DIR_LEFT(-1, Axis.AXIS_X),
-		DIR_RIGHT(1, Axis.AXIS_X);
-		
-		final int sign;
-		final Axis axis;
-		
-		Direction(int sign, Axis axis) {
-			this.sign = sign;
-			this.axis = axis;
-		}
-		
-		public boolean isAlongX() {
-			return (axis == Axis.AXIS_X);
-		}
-		
-		public boolean isAlongY() {
-			return (axis == Axis.AXIS_Y);
-		}
-	}
-	
-	private Direction controllerDirection;
+	private final DirectionFilter dirFilter;
 	
 	public PokemonPhysicsComponent(GameObject obj) {
 		super(obj);
+		
+		dirFilter = new DirectionFilter(obj.getController());
 	}
 
 	@Override
 	public void update(GameWorld world, long dtMillisec) {
 		
-		updateControllerDirection();
+		dirFilter.updateControllerDirection();
 		
 		// FIXME dtMillisec is ignored
 		
@@ -76,11 +43,11 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		
 		// The object's controller state is read only when the object reach the next cell
 		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  {
-			if (controllerDirection == null) {
+			if (dirFilter.getControllerDirection() == null) {
 				obj.setSpeedX(0);
 				obj.setSpeedY(0);
 			} else {
-				setVelocity(controllerDirection, Configuration.PLAYER_SPEED);
+				setVelocity(dirFilter.getControllerDirection(), Configuration.PLAYER_SPEED);
 			}
 		}
 //		Controller controller = obj.getController();
@@ -119,65 +86,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		
 	}
 	
-	private void updateControllerDirection() {
-		
-		Controller ctrl = obj.getController();
-		if (ctrl == null) {
-			return;
-		}
-		
-		if (ctrl.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
-			controllerDirection = null;
-		} else if (ctrl.isStatusChanged(MOVE_RIGHT)) {
-			if (ctrl.isActive(MOVE_RIGHT)) {
-				// RIGHT pressed
-				controllerDirection = Direction.DIR_RIGHT;
-			} else {
-				// RIGHT released
-				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
-			}
-		} else if (ctrl.isStatusChanged(MOVE_DWN)) {
-			if (ctrl.isActive(MOVE_DWN)) {
-				// DOWN pressed
-				controllerDirection = Direction.DIR_DOWN;
-			} else {
-				// DOWN released
-				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
-			}
-		} else if (ctrl.isStatusChanged(MOVE_LEFT)) {
-			if (ctrl.isActive(MOVE_LEFT)) {
-				// LEFT pressed
-				controllerDirection = Direction.DIR_LEFT;
-			} else {
-				// LEFT released
-				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
-			}
-		} else if (ctrl.isStatusChanged(MOVE_UP)) {
-			if (ctrl.isActive(MOVE_UP)) {
-				// UP pressed
-				controllerDirection = Direction.DIR_UP;
-			} else {
-				// UP released
-				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
-			}
-		} 
-	}
 	
-	private Direction getHighestPriorityActiveCntrl(Controller ctrl) {
-		if (ctrl.isActive(MOVE_RIGHT)) {
-			return Direction.DIR_RIGHT;
-		}
-		if (ctrl.isActive(MOVE_DWN)) {
-			return Direction.DIR_DOWN;
-		}
-		if (ctrl.isActive(MOVE_LEFT)) {
-			return Direction.DIR_LEFT;
-		}
-		if (ctrl.isActive(MOVE_UP)) {
-			return Direction.DIR_UP;
-		}
-		return null;
-	}
 
 	private void resolveCollision(GameWorld world) {
 		int cornerX = obj.getX();
