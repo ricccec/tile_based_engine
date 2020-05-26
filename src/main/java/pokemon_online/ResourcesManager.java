@@ -33,7 +33,7 @@ public class ResourcesManager {
 		return mgr;
 	}
 	
-	private final Map<String, Image> images;
+	private final Map<String, Map<Float, Image>> images;
 	
 	private final Collection<File> directories; // FIXME This dumps all resources in the same "virtual" directory
 	
@@ -48,15 +48,38 @@ public class ResourcesManager {
 		}
 	}
 	
-	public Image getTileImage(String imgName) {
+	public Image getImage(String imgName) {
+		return getImage(imgName, 1f);
+	}
+	
+	public Image getImage(String imgName, float scaleFactor) {
+		
+		// Load image at default size
 		if (!images.containsKey(imgName)) {
+			images.put(imgName, new HashMap<>());
+			
 			Image img = loadImage(imgName);
-			images.put(imgName, img);
+			images.get(imgName).put(1f,img);
 			if (img == null) {
 				System.out.println("Error"); // FIXME use a logger
 			}
 		}
-		return images.get(imgName);
+		
+		// Resize image
+		if (!images.get(imgName).containsKey(scaleFactor)) {
+			Image img = images.get(imgName).get(1f);
+			if (img == null) {
+				images.get(imgName).put(scaleFactor, null);
+			} else {
+				int imgWidth = img.getWidth(null);
+				int imgHeight = img.getHeight(null);
+				int newWidth = (int)Math.ceil(imgWidth*scaleFactor);
+				int newHeight = (int)Math.ceil(imgHeight*scaleFactor);
+				Image scaledImg = img.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+				images.get(imgName).put(scaleFactor, scaledImg);
+			}
+		}
+		return images.get(imgName).get(scaleFactor);
 	}
 	
 	public Image loadImage(String imgName) {

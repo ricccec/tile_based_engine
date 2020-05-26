@@ -20,34 +20,64 @@ import pokemon_online.game.rendering.Viewport;
  */
 public class GraphicsComponent extends Component { // TODO Make abstract
 	
-	private final Map<String, StateAnimation> animations;
+	private enum State {
+		IDLE,
+		WALKING;
+	}
+	
+	private final Map<State, StateAnimation> animations;
+	
+	private State currState; // FIXME Use a real FSM
 	
 	public GraphicsComponent(GameObject obj) {
 		super(obj);
+		
+		currState = State.IDLE;
+		
 		animations = new HashMap<>();
 		
-		animations.put("IDLE", new StateAnimation("IDLE"));
-		animations.get("IDLE").getAnimation(0).addSprite("F Allenatrice_E_Stop.gif");
-		animations.get("IDLE").getAnimation(90).addSprite("F Allenatrice_N_Stop.gif");
-		animations.get("IDLE").getAnimation(180).addSprite("F Allenatrice_O_Stop.gif");
-		animations.get("IDLE").getAnimation(270).addSprite("F Allenatrice_S_Stop.gif");
+		animations.put(State.IDLE, new StateAnimation(State.IDLE.toString()));
+		animations.get(State.IDLE).getAnimation(0).addSprite("F Allenatrice_E_Stop.gif");
+		animations.get(State.IDLE).getAnimation(90).addSprite("F Allenatrice_N_Stop.gif");
+		animations.get(State.IDLE).getAnimation(180).addSprite("F Allenatrice_O_Stop.gif");
+		animations.get(State.IDLE).getAnimation(270).addSprite("F Allenatrice_S_Stop.gif");
+		
+		animations.put(State.WALKING, new StateAnimation(State.WALKING.toString()));
+		animations.get(State.WALKING).getAnimation(0).addSprite("F Allenatrice_E_Walk.gif").addSprite("F Allenatrice_E_Stop.gif");
+		animations.get(State.WALKING).getAnimation(90).addSprite("F Allenatrice_N_Walk.gif").addSprite("F Allenatrice_N_Stop.gif");
+		animations.get(State.WALKING).getAnimation(180).addSprite("F Allenatrice_O_Walk.gif").addSprite("F Allenatrice_O_Stop.gif");
+		animations.get(State.WALKING).getAnimation(270).addSprite("F Allenatrice_S_Walk.gif").addSprite("F Allenatrice_S_Stop.gif");
 	}
 	
 	public void render(Graphics2D grap, Viewport viewport) {
 		int scrX = viewport.getScreenX() + obj.getX();
 		int scrY = viewport.getScreenY() + obj.getY();
-		grap.fillOval(scrX, scrY, 32, 32); // Player is alwais at the center of the screen
 		
-//		// Draw object sprite
+		// Draw object sprite
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
-		String imgName = animations.get("IDLE").getAnimation(objDir).getSprite(0);
-		Image tileImg = ResourcesManager.getMgr().getTileImage(imgName);
+		String imgName = animations.get(currState).getCurrentSprinte(objDir);
+		// TODO Sprite and bounding box might have different size: draw the image in such a way that its center is aligned with the bb's center
+		Image tileImg = ResourcesManager.getMgr().getImage(imgName, 2);
 		grap.drawImage(tileImg,scrX, scrY, null);
 	}
 
 	public void updateAnimation(long dt) {
-		// TODO Auto-generated method stub
-		
+		switch (currState) {
+			// Change state?
+			case IDLE:
+				if (obj.isMoving()) {
+					currState = State.WALKING;
+					animations.get(currState).reset();
+				}
+				break;
+			case WALKING:
+				if (!obj.isMoving()) {
+					currState = State.IDLE;
+					animations.get(currState).reset();
+				}
+				break;
+		}
+		animations.get(currState).updateAnimation(dt);
 	}
 
 }

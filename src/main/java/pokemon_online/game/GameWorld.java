@@ -45,6 +45,26 @@ public class GameWorld {
 			}
 		}
 	}
+	
+	public void updateAnimation(long dtMillisec) {
+		for (GameObject obj : gameObjects) {
+			// FIXME Only update active objects
+			GraphicsComponent gComp = obj.getGraphicsComponent();
+			if (gComp != null) {
+				gComp.updateAnimation(dtMillisec);
+			}
+		}
+	}
+
+	public void updateControllers() {
+		for (GameObject obj : gameObjects) {
+			// FIXME Only update active objects
+			Controller controller = obj.getController();
+			if (controller != null) {
+				controller.updateController();
+			}
+		}
+	}
 
 	public void renderWorld(Camera camera, int width, int height, Graphics2D grap) {
 
@@ -92,7 +112,7 @@ public class GameWorld {
 
 				Tile tile = currLand.getCellTile(r, c);
 				if (tile != null) {
-					Image tileImg = ResourcesManager.getMgr().getTileImage(tile.getImage());
+					Image tileImg = ResourcesManager.getMgr().getImage(tile.getImage());
 					grap.drawImage(tileImg, screenX, screeny, null);
 				}
 			}
@@ -130,26 +150,6 @@ public class GameWorld {
 
 	public int getY(int row) {
 		return row * 32;
-	}
-
-	public void updateAnimation(long dtMillisec) {
-		for (GameObject obj : gameObjects) {
-			// FIXME Only update active objects
-			GraphicsComponent gComp = obj.getGraphicsComponent();
-			if (gComp != null) {
-				gComp.updateAnimation(0);
-			}
-		}
-	}
-
-	public void updateControllers() {
-		for (GameObject obj : gameObjects) {
-			// FIXME Only update active objects
-			Controller controller = obj.getController();
-			if (controller != null) {
-				controller.updateController();
-			}
-		}
 	}
 
 }

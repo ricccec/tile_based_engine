@@ -104,5 +104,9 @@ public abstract class GameObject {
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}
+	
+	public boolean isMoving() {
+		return ((getSpeedX() != 0) || (getSpeedY() != 0));
+	}
 
 }

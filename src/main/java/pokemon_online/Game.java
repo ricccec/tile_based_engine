@@ -103,8 +103,12 @@ public class Game extends Thread {
 
 	public void drawGameStats(Graphics2D grap) {
 		grap.setColor(Color.RED);
-		grap.drawString("Player X: " + String.valueOf(getPlayer().getX()), 8, 16);
-		grap.drawString("Player Y: " + String.valueOf(getPlayer().getY()), 8, 32);
+		int plyrX = getPlayer().getX();
+		int plyrCol = getWorld().getColumn(plyrX);
+		int plyrY = getPlayer().getY();
+		int plyrRow = getWorld().getColumn(plyrY);
+		grap.drawString("Player X: " + String.valueOf(plyrX) + "(" + String.valueOf(plyrCol) + ")", 8, 16);
+		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(" + String.valueOf(plyrRow) + ")", 8, 32);
 		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 8, 48);
 		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 8, 64);
 		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirection()), 8, 80);

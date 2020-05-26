@@ -12,27 +12,21 @@ import java.util.List;
  */
 public class Animation {
 	
-	private static final int FPS = 16;
+	private static final int FPS = 8;
 	
 	private final List<String> sprites; // FIXME Use spritesheets
-	
-	private long stateStart;
 	
 	public Animation() {
 		sprites = new ArrayList<>();
 	}
 	
-	public void reset() {
-		stateStart = 0;
+	public int getFrame(long timeMs) {
+		return (int)(timeMs*FPS/1000);
 	}
 	
-	public int getCurrentFrame(long dt) {
-		long elapsedMs = dt - stateStart;
-		return (int) (elapsedMs*FPS/1000);
-	}
-	
-	public void addSprite(String sprite) {
+	public Animation addSprite(String sprite) {
 		sprites.add(sprite);
+		return this;
 	}
 	
 	public String getSprite(int frame) {

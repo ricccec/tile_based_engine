@@ -5,11 +5,11 @@ import org.junit.Test;
 
 public class GameTesterTest {
 
-	private static final String START_LAND = "Pokecity";
+	private static final String START_LAND = "Bosco fosco";
 	
-	private static final int START_ROW = 1;
+	private static final int START_ROW = 5;
 	
-	private static final int START_COL = 8;
+	private static final int START_COL = 12;
 	
 	private static GameTester tester;
 	

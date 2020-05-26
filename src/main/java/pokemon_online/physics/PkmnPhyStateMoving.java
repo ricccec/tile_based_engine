@@ -47,8 +47,6 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 				obj.setSpeedY(0);
 			} else {
 				phyComp.setVelocity(ctrlerDir, Configuration.PLAYER_SPEED);
-
-				System.out.println("Hello: " + phyComp.getSpeed());
 			}
 		}
 		
