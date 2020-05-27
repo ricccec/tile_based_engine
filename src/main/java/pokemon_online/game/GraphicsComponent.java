@@ -20,42 +20,53 @@ import pokemon_online.game.rendering.Viewport;
  */
 public class GraphicsComponent extends Component { // TODO Make abstract
 	
-	private enum State {
+	public enum GraphicsState { // FIXME Move somewhere else
 		IDLE,
 		WALKING;
+		
+		private static final Map<String, GraphicsState> STR_2_STATE;
+		static {
+			STR_2_STATE = new HashMap<>();
+			STR_2_STATE.put("idle", IDLE);
+			STR_2_STATE.put("walking", WALKING);
+		}
+		
+		public static GraphicsState getStateByName(String str) {
+			return STR_2_STATE.get(str);
+		}
 	}
 	
-	private final Map<State, StateAnimation> animations;
+	private final Map<GraphicsState, StateAnimation> animations;
 	
-	private State currState; // FIXME Use a real FSM
+	private GraphicsState currState; // FIXME Use a real FSM
 	
 	public GraphicsComponent(GameObject obj) {
 		super(obj);
 		
-		currState = State.IDLE;
+		currState = GraphicsState.IDLE;
 		
 		animations = new HashMap<>();
-		
-		animations.put(State.IDLE, new StateAnimation(State.IDLE.toString()));
-		animations.get(State.IDLE).getAnimation(0).addSprite("F Allenatrice_E_Stop.gif");
-		animations.get(State.IDLE).getAnimation(90).addSprite("F Allenatrice_N_Stop.gif");
-		animations.get(State.IDLE).getAnimation(180).addSprite("F Allenatrice_O_Stop.gif");
-		animations.get(State.IDLE).getAnimation(270).addSprite("F Allenatrice_S_Stop.gif");
-		
-		animations.put(State.WALKING, new StateAnimation(State.WALKING.toString()));
-		animations.get(State.WALKING).getAnimation(0).addSprite("F Allenatrice_E_Walk.gif").addSprite("F Allenatrice_E_Stop.gif");
-		animations.get(State.WALKING).getAnimation(90).addSprite("F Allenatrice_N_Walk.gif").addSprite("F Allenatrice_N_Stop.gif");
-		animations.get(State.WALKING).getAnimation(180).addSprite("F Allenatrice_O_Walk.gif").addSprite("F Allenatrice_O_Stop.gif");
-		animations.get(State.WALKING).getAnimation(270).addSprite("F Allenatrice_S_Walk.gif").addSprite("F Allenatrice_S_Stop.gif");
+	}
+	
+	public void addGraphicsState(StateAnimation state) {
+		GraphicsState stateName = state.getState();
+		animations.put(stateName, state);
 	}
 	
 	public void render(Graphics2D grap, Viewport viewport) {
+		
+		StateAnimation graphState = animations.get(currState);
+		if (graphState == null) {
+			// TODO warn
+			return;
+		}
+		
 		int scrX = viewport.getScreenX() + obj.getX();
 		int scrY = viewport.getScreenY() + obj.getY();
 		
 		// Draw object sprite
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
-		String imgName = animations.get(currState).getCurrentSprinte(objDir);
+		String imgName = graphState.getCurrentSprinte(objDir);
 		// TODO Sprite and bounding box might have different size: draw the image in such a way that its center is aligned with the bb's center
 		Image tileImg = ResourcesManager.getMgr().getImage(imgName, 2);
 		grap.drawImage(tileImg,scrX, scrY, null);
@@ -66,18 +77,27 @@ public class GraphicsComponent extends Component { // TODO Make abstract
 			// Change state?
 			case IDLE:
 				if (obj.isMoving()) {
-					currState = State.WALKING;
-					animations.get(currState).reset();
+					currState = GraphicsState.WALKING;
+					resetStateAnimation();
 				}
 				break;
 			case WALKING:
 				if (!obj.isMoving()) {
-					currState = State.IDLE;
-					animations.get(currState).reset();
+					currState = GraphicsState.IDLE;
+					resetStateAnimation();
 				}
 				break;
 		}
-		animations.get(currState).updateAnimation(dt);
+		if (animations.containsKey(currState)) {
+			// TODO Use a default animation in else?
+			animations.get(currState).updateAnimation(dt);
+		}
+	}
+	
+	private void resetStateAnimation() {
+		if (animations.containsKey(currState)) {
+			animations.get(currState).reset();
+		}
 	}
 
 }

@@ -12,16 +12,26 @@ import java.util.List;
  */
 public class Animation {
 	
-	private static final int FPS = 8;
+	private static final int DEFAULT_FPS = 8;
 	
 	private final List<String> sprites; // FIXME Use spritesheets
 	
-	public Animation() {
+	private final int fps;
+	
+	private final boolean loop;
+	
+	private final boolean hold;
+	
+	public Animation(int fps, boolean loop, boolean hold) {
+		this.fps = fps;
+		this.loop = loop;
+		this.hold = hold;
+		
 		sprites = new ArrayList<>();
 	}
 	
 	public int getFrame(long timeMs) {
-		return (int)(timeMs*FPS/1000);
+		return (int)(timeMs*fps/1000);
 	}
 	
 	public Animation addSprite(String sprite) {

@@ -13,6 +13,8 @@ import javax.swing.Timer;
 
 import org.json.simple.parser.ParseException;
 
+import pokemon_online.game.GraphicsComponent;
+import pokemon_online.game.rendering.ObjectGraphicsData;
 import pokemon_online.land.Land;
 import pokemon_online.land.LandManager;
 
@@ -41,6 +43,14 @@ public class GameTester extends JFrame {
 		areaGioco = new AreaGioco(game);
 		initComponents();
 		
+	}
+	
+	public void setPlayerSprite(String spriteName) {
+		GraphicsComponent gComp = game.getPlayer().getGraphicsComponent();
+		if (gComp != null) {
+			ObjectGraphicsData gData = ResourcesManager.getMgr().getGameObjectGraphics(spriteName);
+			gData.setGraphics(gComp);
+		}
 	}
 	
 	public void startGame(String startLand, int startRow, int startCol) {

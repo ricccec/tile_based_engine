@@ -19,6 +19,7 @@ public class GameTesterTest {
 	}
 	@Test
 	public void test() {
+		tester.setPlayerSprite("F Allenatrice");
 		tester.setVisible(true);
 		tester.startGame(START_LAND, START_ROW, START_COL);
 	}

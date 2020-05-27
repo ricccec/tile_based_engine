@@ -1,0 +1,144 @@
+{
+	"type":"object",
+	"name":"F Allenatrice",
+	"states":[
+		{
+			"name":"idle",
+			"directions": [
+					{
+						"angle":0,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_E_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":90,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_N_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":180,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_O_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":270,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_S_Stop.gif"
+								}
+							]
+						}
+					}
+				]
+		},
+		{
+			"name":"walking",
+			"directions": [
+					{
+						"angle":0,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_E_Walk.gif"
+								},
+								{
+									"number":1,
+									"sprite":"F Allenatrice_E_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":90,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_N_Walk.gif"
+								},
+								{
+									"number":1,
+									"sprite":"F Allenatrice_N_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":180,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_O_Walk.gif"
+								},
+								{
+									"number":1,
+									"sprite":"F Allenatrice_O_Stop.gif"
+								}
+							]
+						}
+					},
+					{
+						"angle":270,
+						"animation": {
+							"loop":true,
+							"hold":false,
+							"fps":4,
+							"frames":[
+								{
+									"number":0,
+									"sprite":"F Allenatrice_S_Walk.gif"
+								},
+								{
+									"number":1,
+									"sprite":"F Allenatrice_S_Stop.gif"
+								}
+							]
+						}
+					}
+				]
+			}
+	]
+}

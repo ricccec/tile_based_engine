@@ -3,16 +3,19 @@ package pokemon_online.game.rendering;
 import java.util.HashMap;
 import java.util.Map;
 
+import pokemon_online.game.GraphicsComponent.GraphicsState;
+
+// FIXME Change this class name
 public class StateAnimation {
 	
-	private final String stateName;
+	private final GraphicsState state;
 	
 	private long elapsedMs;
 	
 	private final Map<Integer, Animation> directions;
 	
-	public StateAnimation(String stateName) {
-		this.stateName = stateName;
+	public StateAnimation(GraphicsState state) {
+		this.state = state;
 		
 		directions = new HashMap<>();
 	}
@@ -21,10 +24,12 @@ public class StateAnimation {
 		elapsedMs += dtMillisec;
 	}
 	
+	public void setAnimation(int directionDegrees, Animation animation) {
+		directions.put(directionDegrees, animation);
+	}
+	
 	public Animation getAnimation(int directionDegrees) {
-		if (!directions.containsKey(directionDegrees)) {
-			directions.put(directionDegrees, new Animation());
-		}
+		// TODO What if there is no animation for the given direction?
 		return directions.get(directionDegrees);
 	}
 	
@@ -42,7 +47,7 @@ public class StateAnimation {
 		elapsedMs = 0;
 	}
 
-	public String getStateName() {
-		return stateName;
+	public GraphicsState getState() {
+		return state;
 	}
 }
