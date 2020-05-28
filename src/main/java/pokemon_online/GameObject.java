@@ -3,6 +3,7 @@ package pokemon_online;
 import pokemon_online.game.Controller;
 import pokemon_online.game.GraphicsComponent;
 import pokemon_online.game.PhysicsComponent;
+import pokemon_online.game.ia.IAComponent;
 
 /**
  * 
@@ -12,13 +13,15 @@ import pokemon_online.game.PhysicsComponent;
  * @author Cecchi
  *
  */
-public abstract class GameObject {
+public class GameObject {
 
 	protected GraphicsComponent grapComp;
 	
 	protected PhysicsComponent physComp;
 	
-	protected Controller ctrl;
+	protected IAComponent iaComp;
+	
+	protected final Controller ctrl;
 	
 	protected int x;
 	
@@ -32,6 +35,14 @@ public abstract class GameObject {
 	 * The direction the object is facing. Doesn't have to match the moving direction;
 	 */
 	protected double direction;
+	
+	public GameObject() {
+		ctrl = new Controller();
+	}
+
+	public Controller getCtrl() {
+		return ctrl;
+	}
 
 	/**
 	 * @return the object's X coordinate in the world's space
@@ -73,12 +84,28 @@ public abstract class GameObject {
 		return ctrl;
 	}
 
+	public IAComponent getIAComponent() {
+		return iaComp;
+	}
+	
+	public void setIAComponent(IAComponent iaComp) {
+		this.iaComp = iaComp;
+	}
+	
 	public GraphicsComponent getGraphicsComponent() {
 		return grapComp;
 	}
 	
+	public void setGraphicsComponent(GraphicsComponent grapComp) {
+		this.grapComp = grapComp;
+	}
+	
 	public PhysicsComponent getPhysicsComponent() {
 		return physComp;
+	}
+
+	public void setPhysicsComponent(PhysicsComponent physComp) {
+		this.physComp = physComp;
 	}
 
 	public void setX(int x) {

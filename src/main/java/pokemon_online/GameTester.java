@@ -53,6 +53,12 @@ public class GameTester extends JFrame {
 		}
 	}
 	
+	public void spawnObject(GameObject obj, int row, int col) {
+		obj.setX(col*32);
+		obj.setY(row*32);
+		game.getWorld().spanObject(obj);
+	}
+	
 	public void startGame(String startLand, int startRow, int startCol) {
 		
 		// Load land

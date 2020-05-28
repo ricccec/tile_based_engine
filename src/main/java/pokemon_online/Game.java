@@ -71,6 +71,7 @@ public class Game extends Thread {
 		lag += elapsed;
 
 		while (lag >= Configuration.MS_PER_UPDATE) {
+			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);

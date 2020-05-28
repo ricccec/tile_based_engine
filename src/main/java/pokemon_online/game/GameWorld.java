@@ -11,6 +11,7 @@ import java.util.Collection;
 
 import pokemon_online.GameObject;
 import pokemon_online.ResourcesManager;
+import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
 import pokemon_online.land.Tile;
@@ -34,7 +35,17 @@ public class GameWorld {
 	}
 
 	public void spanObject(GameObject obj) {
+		// FIXME Add coordinates
 		gameObjects.add(obj);
+	}
+	
+	public void updateIA(long dtMillisec) {
+		for (GameObject obj : gameObjects) { // FIXME Only active objects
+			IAComponent iaComp = obj.getIAComponent();
+			if (iaComp != null) {
+				iaComp.updateIA(this, dtMillisec);
+			}
+		}
 	}
 	
 	public void updateWorld(long dtMillisec) {

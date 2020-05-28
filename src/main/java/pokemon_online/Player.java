@@ -14,7 +14,6 @@ import pokemon_online.physics.PokemonPhysicsComponent;
 public class Player extends GameObject {
 	
 	public Player() {
-		ctrl = new Controller();
 		physComp = new PokemonPhysicsComponent(this);
 		grapComp = new GraphicsComponent(this);
 	}
