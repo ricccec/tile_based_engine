@@ -54,9 +54,7 @@ public class GameTester extends JFrame {
 	}
 	
 	public void spawnObject(GameObject obj, int row, int col) {
-		obj.setX(col*32);
-		obj.setY(row*32);
-		game.getWorld().spanObject(obj);
+		game.getWorld().spanObject(obj, row, col);
 	}
 	
 	public void startGame(String startLand, int startRow, int startCol) {
@@ -65,14 +63,15 @@ public class GameTester extends JFrame {
 		Land land = loadLand(startLand);
 		
 		if (land != null) {
-			game.jumpToLand(land, startCol*32, startRow*32);
+			game.jumpToLand(land, startCol, startRow);
 			startScreenRefresh();
 			game.start();
 		}
 		
-		while(true) {
-			// Game events
-		}
+		// FIXME
+//		while(true) {
+//			// Handle Game events
+//		}
 	}
 	
 	private Land loadLand(String name) {

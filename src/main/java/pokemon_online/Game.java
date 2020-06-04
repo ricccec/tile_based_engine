@@ -32,15 +32,17 @@ public class Game extends Thread {
 	public Game() {
 		player = new Player();
 		world = new GameWorld();
-		world.spanObject(player);
+		
 		
 		keyboard = new Keyboard();
 		keyboard.attachController(player.getController());
 	}
 	
-	public void jumpToLand(Land land, int playerX, int playerY) {
+	public void jumpToLand(Land land, int playerRow, int playerCol) {
+		
 		world.jumpToLand(land);
-		player.setPosition(playerX, playerY);
+		world.spanObject(player, playerCol, playerRow);
+
 	}
 	
 	public void keyPressed(int keyCode) {

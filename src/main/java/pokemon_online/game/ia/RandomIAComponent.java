@@ -3,7 +3,6 @@
  */
 package pokemon_online.game.ia;
 
-import java.util.Collection;
 import java.util.Random;
 
 import pokemon_online.GameObject;
@@ -29,7 +28,6 @@ public class RandomIAComponent extends IAComponent {
 	public void updateIA(GameWorld world, long dtMillisec) {
 		
 		int newDir = rand.nextInt(4);
-		System.out.println(newDir);
 		Controller ctrl = obj.getController();
 		ctrl.setDeactivated(Control.MOVE_RIGHT);
 		ctrl.setDeactivated(Control.MOVE_DWN);
@@ -46,6 +44,7 @@ public class RandomIAComponent extends IAComponent {
 		}
 		
 		// TODO Add STOP and WALK state
+		
 //		if (obj.isMoving()) {
 //			if (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0)) { // FIXME No hard-coded shit
 //				// Object is between two cells, nothing to decide

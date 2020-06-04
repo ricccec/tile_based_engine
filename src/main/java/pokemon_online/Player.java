@@ -18,10 +18,4 @@ public class Player extends GameObject {
 		grapComp = new GraphicsComponent(this);
 	}
 
-
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
 }

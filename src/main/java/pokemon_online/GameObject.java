@@ -1,6 +1,11 @@
 package pokemon_online;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import pokemon_online.game.Controller;
+import pokemon_online.game.GameObjectListener;
+import pokemon_online.game.GameObjectsContainer;
 import pokemon_online.game.GraphicsComponent;
 import pokemon_online.game.PhysicsComponent;
 import pokemon_online.game.ia.IAComponent;
@@ -15,6 +20,13 @@ import pokemon_online.game.ia.IAComponent;
  */
 public class GameObject {
 
+	private final Collection<GameObjectListener> listeners;
+	
+	private int x;
+	
+	private int y;
+	
+	
 	protected GraphicsComponent grapComp;
 	
 	protected PhysicsComponent physComp;
@@ -22,10 +34,6 @@ public class GameObject {
 	protected IAComponent iaComp;
 	
 	protected final Controller ctrl;
-	
-	protected int x;
-	
-	protected int y;
 	
 	protected int speedX; // In pxl/tick
 
@@ -38,6 +46,8 @@ public class GameObject {
 	
 	public GameObject() {
 		ctrl = new Controller();
+		
+		listeners = new ArrayList<>();
 	}
 
 	public Controller getCtrl() {
@@ -109,11 +119,25 @@ public class GameObject {
 	}
 
 	public void setX(int x) {
-		this.x = x;
+		setPosition(x, this.y);
 	}
 	
 	public void setY(int y) {
+		setPosition(this.x, y);
+	}
+	
+	public void setPosition(int x, int y) {
+		int prevX = this.x;
+		int prevY = this.y;
+		this.x = x;
 		this.y = y;
+		
+		if ((prevX != x) || (prevY != y)) {
+			// Notify listeners the position has changed
+			for (GameObjectListener listener : listeners) {
+				listener.positionChanged(this, prevX, prevY, x, y);
+			}
+		}
 	}
 	
 	public int getSpeedX() {
@@ -134,6 +158,14 @@ public class GameObject {
 	
 	public boolean isMoving() {
 		return ((getSpeedX() != 0) || (getSpeedY() != 0));
+	}
+
+	public void addListener(GameObjectListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeListener(GameObjectListener listener) {
+		listeners.remove(listener);
 	}
 
 }

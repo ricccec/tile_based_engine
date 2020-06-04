@@ -22,25 +22,30 @@ import pokemon_online.land.Tile;
  */
 public class GameWorld {
 
-	private final Collection<GameObject> gameObjects;
+	private final GameObjectsContainer objContainer;
 
 	private Land currLand;
 
 	public GameWorld() {
-		this.gameObjects = new ArrayList<>();
+		objContainer = new GameObjectsContainer(this);
 	}
 
 	public void jumpToLand(Land land) {
 		this.currLand = land;
+		objContainer.clear();
 	}
 
-	public void spanObject(GameObject obj) {
-		// FIXME Add coordinates
-		gameObjects.add(obj);
+	public void spanObject(GameObject obj, int row, int col) {
+		obj.setPosition(32*col, 32*row); // FIXME Remove all hard-coded shit
+		objContainer.addObject(obj);
+	}
+	
+	public Collection<GameObject> getObjects() {
+		return objContainer.getObjects();
 	}
 	
 	public void updateIA(long dtMillisec) {
-		for (GameObject obj : gameObjects) { // FIXME Only active objects
+		for (GameObject obj : getObjects()) { // FIXME Only active objects
 			IAComponent iaComp = obj.getIAComponent();
 			if (iaComp != null) {
 				iaComp.updateIA(this, dtMillisec);
@@ -49,7 +54,7 @@ public class GameWorld {
 	}
 	
 	public void updateWorld(long dtMillisec) {
-		for (GameObject obj : gameObjects) {
+		for (GameObject obj : getObjects()) {
 			PhysicsComponent phyComp = obj.getPhysicsComponent();
 			if (phyComp != null) {
 				phyComp.update(this, dtMillisec);
@@ -58,7 +63,7 @@ public class GameWorld {
 	}
 	
 	public void updateAnimation(long dtMillisec) {
-		for (GameObject obj : gameObjects) {
+		for (GameObject obj : getObjects()) {
 			// FIXME Only update active objects
 			GraphicsComponent gComp = obj.getGraphicsComponent();
 			if (gComp != null) {
@@ -68,7 +73,7 @@ public class GameWorld {
 	}
 
 	public void updateControllers() {
-		for (GameObject obj : gameObjects) {
+		for (GameObject obj : getObjects()) {
 			// FIXME Only update active objects
 			Controller controller = obj.getController();
 			if (controller != null) {
@@ -135,7 +140,7 @@ public class GameWorld {
 
 		// Draw game objects
 		Viewport viewport = new Viewport(rowMin, rowMax, colMin, colMax, landOriginX, landOriginY);
-		for (GameObject obj : gameObjects) {
+		for (GameObject obj : getObjects()) {
 			GraphicsComponent gComp = obj.getGraphicsComponent();
 			if (gComp != null) {
 				gComp.render(grap, viewport);
@@ -161,6 +166,43 @@ public class GameWorld {
 
 	public int getY(int row) {
 		return row * 32;
+	}
+	
+	public static class Cell {
+		
+		private final int row;
+		
+		private final int col;
+		
+		public Cell(int row, int col) {
+			this.row = row;
+			this.col = col;
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + col;
+			result = prime * result + row;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Cell other = (Cell) obj;
+			if (col != other.col)
+				return false;
+			if (row != other.row)
+				return false;
+			return true;
+		}
 	}
 
 }

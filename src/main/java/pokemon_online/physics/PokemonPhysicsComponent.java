@@ -58,8 +58,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		int newRow = cornerRow - (getMovingDirection().isAlongY() ? getMovingDirection().sign : 0);
 		int newCol = cornerCol - (getMovingDirection().isAlongX() ? getMovingDirection().sign : 0);
 		
-		obj.setX(world.getX(newCol));
-		obj.setY(world.getY(newRow));
+		obj.setPosition(world.getX(newCol), world.getY(newRow));
 
 	}
 	

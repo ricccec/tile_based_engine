@@ -25,6 +25,7 @@ public class GameTesterTest {
 	public static void init() {
 		tester = new GameTester();
 	}
+	
 	@Test
 	public void test() {
 		
@@ -38,11 +39,12 @@ public class GameTesterTest {
 		PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
 		obj.setPhysicsComponent(phComp);
 		
-		tester.spawnObject(obj, 10, 10);
 		
 		tester.setPlayerSprite("F Allenatrice");
 		tester.setVisible(true);
 		tester.startGame(START_LAND, START_ROW, START_COL);
+		
+		tester.spawnObject(obj, 12, 8);
 	}
 
 }
