@@ -14,9 +14,12 @@ import javax.swing.Timer;
 import org.json.simple.parser.ParseException;
 
 import pokemon_online.game.GraphicsComponent;
+import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.rendering.ObjectGraphicsData;
 import pokemon_online.land.Land;
 import pokemon_online.land.LandManager;
+import pokemon_online.physics.PokemonPhysicsComponent;
 
 /**
  * @author Cecchi
@@ -24,25 +27,84 @@ import pokemon_online.land.LandManager;
  */
 public class GameTester extends JFrame {
 
+	private static final String START_LAND = "Pokecity";
+	
+	private static final int START_ROW = 10;
+	
+	private static final int START_COL = 12;
+	
+	public static void main(String s[]) {  
+		
+		GameTester tester = new GameTester();
+		
+		GameObject obj = new GameObject();
+		IAComponent iaComponent = new RandomIAComponent(obj);
+		obj.setIAComponent(iaComponent);
+		GraphicsComponent gComp = new GraphicsComponent(obj);
+		ObjectGraphicsData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
+		gData.setGraphics(gComp);
+		obj.setGraphicsComponent(gComp);
+		PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
+		obj.setPhysicsComponent(phComp);
+		
+		
+		tester.setPlayerSprite("F Allenatrice");
+		
+		tester.jumpToLand(START_LAND, START_ROW, START_COL);
+
+		tester.spawnObject(obj, 9, 10);
+		
+		tester.startGameLoop();
+		
+		tester.setVisible(true);
+	}
+	
 	private static final long serialVersionUID = 4022568139447850178L;
 
 	Land[] elencoLand;
 
 	Timer timer;
+	
 	Game game;
 
 	private AreaGioco areaGioco;
+	
 	private javax.swing.JMenu jMenu1;
+	
 	private javax.swing.JMenuBar jMenuBar1;
+	
 	private javax.swing.JMenuItem jMenuItemCambiaCella;
+	
 	private javax.swing.JMenuItem jMenuItemCambiaLand;
 
 	public GameTester() {
 
 		game = new Game();
 		areaGioco = new AreaGioco(game);
+		
 		initComponents();
 		
+	}
+	
+	public void jumpToLand(String landName, int playerRow, int playerCol) {
+		// Load land
+		Land land = loadLand(landName);
+		if (land == null) {
+			throw new IllegalArgumentException("Cannot load land " + landName);
+		} else {
+			game.jumpToLand(land, playerCol, playerRow);
+		}
+	}
+	
+	public void startGameLoop() {
+		
+		startScreenRefresh();
+		game.start();
+
+		// FIXME
+//		while(true) {
+//			// Handle Game events
+//		}
 	}
 	
 	public void setPlayerSprite(String spriteName) {
@@ -55,23 +117,7 @@ public class GameTester extends JFrame {
 	
 	public void spawnObject(GameObject obj, int row, int col) {
 		game.getWorld().spanObject(obj, row, col);
-	}
-	
-	public void startGame(String startLand, int startRow, int startCol) {
-		
-		// Load land
-		Land land = loadLand(startLand);
-		
-		if (land != null) {
-			game.jumpToLand(land, startCol, startRow);
-			startScreenRefresh();
-			game.start();
-		}
-		
-		// FIXME
-//		while(true) {
-//			// Handle Game events
-//		}
+		// TODO If the game is running, ensure the world state doesn't change within a tick. Use a protected section or an event system
 	}
 	
 	private Land loadLand(String name) {
@@ -144,15 +190,15 @@ public class GameTester extends JFrame {
 				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
 				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE));
 		pack();
-	}// </editor-fold>//GEN-END:initComponents
+	}
 
-	private void formKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_formKeyReleased
+	private void formKeyReleased(java.awt.event.KeyEvent evt) {
 		int keyCode = evt.getKeyCode();
 		//System.out.println(keyCode + " released");
 		game.keyReleased(keyCode);
 	}
 
-	private void formKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_formKeyPressed
+	private void formKeyPressed(java.awt.event.KeyEvent evt) {
 		int keyCode = evt.getKeyCode();
 		//System.out.println(keyCode + " pressed");
 		game.keyPressed(keyCode);
