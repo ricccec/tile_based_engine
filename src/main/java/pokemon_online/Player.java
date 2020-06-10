@@ -1,7 +1,6 @@
 package pokemon_online;
 
-import pokemon_online.game.Controller;
-import pokemon_online.game.GraphicsComponent;
+import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 /**
  * 
@@ -15,7 +14,7 @@ public class Player extends GameObject {
 	
 	public Player() {
 		physComp = new PokemonPhysicsComponent(this);
-		grapComp = new GraphicsComponent(this);
+		grapComp = new SpriteGraphicsComponent(this);
 	}
 
 }

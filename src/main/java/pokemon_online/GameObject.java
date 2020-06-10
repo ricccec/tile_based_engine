@@ -6,9 +6,9 @@ import java.util.Collection;
 import pokemon_online.game.Controller;
 import pokemon_online.game.GameObjectListener;
 import pokemon_online.game.GameObjectsContainer;
-import pokemon_online.game.GraphicsComponent;
 import pokemon_online.game.PhysicsComponent;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.rendering.GraphicsComponent;
 
 /**
  * 
@@ -20,12 +20,12 @@ import pokemon_online.game.ia.IAComponent;
  */
 public class GameObject {
 
+	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
 	
 	private int x;
 	
 	private int y;
-	
 	
 	protected GraphicsComponent grapComp;
 	

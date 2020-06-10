@@ -3,7 +3,8 @@ package pokemon_online.game.rendering;
 import java.util.HashMap;
 import java.util.Map;
 
-import pokemon_online.game.GraphicsComponent.GraphicsState;
+import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
+
 
 // FIXME Change this class name
 public class StateAnimation {

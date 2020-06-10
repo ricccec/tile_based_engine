@@ -1,25 +1,15 @@
-/**
- * 
- */
-package pokemon_online.game;
+package pokemon_online.game.rendering;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
-import pokemon_online.Component;
 import pokemon_online.GameObject;
 import pokemon_online.ResourcesManager;
-import pokemon_online.game.rendering.StateAnimation;
-import pokemon_online.game.rendering.Viewport;
 
-/**
- * @author Cecchi
- *
- */
-public class GraphicsComponent extends Component { // TODO Make abstract
-	
+public class SpriteGraphicsComponent extends GraphicsComponent {
+
 	public enum GraphicsState { // FIXME Move somewhere else
 		IDLE,
 		WALKING;
@@ -40,7 +30,7 @@ public class GraphicsComponent extends Component { // TODO Make abstract
 	
 	private GraphicsState currState; // FIXME Use a real FSM
 	
-	public GraphicsComponent(GameObject obj) {
+	public SpriteGraphicsComponent(GameObject obj) {
 		super(obj);
 		
 		currState = GraphicsState.IDLE;

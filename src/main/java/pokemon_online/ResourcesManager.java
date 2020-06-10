@@ -23,7 +23,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import pokemon_online.game.rendering.ObjectGraphicsData;
+import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.land.Land;
 
 /**
@@ -43,7 +43,7 @@ public class ResourcesManager {
 	
 	private final Map<String, Map<Float, Image>> images;
 	
-	private final Map<String, ObjectGraphicsData> graphics;
+	private final Map<String, SpriteData> graphics;
 	
 	private final Collection<File> directories; // FIXME This dumps all resources in the same "virtual" directory
 	
@@ -59,9 +59,9 @@ public class ResourcesManager {
 		}
 	}
 	
-	public ObjectGraphicsData getGameObjectGraphics(String graphDataName) {
+	public SpriteData getGameObjectGraphics(String graphDataName) {
 		if (!graphics.containsKey(graphDataName)) {
-			ObjectGraphicsData objGraph = null;
+			SpriteData objGraph = null;
 			try {
 				objGraph = loadGraphicsData(graphDataName);
 			} catch (IOException | ParseException e) {
@@ -116,7 +116,7 @@ public class ResourcesManager {
 		return null;
 	}
 	
-	public ObjectGraphicsData loadGraphicsData(String graphDataName) throws FileNotFoundException, IOException, ParseException {
+	public SpriteData loadGraphicsData(String graphDataName) throws FileNotFoundException, IOException, ParseException {
 		// FIXME This requires the json to have the same name of the object, which is not good
 		String fileName = graphDataName + ".json";
 		File file = findFile(fileName);
@@ -128,7 +128,7 @@ public class ResourcesManager {
 		JSONParser jsonParser = new JSONParser();
 		try (FileReader reader = new FileReader(file)) {
         	JSONObject graphJSON = (JSONObject)jsonParser.parse(reader);
-        	return new ObjectGraphicsData(graphJSON);
+        	return new SpriteData(graphJSON);
         }
 		
 	}

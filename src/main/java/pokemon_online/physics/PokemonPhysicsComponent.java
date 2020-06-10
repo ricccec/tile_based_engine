@@ -4,21 +4,31 @@
 package pokemon_online.physics;
 
 import pokemon_online.GameObject;
+import pokemon_online.game.GameObjectListener;
 import pokemon_online.game.GameWorld;
+import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.PhysicsComponent;
 
 /**
  * @author Cecchi
  *
  */
-public class PokemonPhysicsComponent extends PhysicsComponent {
+public class PokemonPhysicsComponent extends PhysicsComponent implements GameObjectListener {
 	
 	private final DirectionFilter dirFilter;
 	
 	private PkmnPhyState state;
 	
+	private Integer bBoxCol;
+	
+	private Integer bBoxRow;
+	
 	public PokemonPhysicsComponent(GameObject obj) {
 		super(obj);
+		
+		obj.addListener(this);
+		bBoxCol = null;
+		bBoxRow = null;
 		
 		dirFilter = new DirectionFilter(obj.getController());
 		state = new PkmnPhyStateIdle(this); // Use a Factory for stateless states
@@ -33,36 +43,57 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		if (newState != null) {
 			// State has changed
 			state = newState;
-			state.enterState();
+			state.enterState(world);
 		}
 		
 	}
 	
-	
+	public Cell getBoundingBox(GameWorld world) {
+		if ((bBoxCol == null) || (bBoxRow == null)) {
+			bBoxCol = world.getColumn(obj.getX());
+			bBoxRow = world.getRow(obj.getY());
+		}
+		
+		return new Cell(bBoxRow, bBoxCol);
+		
+	}
 
 	public void resolveCollision(GameWorld world) {
-		int cornerX = obj.getX();
-		if ((getMovingDirection().isAlongX() && (getMovingDirection().sign > 0)))
-			cornerX += 32;
-		int cornerY = obj.getY();
-		if ((getMovingDirection().isAlongY() && (getMovingDirection().sign > 0)))
-			cornerY += 32;
 		
-		int cornerRow = world.getRow(cornerY);
-		int cornerCol = world.getColumn(cornerX);
+		Cell cornerCell = getBoundingBox(world);
+		int cornerRow = cornerCell.getRow();
+		int cornerCol = cornerCell.getColumn();
 		
-		if (world.isWalkable(cornerRow, cornerCol))
-			return;
+		// Check collision
+		boolean collides = !world.isWalkable(cornerRow, cornerCol);
+		if (!collides) {
+			// Check object-with-object collision
+			for (GameObject otherObj : world.getProps(cornerRow, cornerCol)) {
+				if (!otherObj.equals(obj)) {
+					collides = true;
+					break;
+				}
+			}
+		}
 		
-		// Cell is not walkable: resolve collision
-		int newRow = cornerRow - (getMovingDirection().isAlongY() ? getMovingDirection().sign : 0);
-		int newCol = cornerCol - (getMovingDirection().isAlongX() ? getMovingDirection().sign : 0);
-		
-		obj.setPosition(world.getX(newCol), world.getY(newRow));
+		if (collides) {
+			// Cell is not walkable: resolve collision
+			int newRow = cornerRow - (getMovingDirection().isAlongY() ? getMovingDirection().sign : 0);
+			int newCol = cornerCol - (getMovingDirection().isAlongX() ? getMovingDirection().sign : 0);
+			
+			obj.setPosition(world.getX(newCol), world.getY(newRow));
+
+			// Update bounding box
+			bBoxCol = world.getColumn(obj.getX());
+			bBoxRow = world.getRow(obj.getY());
+			notifyBoundingBoxChanged(getBoundingBox(world));
+		}
 
 	}
 	
 	public void moveOneCell(GameWorld world, int dPxlsMax) {
+		
+		assert(dPxlsMax > 0);
 		
 		// Compute distance from next cell
 		int currPos = (getMovingDirection().isAlongX() ? obj.getX() : obj.getY());
@@ -79,11 +110,30 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		// Cannot move more than dPxlsMax
 		dPxls = Math.min(dPxlsMax, dPxls);
 		
+		assert(dPxls > 0);
+		
 		if (getMovingDirection().isAlongX()) {
 			obj.setX(obj.getX() + getMovingDirection().sign*dPxls);
 		} else {
 			obj.setY(obj.getY() + getMovingDirection().sign*dPxls);
 		}
+		
+		// Bounding box changed
+		int bBoxX = obj.getX();
+		if (getMovingDirection().isAlongX() &&
+			(getMovingDirection().sign > 0) &&
+			((obj.getX() % 32) != 0)) {
+			bBoxX += 32;
+		}
+		bBoxCol = world.getColumn(bBoxX);
+		int bBoxY = obj.getY();
+		if (getMovingDirection().isAlongY()
+			&& (getMovingDirection().sign > 0) &&
+			((obj.getY() % 32) != 0)) {
+			bBoxY += 32;
+		}
+		bBoxRow = world.getRow(bBoxY);
+		notifyBoundingBoxChanged(getBoundingBox(world));
 		
 	}
 
@@ -168,6 +218,12 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	
 	public int getSpeed() {
 		return (int)Math.ceil(Math.sqrt(Math.pow(obj.getSpeedX(), 2) + Math.pow( obj.getSpeedY(), 2)));
+	}
+
+	@Override
+	public void positionChanged(GameObject obj, int prevX, int prevY, int currX, int currY) {
+		bBoxRow = null;
+		bBoxCol = null;
 	}
 	
 }

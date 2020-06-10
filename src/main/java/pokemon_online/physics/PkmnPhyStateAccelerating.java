@@ -21,7 +21,7 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 	}
 
 	@Override
-	public void enterState() {
+	public void enterState(GameWorld world) {
 		timerMillisec = 0;
 	}
 

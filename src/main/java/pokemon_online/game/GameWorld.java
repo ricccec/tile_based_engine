@@ -6,12 +6,12 @@ package pokemon_online.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import pokemon_online.GameObject;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
 import pokemon_online.land.Tile;
@@ -22,6 +22,8 @@ import pokemon_online.land.Tile;
  */
 public class GameWorld {
 
+	private static final boolean DRAW_B_BOX = true;
+	
 	private final GameObjectsContainer objContainer;
 
 	private Land currLand;
@@ -157,7 +159,12 @@ public class GameWorld {
 	}
 
 	public int getColumn(int x) {
+		// FIXME Use the fixed coordinate system where (0,0) is the CENTER of the top-left cell
 		return x / 32 - ((x < 0) ? 1 : 0);
+	}
+	
+	public Cell getCell(int x, int y) {
+		return new Cell(getRow(y), getColumn(x));
 	}
 
 	public int getX(int column) {
@@ -169,7 +176,7 @@ public class GameWorld {
 	}
 	
 	public static class Cell {
-		
+
 		private final int row;
 		
 		private final int col;
@@ -177,6 +184,14 @@ public class GameWorld {
 		public Cell(int row, int col) {
 			this.row = row;
 			this.col = col;
+		}
+		
+		public int getRow() {
+			return row;
+		}
+
+		public int getColumn() {
+			return col;
 		}
 		
 		@Override
@@ -203,6 +218,10 @@ public class GameWorld {
 				return false;
 			return true;
 		}
+	}
+
+	public Collection<GameObject> getProps(int row, int col) {
+		return objContainer.getProps(row, col);
 	}
 
 }

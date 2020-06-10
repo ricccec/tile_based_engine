@@ -18,7 +18,7 @@ public abstract class PkmnPhyState {
 		this.phyComp = phyComp;
 	}
 	
-	public abstract void enterState();
+	public abstract void enterState(GameWorld world);
 	
 	public abstract PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir);
 	

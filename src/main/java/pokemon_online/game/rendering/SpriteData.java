@@ -10,14 +10,13 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import pokemon_online.game.GraphicsComponent;
-import pokemon_online.game.GraphicsComponent.GraphicsState;
+import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
 
 /**
  * @author Cecchi
  *
  */
-public class ObjectGraphicsData {
+public class SpriteData {
 	
 	public static final String JSON_TYPE = "object graphics";
 	
@@ -53,14 +52,14 @@ public class ObjectGraphicsData {
 	
 	private final Map<String, Map<Integer, Animation>> stateAnimations;
 	
-	public ObjectGraphicsData(JSONObject graphicsJSON) {
+	public SpriteData(JSONObject graphicsJSON) {
 		this.graphicsJSON = graphicsJSON;
 		
 		name = parseName(graphicsJSON);
 		stateAnimations = new HashMap<>();
 	}
 	
-	public void setGraphics(GraphicsComponent gComp) {
+	public void setGraphics(SpriteGraphicsComponent gComp) {
 		
 		for (StateAnimation graphState : parseJSONData()) {
 			gComp.addGraphicsState(graphState);

@@ -19,7 +19,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 	}
 
 	@Override
-	public void enterState() {
+	public void enterState(GameWorld world) {
 		// TODO Auto-generated method stub
 
 	}

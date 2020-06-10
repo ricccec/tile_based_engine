@@ -13,10 +13,11 @@ import javax.swing.Timer;
 
 import org.json.simple.parser.ParseException;
 
-import pokemon_online.game.GraphicsComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
-import pokemon_online.game.rendering.ObjectGraphicsData;
+import pokemon_online.game.rendering.GraphicsComponent;
+import pokemon_online.game.rendering.SpriteData;
+import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.land.Land;
 import pokemon_online.land.LandManager;
 import pokemon_online.physics.PokemonPhysicsComponent;
@@ -35,24 +36,26 @@ public class GameTester extends JFrame {
 	
 	public static void main(String s[]) {  
 		
-		GameTester tester = new GameTester();
-		
-		GameObject obj = new GameObject();
-		IAComponent iaComponent = new RandomIAComponent(obj);
-		obj.setIAComponent(iaComponent);
-		GraphicsComponent gComp = new GraphicsComponent(obj);
-		ObjectGraphicsData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
-		gData.setGraphics(gComp);
-		obj.setGraphicsComponent(gComp);
-		PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
-		obj.setPhysicsComponent(phComp);
-		
+		GameTester tester = new GameTester();		
 		
 		tester.setPlayerSprite("F Allenatrice");
 		
 		tester.jumpToLand(START_LAND, START_ROW, START_COL);
 
-		tester.spawnObject(obj, 9, 10);
+		for (int i = 0; i < 100; i++) {
+			GameObject obj = new GameObject();
+			IAComponent iaComponent = new RandomIAComponent(obj);
+			obj.setIAComponent(iaComponent);
+			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(obj);
+			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
+			gData.setGraphics(gComp);
+			obj.setGraphicsComponent(gComp);
+			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
+			obj.setPhysicsComponent(phComp);
+			tester.spawnObject(obj, 9, i);
+		}
+		
+		
 		
 		tester.startGameLoop();
 		
@@ -108,9 +111,9 @@ public class GameTester extends JFrame {
 	}
 	
 	public void setPlayerSprite(String spriteName) {
-		GraphicsComponent gComp = game.getPlayer().getGraphicsComponent();
+		SpriteGraphicsComponent gComp = (SpriteGraphicsComponent)game.getPlayer().getGraphicsComponent();
 		if (gComp != null) {
-			ObjectGraphicsData gData = ResourcesManager.getMgr().getGameObjectGraphics(spriteName);
+			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics(spriteName);
 			gData.setGraphics(gComp);
 		}
 	}

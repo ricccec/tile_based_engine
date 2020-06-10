@@ -17,9 +17,9 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 	}
 
 	@Override
-	public void enterState() {
+	public void enterState(GameWorld world) {
 		// TODO Auto-generated method stub
-		
+		phyComp.moveOneCell(world, 0);
 	}
 
 	@Override
