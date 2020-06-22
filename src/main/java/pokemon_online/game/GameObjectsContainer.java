@@ -6,8 +6,11 @@ package pokemon_online.game;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,6 +58,34 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 		}
 	}
 	
+	public List<GameObject> getSortedObjectsInRange(int fromRow, int fromCol, int toRow, int toCol) {
+		
+		List<GameObject> results = new ArrayList<>();
+		assert(fromRow <= toRow);
+		assert(fromCol <= toCol);
+		for (int r = fromRow; r <= toRow; r++) {
+			for (int c = fromCol; c <= toCol; c++) {
+				results.addAll(getObjects(r, c));
+			}
+		}
+		
+		// Sort objects
+		Collections.sort(results, new Comparator<GameObject>() {
+
+			@Override
+			public int compare(GameObject o1, GameObject o2) {
+				return Integer.compare(o1.getY(), o2.getY());
+			}
+		});
+		
+		return results;
+		
+	}
+	
+	public Collection<GameObject> getAllObjects() {
+		return objects;
+	}
+	
 	public Collection<GameObject> getProps(int row, int col) {
 		Cell cell = new Cell(row, col);
 		if (cell2bBoxes.containsKey(cell)) {
@@ -65,7 +96,7 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 	}
 
 	public void clear() {
-		for (GameObject object : getObjects()) {
+		for (GameObject object : getAllObjects()) {
 			object.removeListener(this);
 			
 			// Remove physics listener
@@ -97,10 +128,6 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 				}
 			}
 		}
-	}
-	
-	public Collection<GameObject> getObjects() {
-		return objects;
 	}
 
 	@Override

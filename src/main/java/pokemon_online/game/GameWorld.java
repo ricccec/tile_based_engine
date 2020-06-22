@@ -43,7 +43,7 @@ public class GameWorld {
 	}
 	
 	public Collection<GameObject> getObjects() {
-		return objContainer.getObjects();
+		return objContainer.getAllObjects();
 	}
 	
 	public void updateIA(long dtMillisec) {
@@ -142,7 +142,7 @@ public class GameWorld {
 
 		// Draw game objects
 		Viewport viewport = new Viewport(rowMin, rowMax, colMin, colMax, landOriginX, landOriginY);
-		for (GameObject obj : getObjects()) {
+		for (GameObject obj : objContainer.getSortedObjectsInRange(rowMin - 1, colMin - 1, rowMax, colMax)) {
 			GraphicsComponent gComp = obj.getGraphicsComponent();
 			if (gComp != null) {
 				gComp.render(grap, viewport);
