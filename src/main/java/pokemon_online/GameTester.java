@@ -13,6 +13,8 @@ import javax.swing.Timer;
 
 import org.json.simple.parser.ParseException;
 
+import pokemon_online.game.Game;
+import pokemon_online.game.GameObject;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
@@ -30,9 +32,9 @@ public class GameTester extends JFrame {
 
 	private static final String START_LAND = "Pokecity";
 	
-	private static final int START_ROW = 10;
+	private static final int START_ROW = 0;
 	
-	private static final int START_COL = 12;
+	private static final int START_COL = 8;
 	
 	public static void main(String s[]) {  
 		

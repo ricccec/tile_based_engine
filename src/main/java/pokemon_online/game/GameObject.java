@@ -1,14 +1,11 @@
-package pokemon_online;
+package pokemon_online.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import pokemon_online.game.Controller;
-import pokemon_online.game.GameObjectListener;
-import pokemon_online.game.GameObjectsContainer;
-import pokemon_online.game.PhysicsComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
+import pokemon_online.physics.PhysicsComponent;
 
 /**
  * 

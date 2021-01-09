@@ -14,8 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pokemon_online.GameObject;
 import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.utils.GameUtils;
+import pokemon_online.physics.PhysicsComponent;
+import pokemon_online.physics.PhysicsListener;
+import pokemon_online.physics.ZoneDebugObject;
 
 /**
  * @author Cecchi
@@ -35,7 +38,7 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 	
 	private final Map<GameObject, GameObject> zoneGraphics;
 	
-	private final GameWorld world;
+	private final GameWorld world; // FIXME Needed?
 	
 	public GameObjectsContainer(GameWorld world) {
 		this.world = world;
@@ -144,10 +147,10 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 		
 //		System.out.println(obj + " (" + prevX + "," + prevY + ") -> (" + currX + ", " + currY + ")");
 		// Update object cell
-		int prevRow = world.getRow(prevY);
-		int prevCol = world.getColumn(prevX);
-		int currRow = world.getRow(currY);
-		int currCol = world.getColumn(currX);
+		int prevRow = GameUtils.getRow(prevY);
+		int prevCol = GameUtils.getColumn(prevX);
+		int currRow = GameUtils.getRow(currY);
+		int currCol = GameUtils.getColumn(currX);
 		if ((prevRow != currRow) || (prevCol != currCol)) {
 			// Cell is actually changed
 			Cell prevCell = new Cell(prevRow, prevCol);
@@ -193,7 +196,7 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 		
 		if (zoneGraphics.containsKey(obj)) {
 			GameObject bBoxGraph = zoneGraphics.get(obj);
-			bBoxGraph.setPosition(world.getX(cell.getColumn()), world.getY(cell.getRow()));
+			bBoxGraph.setPosition(GameUtils.getX(cell.getColumn()), GameUtils.getY(cell.getRow()));
 		}
 		
 	}

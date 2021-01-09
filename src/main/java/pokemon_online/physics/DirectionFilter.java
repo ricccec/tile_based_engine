@@ -3,10 +3,10 @@
  */
 package pokemon_online.physics;
 
-import static pokemon_online.game.Control.MOVE_DWN;
-import static pokemon_online.game.Control.MOVE_LEFT;
-import static pokemon_online.game.Control.MOVE_RIGHT;
-import static pokemon_online.game.Control.MOVE_UP;
+import static pokemon_online.game.Controller.Control.MOVE_DWN;
+import static pokemon_online.game.Controller.Control.MOVE_LEFT;
+import static pokemon_online.game.Controller.Control.MOVE_RIGHT;
+import static pokemon_online.game.Controller.Control.MOVE_UP;
 
 import pokemon_online.game.Controller;
 

@@ -5,8 +5,13 @@ import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
-import pokemon_online.GameObject;
+import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
+import pokemon_online.game.GameObject;
+import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.utils.GameUtils;
+import pokemon_online.physics.PhysicsComponent;
+import pokemon_online.physics.PokemonPhysicsComponent;
 
 public class SpriteGraphicsComponent extends GraphicsComponent {
 
@@ -51,15 +56,28 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 			return;
 		}
 		
+		// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution)
+		PhysicsComponent phyComp = obj.getPhysicsComponent();
+		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) {
+			PokemonPhysicsComponent pkmnPhyComp = (PokemonPhysicsComponent) phyComp;
+			Cell bBox = pkmnPhyComp.getBoundingBox();
+			
+			int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
+			int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
+			
+			grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
+		}
+		
+		// Draw object sprite
 		int scrX = viewport.getScreenX() + obj.getX();
 		int scrY = viewport.getScreenY() + obj.getY();
 		
-		// Draw object sprite
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
 		String imgName = graphState.getCurrentSprinte(objDir);
 		// TODO Sprite and bounding box might have different size: draw the image in such a way that its center is aligned with the bb's center
 		Image tileImg = ResourcesManager.getMgr().getImage(imgName, 2);
 		grap.drawImage(tileImg,scrX, scrY, null);
+		
 	}
 
 	public void updateAnimation(long dt) {

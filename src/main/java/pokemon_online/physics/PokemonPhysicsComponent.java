@@ -3,11 +3,11 @@
  */
 package pokemon_online.physics;
 
-import pokemon_online.GameObject;
+import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObjectListener;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
-import pokemon_online.game.PhysicsComponent;
+import pokemon_online.game.utils.GameUtils;
 
 /**
  * @author Cecchi
@@ -48,10 +48,10 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		
 	}
 	
-	public Cell getBoundingBox(GameWorld world) {
+	public Cell getBoundingBox() {
 		if ((bBoxCol == null) || (bBoxRow == null)) {
-			bBoxCol = world.getColumn(obj.getX());
-			bBoxRow = world.getRow(obj.getY());
+			bBoxCol = GameUtils.getColumn(obj.getX());
+			bBoxRow = GameUtils.getRow(obj.getY());
 		}
 		
 		return new Cell(bBoxRow, bBoxCol);
@@ -60,7 +60,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 
 	public void resolveCollision(GameWorld world) {
 		
-		Cell cornerCell = getBoundingBox(world);
+		Cell cornerCell = getBoundingBox();
 		int cornerRow = cornerCell.getRow();
 		int cornerCol = cornerCell.getColumn();
 		
@@ -81,12 +81,12 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 			int newRow = cornerRow - (getMovingDirection().isAlongY() ? getMovingDirection().sign : 0);
 			int newCol = cornerCol - (getMovingDirection().isAlongX() ? getMovingDirection().sign : 0);
 			
-			obj.setPosition(world.getX(newCol), world.getY(newRow));
+			obj.setPosition(GameUtils.getX(newCol), GameUtils.getY(newRow));
 
 			// Update bounding box
-			bBoxCol = world.getColumn(obj.getX());
-			bBoxRow = world.getRow(obj.getY());
-			notifyBoundingBoxChanged(getBoundingBox(world));
+			bBoxCol = GameUtils.getColumn(obj.getX());
+			bBoxRow = GameUtils.getRow(obj.getY());
+			notifyBoundingBoxChanged(getBoundingBox());
 		}
 
 	}
@@ -122,18 +122,19 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		int bBoxX = obj.getX();
 		if (getMovingDirection().isAlongX() &&
 			(getMovingDirection().sign > 0) &&
-			((obj.getX() % 32) != 0)) {
+			((obj.getX() % 32) != 0)) { // Object is moving (in the +X direction) and has not reached the next cell 
 			bBoxX += 32;
 		}
-		bBoxCol = world.getColumn(bBoxX);
+		bBoxCol = GameUtils.getColumn(bBoxX);
 		int bBoxY = obj.getY();
 		if (getMovingDirection().isAlongY()
 			&& (getMovingDirection().sign > 0) &&
-			((obj.getY() % 32) != 0)) {
+			((obj.getY() % 32) != 0)) { // Object is moving (in the +Y direction) and has not reached the next cell 
 			bBoxY += 32;
 		}
-		bBoxRow = world.getRow(bBoxY);
-		notifyBoundingBoxChanged(getBoundingBox(world));
+		bBoxRow = GameUtils.getRow(bBoxY);
+//		System.out.println("Y: " + bBoxY + " row: " + bBoxRow);
+		notifyBoundingBoxChanged(getBoundingBox());
 		
 	}
 

@@ -3,8 +3,8 @@
  */
 package pokemon_online.game.ia;
 
-import pokemon_online.Component;
-import pokemon_online.GameObject;
+import pokemon_online.game.Component;
+import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
 
 /**

@@ -1,10 +1,12 @@
 /**
  * 
  */
-package pokemon_online.game;
+package pokemon_online.physics;
 
-import pokemon_online.Component;
-import pokemon_online.GameObject;
+import pokemon_online.game.Component;
+import pokemon_online.game.GameObject;
+import pokemon_online.game.GameObjectsContainer;
+import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
 
 /**

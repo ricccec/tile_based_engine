@@ -4,7 +4,7 @@
 package pokemon_online.physics;
 
 import pokemon_online.Configuration;
-import pokemon_online.GameObject;
+import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
 
 /**
@@ -28,6 +28,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir) {
 		// FIXME dtMillisec is ignored
 		
+		// Complete any previous movement
 		int residueDist = Configuration.PLAYER_SPEED;//phyComp.getSpeed();
 		if (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0)) {
 			assert(phyComp.getSpeed() > 0);
@@ -40,8 +41,8 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			residueDist -= Math.abs(prevPos - currPos);
 		}
 		
-		// The state of the object's controller gets read only when the object reach the next cell
-		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  {
+		
+		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  { // The state of the object's controller gets read only when the object reach the next cell
 			if (ctrlerDir == null) {
 				obj.setSpeedX(0);
 				obj.setSpeedY(0);

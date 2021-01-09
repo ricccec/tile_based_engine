@@ -3,8 +3,6 @@
  */
 package pokemon_online.game;
 
-import pokemon_online.GameObject;
-
 /**
  * @author Cecchi
  *

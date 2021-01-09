@@ -1,4 +1,4 @@
-package pokemon_online;
+package pokemon_online.game;
 
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;

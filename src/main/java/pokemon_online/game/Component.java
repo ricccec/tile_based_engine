@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online;
+package pokemon_online.game;
 
 /**
  * @author Cecchi

@@ -1,9 +1,12 @@
-package pokemon_online;
+package pokemon_online.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import pokemon_online.game.GameWorld;
-import pokemon_online.game.Keyboard;
+import org.apache.log4j.Logger;
+
+import pokemon_online.Configuration;
+import pokemon_online.game.utils.GameUtils;
+import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.land.Land;
 
 /**
@@ -17,11 +20,13 @@ import pokemon_online.land.Land;
  */
 public class Game extends Thread {
  
+	private static final Logger LOGGER = Logger.getLogger(Game.class);
+	
 	private final GameWorld world;
 
-	private Player player;
+	private final GameStatistics stats;
 	
-	private long tickCount;
+	private final Player player;
 	
 	private long lag; // Lag between real time and game time
 	
@@ -32,7 +37,7 @@ public class Game extends Thread {
 	public Game() {
 		player = new Player();
 		world = new GameWorld();
-		
+		stats = new GameStatistics();
 		
 		keyboard = new Keyboard();
 		keyboard.attachController(player.getController());
@@ -59,6 +64,9 @@ public class Game extends Thread {
 	
 	@Override
 	public void run() {
+		
+		LOGGER.debug("Game started");
+		
 		lastTick = System.currentTimeMillis();
 		while(true) {
 			gameLoop(System.currentTimeMillis());
@@ -73,23 +81,17 @@ public class Game extends Thread {
 		lag += elapsed;
 
 		while (lag >= Configuration.MS_PER_UPDATE) {
+			
+			stats.beforeUpdate();
 			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
+			stats.afterUpdate();
 			
-			tickCount++;
 			lag -= Configuration.MS_PER_UPDATE;
 		}
 
-	}
-	
-	public long getTickCount() {
-		return tickCount;
-	}
-
-	public void setTickCount(long tickCount) {
-		this.tickCount = tickCount;
 	}
 
 	public long getLag() {
@@ -107,13 +109,15 @@ public class Game extends Thread {
 	public void drawGameStats(Graphics2D grap) {
 		grap.setColor(Color.RED);
 		int plyrX = getPlayer().getX();
-		int plyrCol = getWorld().getColumn(plyrX);
+		int plyrCol = GameUtils.getColumn(plyrX);
 		int plyrY = getPlayer().getY();
-		int plyrRow = getWorld().getColumn(plyrY);
-		grap.drawString("Player X: " + String.valueOf(plyrX) + "(" + String.valueOf(plyrCol) + ")", 8, 16);
-		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(" + String.valueOf(plyrRow) + ")", 8, 32);
-		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 8, 48);
-		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 8, 64);
-		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirection()), 8, 80);
+		int plyrRow = GameUtils.getColumn(plyrY);
+		grap.drawString("Player X: " + String.valueOf(plyrX) + "(" + String.valueOf(plyrCol) + ")", 0, 0);
+		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(" + String.valueOf(plyrRow) + ")", 0, 16);
+		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 0, 32);
+		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 0, 48);
+		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirection()), 0, 64);
+		
+		stats.print(GraphicsUtils.translate(grap, 0,  80));
 	}
 }

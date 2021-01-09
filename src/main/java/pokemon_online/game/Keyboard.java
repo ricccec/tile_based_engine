@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import pokemon_online.game.Controller.Control;
+
 /**
  * @author Cecchi
  *

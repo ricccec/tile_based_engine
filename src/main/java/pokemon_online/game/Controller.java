@@ -15,6 +15,15 @@ import java.util.Set;
  */
 public class Controller {
 	
+	public enum Control {
+
+		MOVE_UP,
+		MOVE_DWN,
+		MOVE_LEFT,
+		MOVE_RIGHT;
+		
+	}
+
 	private final Map<Control, Boolean> ctrlsState;
 	
 	private final Set<Control> stateChanged;

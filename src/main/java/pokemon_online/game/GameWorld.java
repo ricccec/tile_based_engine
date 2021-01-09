@@ -6,15 +6,16 @@ package pokemon_online.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.util.Collection;
 
-import pokemon_online.GameObject;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
 import pokemon_online.land.Tile;
+import pokemon_online.physics.PhysicsComponent;
 
 /**
  * @author Cecchi
@@ -84,8 +85,11 @@ public class GameWorld {
 		}
 	}
 
-	public void renderWorld(Camera camera, int width, int height, Graphics2D grap) {
-
+	public void renderWorld(Camera camera, Rectangle bounds, Graphics2D grap) {
+		
+		int componentWidth = bounds.width;
+		int componentHeight = bounds.height;
+		
 		// Cover previous frame
 		grap.setColor(Color.BLACK);
 		grap.fillRect(0, 0, 1000, 1000);
@@ -94,8 +98,8 @@ public class GameWorld {
 			return;
 
 		// Compute camera center coords in screen space
-		int plyrScreenX = width / 2 - 16;
-		int plyrScreenY = height / 2 - 16;
+		int plyrScreenX = componentWidth / 2 - 16;
+		int plyrScreenY = componentHeight / 2 - 16;
 
 		// Calculate the camera's bounding box in world's space
 		// FIXME Camera is always centered at the player: make the camera movable
@@ -138,7 +142,7 @@ public class GameWorld {
 
 		// Draw viewport rectangle
 		grap.setColor(Color.RED);
-		grap.drawRect(width / 2 - 16 - 64, height / 2 - 16 - 64, 160, 160);
+		grap.drawRect(componentWidth / 2 - 16 - 64, componentHeight / 2 - 16 - 64, 160, 160);
 
 		// Draw game objects
 		Viewport viewport = new Viewport(rowMin, rowMax, colMin, colMax, landOriginX, landOriginY);
@@ -152,27 +156,6 @@ public class GameWorld {
 
 	public boolean isWalkable(int row, int col) {
 		return currLand.isWalkable(row, col);
-	}
-
-	public int getRow(int y) {
-		return y / 32 - ((y < 0) ? 1 : 0);
-	}
-
-	public int getColumn(int x) {
-		// FIXME Use the fixed coordinate system where (0,0) is the CENTER of the top-left cell
-		return x / 32 - ((x < 0) ? 1 : 0);
-	}
-	
-	public Cell getCell(int x, int y) {
-		return new Cell(getRow(y), getColumn(x));
-	}
-
-	public int getX(int column) {
-		return column * 32;
-	}
-
-	public int getY(int row) {
-		return row * 32;
 	}
 	
 	public static class Cell {

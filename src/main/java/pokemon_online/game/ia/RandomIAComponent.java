@@ -5,9 +5,9 @@ package pokemon_online.game.ia;
 
 import java.util.Random;
 
-import pokemon_online.GameObject;
-import pokemon_online.game.Control;
 import pokemon_online.game.Controller;
+import pokemon_online.game.Controller.Control;
+import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
 
 /**

@@ -5,8 +5,8 @@ package pokemon_online.game.rendering;
 
 import java.awt.Graphics2D;
 
-import pokemon_online.Component;
-import pokemon_online.GameObject;
+import pokemon_online.game.Component;
+import pokemon_online.game.GameObject;
 
 /**
  * @author Cecchi
