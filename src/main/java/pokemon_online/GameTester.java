@@ -15,6 +15,7 @@ import org.json.simple.parser.ParseException;
 
 import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
+import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
@@ -46,7 +47,7 @@ public class GameTester extends JFrame {
 
 		for (int i = 0; i < 100; i++) {
 			GameObject obj = new GameObject();
-			IAComponent iaComponent = new RandomIAComponent(obj);
+			IAComponent iaComponent = new AdvancedRandomIAComponent(obj);
 			obj.setIAComponent(iaComponent);
 			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(obj);
 			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");

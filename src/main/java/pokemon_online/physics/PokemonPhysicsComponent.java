@@ -157,39 +157,13 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 	
 	public Direction getMovingDirection() {
 		double movingDir = obj.getMovingDirection();
-		if (movingDir <= 45) {
-			return Direction.DIR_RIGHT;
-		}
-		if ((movingDir > 45) && (movingDir <= 135)) {
-			return Direction.DIR_UP;
-		}
-		if ((movingDir > 135) && (movingDir <= 225)) {
-			return Direction.DIR_LEFT;
-		}
-		if ((movingDir > 225) && (movingDir <= 315)) {
-			return Direction.DIR_DOWN;
-		}
-		// direction is > 315
-		return Direction.DIR_RIGHT;
+		return Direction.degree2direction(movingDir);
 	}
 	
 	public Direction getFacingDirection() {
 		// FIXME Merge with the previous method
 		double movingDir = obj.getFacingDirection();
-		if (movingDir <= 45) {
-			return Direction.DIR_RIGHT;
-		}
-		if ((movingDir > 45) && (movingDir <= 135)) {
-			return Direction.DIR_UP;
-		}
-		if ((movingDir > 135) && (movingDir <= 225)) {
-			return Direction.DIR_LEFT;
-		}
-		if ((movingDir > 225) && (movingDir <= 315)) {
-			return Direction.DIR_DOWN;
-		}
-		// direction is > 315
-		return Direction.DIR_RIGHT;
+		return Direction.degree2direction(movingDir);
 	}
 	
 	public void setVelocity(Direction dir, int speed) {

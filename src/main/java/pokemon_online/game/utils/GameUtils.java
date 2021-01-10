@@ -3,6 +3,8 @@
  */
 package pokemon_online.game.utils;
 
+import java.util.Random;
+
 import pokemon_online.Configuration;
 import pokemon_online.game.GameWorld.Cell;
 
@@ -11,6 +13,8 @@ import pokemon_online.game.GameWorld.Cell;
  *
  */
 public class GameUtils {
+	
+	public static final Random RANDOM = new Random();
 	
 	public static int getRow(int y) {
 		// FIXME Use the fixed coordinate system where (0,0) is the CENTER of the top-left cell
@@ -32,6 +36,14 @@ public class GameUtils {
 
 	public static int getY(int row) {
 		return row *  Configuration.CELL_SIZE_PXLS;
+	}
+	
+	public static boolean eventOccur(float eventProbability) {
+		if (eventProbability == 0) {
+			return false;
+		}
+		float rand = RANDOM.nextFloat();
+		return (rand <= eventProbability);
 	}
 
 }
