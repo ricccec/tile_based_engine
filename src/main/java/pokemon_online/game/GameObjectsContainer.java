@@ -128,6 +128,7 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 			cell2objs.put(objCell, new HashSet<>());
 		}
 		cell2objs.get(objCell).add(obj);
+		boundingBoxChanged(obj, objCell);
 		
 		// Add physics listener
 		PhysicsComponent pyComp = obj.getPhysicsComponent();
