@@ -113,24 +113,35 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 	}
 	
 	public void addObject(GameObject obj) {
-		if (!objects.contains(obj)) {
-			objects.add(obj);
+		if (objects.contains(obj)) {
+			throw new IllegalArgumentException("Object " + obj + " is already part of world " + world);
+		}
+		
+		objects.add(obj);
+		obj.addListener(this);
+		
+		// Update data structures
+		int objRow = GameUtils.getRow(obj.getY());
+		int objCol = GameUtils.getColumn(obj.getX());
+		Cell objCell = new Cell(objRow, objCol);
+		if (!cell2objs.containsKey(objCell)) {
+			cell2objs.put(objCell, new HashSet<>());
+		}
+		cell2objs.get(objCell).add(obj);
+		
+		// Add physics listener
+		PhysicsComponent pyComp = obj.getPhysicsComponent();
+		if (pyComp != null) {
+			pyComp.addListener(this);
 			
-			obj.addListener(this);
-			
-			// Add physics listener
-			PhysicsComponent pyComp = obj.getPhysicsComponent();
-			if (pyComp != null) {
-				pyComp.addListener(this);
-				
-				// FIXME
-				if (ADD_ZONE_OBJECTS) {
-					GameObject bBoxGraphics = new ZoneDebugObject(Color.RED);
-					zoneGraphics.put(obj, bBoxGraphics);
-					objects.add(bBoxGraphics);
-				}
+			// FIXME
+			if (ADD_ZONE_OBJECTS) {
+				GameObject bBoxGraphics = new ZoneDebugObject(Color.RED);
+				zoneGraphics.put(obj, bBoxGraphics);
+				objects.add(bBoxGraphics);
 			}
 		}
+		
 	}
 
 	@Override

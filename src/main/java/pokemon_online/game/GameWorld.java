@@ -168,7 +168,7 @@ public class GameWorld {
 			this.row = row;
 			this.col = col;
 		}
-		
+
 		public int getRow() {
 			return row;
 		}
@@ -200,6 +200,11 @@ public class GameWorld {
 			if (row != other.row)
 				return false;
 			return true;
+		}
+		
+		@Override
+		public String toString() {
+			return "[r:" + row + " c:" + col + "]";
 		}
 	}
 
