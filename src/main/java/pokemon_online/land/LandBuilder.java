@@ -3,10 +3,11 @@
  */
 package pokemon_online.land;
 
-import java.util.Collection;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -31,10 +32,20 @@ public class LandBuilder {
 		TILE_TYPE("type"),
 		TILE_WALKABLE("walkable"),
 		
-		TILE_DOOR("door"),
-		TILE_TEXT("text"),
-		TILE_ENCOUNTER("encounter"),
-		TILE_CHECKPOINT("checkpoint"),
+		TILE_IMG_FRAME_NUMBER("frame"),
+		TILE_IMG_FRAME_IMG("img"),
+		
+		TILE_IMG_TILESET("tilesheet"),
+		TILE_IMG_TILESET_X("x"),
+		TILE_IMG_TILESET_Y("y"),
+		TILE_IMG_TILESET_WIDTH("width"),
+		TILE_IMG_TILESET_HEIGHT("height"),
+		TILE_IMG_TILESET_SCALE("scale"),
+		
+		TILE_DOOR("door"), //FIXME OBS?
+		TILE_TEXT("text"), //FIXME OBS?
+		TILE_ENCOUNTER("encounter"), //FIXME OBS?
+		TILE_CHECKPOINT("checkpoint"), //FIXME OBS?
 		
 		CELL_TILE("tile"),
 		CELL_ROW("row"),
@@ -59,6 +70,8 @@ public class LandBuilder {
 			this.key = key;
 		}
 	}
+	
+	private static final Logger LOGGER = Logger.getLogger(LandBuilder.class);
 	
 	private final Map<Integer, Tile> tileIds;
 	
@@ -127,11 +140,58 @@ public class LandBuilder {
 	}
 	
 	private Tile buildTile(JSONObject tileJSON) {
-		String name =  tileJSON.get(JsonField.TILE_ID.key).toString();
-		String img =  tileJSON.get(JsonField.TILE_IMG.key).toString();
-		return new Tile(name, img);
+		String name =  tileJSON.get(JsonField.TILE_NAME.key).toString();
+		
+		Tile result = new Tile(name);
+		parseTileImage(result, tileJSON.get(JsonField.TILE_IMG.key));
+
+		return result;
 	}
 	
+	private void parseTileImage(Tile tile, Object imageData) {
+		
+		if (imageData instanceof String) {
+			tile.addImage(new File(imageData.toString()));
+			return;
+		}
+		if (imageData instanceof JSONObject) {
+			TileImage tileImage = parseTileSet((JSONObject)imageData);
+			tile.addImage(tileImage);
+			return;
+		}
+		if (imageData instanceof JSONArray) {
+			JSONArray frames = (JSONArray)imageData;
+			for (Object frame : frames) {
+				JSONObject frameJSON = (JSONObject)frame;
+				
+				int frameCount = ((Long)frameJSON.get(JsonField.TILE_IMG_FRAME_NUMBER.key)).intValue();
+				LOGGER.info("Parsing frame " + frameCount + " of tile " + tile);
+				
+				Object frameImgData = frameJSON.get(JsonField.TILE_IMG_FRAME_IMG.key);
+				if (frameImgData instanceof String) {
+					tile.addImage(new File(frameImgData.toString()));
+				} else if (frameImgData instanceof JSONObject) {
+					TileImage frameTileSet = parseTileSet((JSONObject)frameImgData);
+					tile.addImage(frameTileSet);
+				} else {
+					throw new IllegalStateException("Frame " + frameCount + " of tile " + tile + " contains invalid data");
+				}
+			}
+		}
+		
+	}
+
+	private TileImage parseTileSet(JSONObject imageData) {
+		String tileSet = imageData.get(JsonField.TILE_IMG_TILESET.key).toString();
+		int x = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_X.key)).intValue();
+		int y = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_Y.key)).intValue();
+		int width = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_WIDTH.key)).intValue();
+		int height = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_HEIGHT.key)).intValue();
+		float scale = ((Double)imageData.get(JsonField.TILE_IMG_TILESET_SCALE.key)).floatValue();
+		
+		return new TileImage(new File(tileSet), x, y, width, height, scale);
+	}
+
 	private Door buildDoor(JSONObject doorJSON) {
 		String destName = doorJSON.get(JsonField.DOOR_TARGET.key).toString();
 		int destRow = ((Long)doorJSON.get(JsonField.DOOR_TARGET_ROW.key)).intValue();

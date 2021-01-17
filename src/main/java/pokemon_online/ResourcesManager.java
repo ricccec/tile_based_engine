@@ -4,6 +4,7 @@
 package pokemon_online;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,18 +20,22 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import pokemon_online.game.rendering.SpriteData;
-import pokemon_online.land.Land;
+import pokemon_online.game.utils.GraphicsUtils;
+import pokemon_online.land.TileImage;
 
 /**
  * @author Cecchi
  *
  */
 public class ResourcesManager {
+	
+	private static final Logger LOGGER = Logger.getLogger(ResourcesManager.class);
 	
 	private static ResourcesManager mgr;
 	
@@ -43,6 +48,8 @@ public class ResourcesManager {
 	
 	private final Map<String, Map<Float, Image>> images;
 	
+	private final Map<TileImage, Image> tileImgs;
+	
 	private final Map<String, SpriteData> graphics;
 	
 	private final Collection<File> directories; // FIXME This dumps all resources in the same "virtual" directory
@@ -50,6 +57,7 @@ public class ResourcesManager {
 	private ResourcesManager() {
 		images = new HashMap<>();
 		graphics = new HashMap<>();
+		tileImgs = new HashMap<>();
 		
 		// Get all directories in resource folder
 		directories = new ArrayList<>();
@@ -72,6 +80,25 @@ public class ResourcesManager {
 		return graphics.get(graphDataName);
 	}
 	
+	public Image getTileImage(TileImage tileImg) {
+		if (!tileImgs.containsKey(tileImg)) { // Image is not loaded
+			LOGGER.debug(tileImg);
+			// Load tileSet at the given scale factor
+			float scaleFactor = tileImg.getScaleFactor();
+			Image tileSet = getImage(tileImg.getTileSet().toString(), scaleFactor);
+			
+			// Crop the tileSet
+			int xScaled = Math.round(tileImg.getX()*scaleFactor); // TODO rounding?
+			int yScaled = Math.round(tileImg.getY()*scaleFactor);
+			int wScaled = Math.round(tileImg.getWidth()*scaleFactor);
+			int hScaled = Math.round(tileImg.getHeight()*scaleFactor);
+			LOGGER.debug(tileImg + " " + xScaled + " " + yScaled + " " + wScaled + " " + hScaled);
+			Image croppedImg = GraphicsUtils.cropImage(tileSet, xScaled, yScaled, wScaled, hScaled);
+			tileImgs.put(tileImg, croppedImg);
+		}
+		return tileImgs.get(tileImg);
+	}
+	
 	public Image getImage(String imgName) {
 		return getImage(imgName, 1f);
 	}
@@ -85,7 +112,7 @@ public class ResourcesManager {
 			Image img = loadImage(imgName);
 			images.get(imgName).put(1f,img);
 			if (img == null) {
-				System.out.println("Error"); // FIXME use a logger
+				LOGGER.warn("Cannot load image " + imgName);
 			}
 		}
 		

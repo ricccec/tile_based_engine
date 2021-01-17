@@ -24,4 +24,6 @@ public class Configuration {
 	public static final boolean EMPTY_CELLS_WALKABLE = true;  
 	
 	public static final int CELL_SIZE_PXLS = 32;
+	
+	public static final float TILE_ANIMATION_SPEED = 25; // In fps
 }

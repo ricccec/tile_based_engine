@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Collection;
 
+import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
@@ -28,6 +29,8 @@ public class GameWorld {
 	private final GameObjectsContainer objContainer;
 
 	private Land currLand;
+	
+	private long worldTimeMs;
 
 	public GameWorld() {
 		objContainer = new GameObjectsContainer(this);
@@ -57,12 +60,16 @@ public class GameWorld {
 	}
 	
 	public void updateWorld(long dtMillisec) {
+		// Update physics
 		for (GameObject obj : getObjects()) {
 			PhysicsComponent phyComp = obj.getPhysicsComponent();
 			if (phyComp != null) {
 				phyComp.update(this, dtMillisec);
 			}
 		}
+		
+		// Update current time
+		worldTimeMs += dtMillisec;
 	}
 	
 	public void updateAnimation(long dtMillisec) {
@@ -125,6 +132,7 @@ public class GameWorld {
 		int landOriginY = plyrScreenY - camera.getY();
 
 		// Draw tile's ground sprites
+		int currTileFrame = (int)Math.floor((worldTimeMs/1000)*Configuration.TILE_ANIMATION_SPEED);
 		for (int c = colMin; c <= colMax; c++) {// Per ogni colonna
 			for (int r = rowMin; r <= rowMax; r++) {// Per ogni righa
 
@@ -134,7 +142,7 @@ public class GameWorld {
 
 				Tile tile = currLand.getCellTile(r, c);
 				if (tile != null) {
-					Image tileImg = ResourcesManager.getMgr().getImage(tile.getImage());
+					Image tileImg = ResourcesManager.getMgr().getTileImage(tile.getImage(currTileFrame));
 					grap.drawImage(tileImg, screenX, screeny, null);
 				}
 			}
