@@ -82,7 +82,6 @@ public class ResourcesManager {
 	
 	public Image getTileImage(TileImage tileImg) {
 		if (!tileImgs.containsKey(tileImg)) { // Image is not loaded
-			LOGGER.debug(tileImg);
 			// Load tileSet at the given scale factor
 			float scaleFactor = tileImg.getScaleFactor();
 			Image tileSet = getImage(tileImg.getTileSet().toString(), scaleFactor);
@@ -92,9 +91,10 @@ public class ResourcesManager {
 			int yScaled = Math.round(tileImg.getY()*scaleFactor);
 			int wScaled = Math.round(tileImg.getWidth()*scaleFactor);
 			int hScaled = Math.round(tileImg.getHeight()*scaleFactor);
-			LOGGER.debug(tileImg + " " + xScaled + " " + yScaled + " " + wScaled + " " + hScaled);
 			Image croppedImg = GraphicsUtils.cropImage(tileSet, xScaled, yScaled, wScaled, hScaled);
 			tileImgs.put(tileImg, croppedImg);
+			
+			LOGGER.debug("Tile image " + tileImg + " loaded");
 		}
 		return tileImgs.get(tileImg);
 	}

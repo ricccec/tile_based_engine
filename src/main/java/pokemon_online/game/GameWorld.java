@@ -132,7 +132,8 @@ public class GameWorld {
 		int landOriginY = plyrScreenY - camera.getY();
 
 		// Draw tile's ground sprites
-		int currTileFrame = (int)Math.floor((worldTimeMs/1000)*Configuration.TILE_ANIMATION_SPEED);
+		int currTileFrame = (int)Math.floor((worldTimeMs/1000f)*Configuration.TILE_ANIMATION_SPEED);
+//		System.out.println(worldTimeMs + " ms -> " + currTileFrame);
 		for (int c = colMin; c <= colMax; c++) {// Per ogni colonna
 			for (int r = rowMin; r <= rowMax; r++) {// Per ogni righa
 

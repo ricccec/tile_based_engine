@@ -11,9 +11,13 @@ public class Configuration {
 
 	public static final String RESOURCES_DIR = "input";
 	
-	public static final long MS_PER_UPDATE = 34; // Around 30 FPS
 	
-	public static final long FRAMERATE = 25;
+	/**
+	 * Game world integration delta
+	 */
+	public static final long MS_PER_UPDATE = 50; // Around 20 FPS
+	
+	public static final long FRAMERATE = 20; // Frames per second
 	
 	/*
 	 * Since no object can move slower than 1 pxl/frame, the gamerate gives also the speed of the slower object:
@@ -25,5 +29,5 @@ public class Configuration {
 	
 	public static final int CELL_SIZE_PXLS = 32;
 	
-	public static final float TILE_ANIMATION_SPEED = 25; // In fps
+	public static final float TILE_ANIMATION_SPEED = 2; // Frames per second
 }
