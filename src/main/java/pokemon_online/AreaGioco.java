@@ -43,7 +43,10 @@ public class AreaGioco extends JPanel implements Serializable {
 		game.getWorld().renderWorld(camera, getBounds(), grap);
 		
 		// Draw game stats
-		game.drawGameStats(GraphicsUtils.translate(grap, 8,  16));
+//		game.drawGameStats(GraphicsUtils.translate(grap, 8,  16));
+		
+		// Draw HUD
+		game.getHud().renderHud(grap);
 	}
 
 }

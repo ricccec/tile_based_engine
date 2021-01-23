@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import pokemon_online.Configuration;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
+import pokemon_online.hud.Hud;
 import pokemon_online.land.Land;
 
 /**
@@ -23,6 +24,8 @@ public class Game extends Thread {
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
 	private final GameWorld world;
+	
+	private final Hud hud;
 
 	private final GameStatistics stats;
 	
@@ -37,6 +40,7 @@ public class Game extends Thread {
 	public Game() {
 		player = new Player();
 		world = new GameWorld();
+		hud = new Hud();
 		stats = new GameStatistics();
 		
 		keyboard = new Keyboard();
@@ -62,6 +66,10 @@ public class Game extends Thread {
 		return world;
 	}
 	
+	public Hud getHud() {
+		return hud;
+	}
+	
 	@Override
 	public void run() {
 		
@@ -83,10 +91,14 @@ public class Game extends Thread {
 		while (lag >= Configuration.MS_PER_UPDATE) {
 			
 			stats.beforeUpdate();
+			
 			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
+			
+			hud.update(player.getController());
+			
 			stats.afterUpdate();
 			
 			lag -= Configuration.MS_PER_UPDATE;

@@ -63,6 +63,8 @@ public class GameTester extends JFrame {
 		tester.startGameLoop();
 		
 		tester.setVisible(true);
+		
+		tester.game.getHud().displayText("PROVA");
 	}
 	
 	private static final long serialVersionUID = 4022568139447850178L;

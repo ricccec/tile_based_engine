@@ -20,7 +20,9 @@ public class Controller {
 		MOVE_UP,
 		MOVE_DWN,
 		MOVE_LEFT,
-		MOVE_RIGHT;
+		MOVE_RIGHT,
+		
+		ACTION_1;
 		
 	}
 
