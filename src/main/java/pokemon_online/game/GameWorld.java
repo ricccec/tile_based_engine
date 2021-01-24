@@ -9,6 +9,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
+
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
@@ -24,6 +26,8 @@ import pokemon_online.physics.PhysicsComponent;
  */
 public class GameWorld {
 
+	private static final Logger LOGGER = Logger.getLogger(GameWorld.class);
+	
 	private static final boolean DRAW_B_BOX = true;
 	
 	private final GameObjectsContainer objContainer;
@@ -38,12 +42,20 @@ public class GameWorld {
 
 	public void jumpToLand(Land land) {
 		this.currLand = land;
+		
+		// Spawn land objects
 		objContainer.clear();
+		for (GameObject obj : land.getObjects()) {
+			Cell objInitPos = land.getInitialPosition(obj);
+			spanObject(obj, objInitPos.getRow(), objInitPos.getColumn());
+		}
 	}
 
 	public void spanObject(GameObject obj, int row, int col) {
 		obj.setPosition(32*col, 32*row); // FIXME Remove all hard-coded shit
 		objContainer.addObject(obj);
+		
+		LOGGER.debug("Object " + obj + " spawned at (" + row + ", " + col + ")");
 	}
 	
 	public Collection<GameObject> getObjects() {
@@ -167,7 +179,7 @@ public class GameWorld {
 		return currLand.isWalkable(row, col);
 	}
 	
-	public static class Cell {
+	public static class Cell { // FIXME move outside this class
 
 		private final int row;
 		
@@ -219,6 +231,10 @@ public class GameWorld {
 
 	public Collection<GameObject> getProps(int row, int col) {
 		return objContainer.getProps(row, col);
+	}
+
+	public Collection<GameObject> getObjects(int row, int col) {
+		return objContainer.getObjects(row, col);
 	}
 
 }

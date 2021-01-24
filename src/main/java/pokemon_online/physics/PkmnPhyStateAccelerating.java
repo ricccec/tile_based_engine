@@ -31,6 +31,11 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 			// Controller released, go back to idle
 			return new PkmnPhyStateIdle(phyComp);
 		}
+		if (phyComp.isFrozen()) {
+			// Something has frozen the Entity, go back to idle
+			return new PkmnPhyStateIdle(phyComp);
+		}
+		
 		if (phyComp.getFacingDirection() != ctrlerDir) {
 			// Controller changed, reset timer
 			timerMillisec = 0;

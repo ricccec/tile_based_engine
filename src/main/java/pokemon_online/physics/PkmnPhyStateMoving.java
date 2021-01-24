@@ -43,7 +43,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		
 		
 		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  { // The state of the object's controller gets read only when the object reach the next cell
-			if (ctrlerDir == null) {
+			if ((ctrlerDir == null) || (phyComp.isFrozen())) {
 				obj.setSpeedX(0);
 				obj.setSpeedY(0);
 			} else {

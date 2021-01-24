@@ -27,6 +27,9 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		if (ctrlerDir == null) {
 			return null;
 		}
+		if (phyComp.isFrozen()) {
+			return null;
+		}
 		
 		if (ctrlerDir == phyComp.getFacingDirection()) {
 			return new PkmnPhyStateMoving(phyComp);

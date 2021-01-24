@@ -17,6 +17,8 @@ public abstract class PhysicsComponent extends Component {
 
 	private GameObjectsContainer objContainer;
 	
+	private boolean frozen;
+	
 	public PhysicsComponent(GameObject obj) {
 		super(obj);
 	}
@@ -35,6 +37,14 @@ public abstract class PhysicsComponent extends Component {
 
 	public void removeListener() {
 		objContainer = null;
+	}
+	
+	public void setFrozen(boolean b) {
+		frozen = b;
+	}
+	
+	public boolean isFrozen() {
+		return frozen;
 	}
 
 }

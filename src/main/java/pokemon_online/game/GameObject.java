@@ -2,6 +2,9 @@ package pokemon_online.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Stack;
+
+import org.apache.log4j.Logger;
 
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
@@ -17,8 +20,16 @@ import pokemon_online.physics.PhysicsComponent;
  */
 public class GameObject {
 
+	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
+	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
+	
+	private final Stack<Message> pendingMsgs;
+	
+	private final Collection<MessageHandler> msgHandlers;
+	
+	private GameWorld world;
 	
 	private int x;
 	
@@ -45,6 +56,8 @@ public class GameObject {
 		ctrl = new Controller();
 		
 		listeners = new ArrayList<>();
+		msgHandlers = new ArrayList<>();
+		pendingMsgs = new Stack<>();
 	}
 
 	public Controller getCtrl() {
@@ -115,6 +128,10 @@ public class GameObject {
 		this.physComp = physComp;
 	}
 
+	public void setWorld(GameWorld world) {
+		this.world = world;
+	}
+	
 	public void setX(int x) {
 		setPosition(x, this.y);
 	}
@@ -155,6 +172,23 @@ public class GameObject {
 	
 	public boolean isMoving() {
 		return ((getSpeedX() != 0) || (getSpeedY() != 0));
+	}
+	
+
+	public void sendMessage(Message msg) {
+		// Check weather there is a message handler for this message
+		LOGGER.debug("Object " + this + " has received a message");
+		for (MessageHandler handler : msgHandlers) {
+			if (handler.getMsgType() == msg.getType()) {
+				handler.handleMessage(world, this, msg);
+				return;
+			}
+		}
+		pendingMsgs.push(msg); // No handler found. Put the message into the queue and hope it will be handled by one of the object's components
+	}
+	
+	public void addMessageHandler(MessageHandler handler) {
+		msgHandlers.add(handler);
 	}
 
 	public void addListener(GameObjectListener listener) {

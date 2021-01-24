@@ -11,6 +11,10 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import pokemon_online.game.GameObject;
+import pokemon_online.game.MessageHandler;
+import pokemon_online.game.TextMessageHandler;
+
 /**
  * @author Cecchi
  *
@@ -25,6 +29,7 @@ public class LandBuilder {
 		LAND_ROWS("rows"),
 		LAND_ROW("row"),
 		LAND_COLUMNS("columns"),
+		LAND_TEXTS("texts"),
 		
 		TILE_ID("id"),
 		TILE_NAME("name"),
@@ -60,6 +65,8 @@ public class LandBuilder {
 		DOOR_TARGET_ROW("targetRow"),
 		DOOR_TARGET_COL("targetCol"),
 		
+		TEXT_ROW("row"),
+		TEXT_COL("col"),
 		TEXT_MSG("text"),
 		
 		CHECKPOINT_PRICE("price");
@@ -102,6 +109,20 @@ public class LandBuilder {
 			land.addTile(tileIds.get(tileId));
 		}
 		
+		// Read texts game objects
+		JSONArray textsJSON = (JSONArray)landJSON.get(JsonField.LAND_TEXTS.key);
+		for (Object obj : textsJSON) {
+			// Get text object data
+			JSONObject textJSON = (JSONObject)obj;
+			String textMsg = textJSON.get(JsonField.TEXT_MSG.key).toString();
+			int initRow = ((Long)textJSON.get(JsonField.TEXT_ROW.key)).intValue();
+			int initCol = ((Long)textJSON.get(JsonField.TEXT_COL.key)).intValue();
+			
+			GameObject text = new GameObject();
+			text.addMessageHandler(new TextMessageHandler(textMsg));
+			land.addObject(text, initRow, initCol);
+		}
+		
 		// Read grid
 		JSONArray rowsJSON = (JSONArray)landJSON.get(JsonField.LAND_ROWS.key);
 		for (Object objRow : rowsJSON) {
@@ -138,7 +159,7 @@ public class LandBuilder {
 		
 		return land;
 	}
-	
+
 	private Tile buildTile(JSONObject tileJSON) {
 		String name =  tileJSON.get(JsonField.TILE_NAME.key).toString();
 		

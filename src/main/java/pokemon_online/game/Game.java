@@ -94,9 +94,11 @@ public class Game extends Thread {
 			
 			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
+			
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			
+			player.handleInput(world);
 			hud.update(player.getController());
 			
 			stats.afterUpdate();

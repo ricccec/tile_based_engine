@@ -10,6 +10,9 @@ import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.utils.GameUtils;
 
 /**
+ * Moves an Entity through a cell grids, one cell at a time. The Entity always
+ * crosses an integer number of cells, and diagonal movements are not allowed.
+ * 
  * @author Cecchi
  *
  */
@@ -89,6 +92,10 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 			notifyBoundingBoxChanged(getBoundingBox());
 		}
 
+	}
+	
+	public boolean isCrossingCells() {
+		return (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0));
 	}
 	
 	public void moveOneCell(GameWorld world, int dPxlsMax) {

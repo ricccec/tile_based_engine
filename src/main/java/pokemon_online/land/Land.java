@@ -4,9 +4,15 @@
 package pokemon_online.land;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pokemon_online.Configuration;
+import pokemon_online.game.GameObject;
+import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.utils.Tuple;
 
 /**
  * @author Cecchi
@@ -23,12 +29,15 @@ public class Land {
     
     private final LandCell[][] grid;
     
+    private final Map<GameObject, Cell> objsInitPosition;
+    
     public Land(String name, int rowsCount, int colsCount) {
     	this.name = name;
     	this.rowsCount = rowsCount;
     	this.colsCount = colsCount;
     	
     	tileset = new ArrayList<>();
+    	objsInitPosition = new HashMap<>();
     	
     	// Init grid with empty cells
     	grid = new LandCell[rowsCount][colsCount];
@@ -91,6 +100,18 @@ public class Land {
 		grid[row][col].door = door;
 	}
     
+	public void addObject(GameObject obj, int initRow, int initCol) {
+		objsInitPosition.put(obj, new Cell(initRow, initCol));
+	}
+	
+	public Collection<GameObject> getObjects() {
+		return objsInitPosition.keySet();
+	}
+	
+	public Cell getInitialPosition(GameObject obj) {
+		return objsInitPosition.get(obj);
+	}
+	
     static private class LandCell {
 
     	Tile tile;
