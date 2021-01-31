@@ -11,17 +11,7 @@ import pokemon_online.game.GameWorld;
  *
  */
 public abstract class MessageHandler {
-
-	private final Message.Type msgType;
 	
-	public MessageHandler(Message.Type msgType) {
-		this.msgType = msgType;
-	}
-	
-	public Message.Type getMsgType() {
-		return msgType;
-	}
-	
-	public abstract void handleMessage(GameWorld world, GameObject receiver, Message msg);
+	public abstract boolean handleMessage(GameWorld world, GameObject receiver, Message msg);
 	
 }

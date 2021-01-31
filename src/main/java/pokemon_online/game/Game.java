@@ -152,9 +152,10 @@ public class Game extends Thread {
 	private void handleMessages() {
 		while(!msgQueue.isEmpty()) {
 			Message msg = msgQueue.pop();
-			switch (msg.getType()) {
+			switch (msg.getType()) { // FIXME Move this logic inside the components
 				case HUD_DISPOSED:
-					player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsability of the Game world
+					player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
+					world.sendMessageToObjects(msg);
 					break;
 				case HUD_DISPLAY_TEXT:
 					String msgText = msg.getArguments().iterator().next().toString();

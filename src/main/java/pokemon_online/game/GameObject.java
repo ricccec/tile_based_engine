@@ -10,6 +10,7 @@ import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.messages.Message;
 import pokemon_online.game.messages.MessageHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
+import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
 
 /**
@@ -85,10 +86,7 @@ public class GameObject {
 	 */
 	public double getMovingDirection() {
 		double angRad = Math.atan2(-speedY, speedX);
-		double angNorm = angRad/Math.PI;
-		double angDegr = ((angNorm < 0) ? 360 : 0) + 180*angNorm;
-		
-		return angDegr;
+		return GameUtils.radiant2degree(angRad);
 	}
 	
 	/**
@@ -177,16 +175,20 @@ public class GameObject {
 	}
 	
 
-	public void sendMessage(Message msg) {
+	/**
+	 * @param msg
+	 * @return <code>true</code> if the message has been delivered (not necessarily handled)
+	 */
+	public boolean sendMessage(Message msg) {
 		// Check weather there is a message handler for this message
 		LOGGER.debug("Object " + this + " has received a message");
 		for (MessageHandler handler : msgHandlers) {
-			if (handler.getMsgType() == msg.getType()) {
-				handler.handleMessage(world, this, msg);
-				return;
+			if (handler.handleMessage(world, this, msg)) {
+				return true;
 			}
 		}
 		pendingMsgs.push(msg); // No handler found. Put the message into the queue and hope it will be handled by one of the object's components
+		return true;
 	}
 	
 	public void addMessageHandler(MessageHandler handler) {
@@ -199,6 +201,13 @@ public class GameObject {
 
 	public void removeListener(GameObjectListener listener) {
 		listeners.remove(listener);
+	}
+	
+	public void setFrozen(boolean b) {
+		if (physComp != null) {
+			physComp.setFrozen(b);
+		}
+		// TODO Freeze all components
 	}
 
 }

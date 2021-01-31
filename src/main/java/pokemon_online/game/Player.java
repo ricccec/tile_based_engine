@@ -35,9 +35,6 @@ public class Player extends GameObject {
 		Controller ctrl = getController();
 		if (ctrl.isStatusChanged(Control.ACTION_1) && ctrl.isActive(Control.ACTION_1)) {
 			
-			// Froze the player
-			getPhysicsComponent().setFrozen(true);
-			
 			// Get the object the action has been performed onto
 			int objRow = GameUtils.getRow(getY());
 			int objCol = GameUtils.getColumn(getX());
@@ -61,6 +58,10 @@ public class Player extends GameObject {
 			
 			// Send message
 			if (!objects.isEmpty()) {
+				
+				// Froze the player
+				getPhysicsComponent().setFrozen(true);
+				
 				GameObject obj = objects.iterator().next();
 				obj.sendMessage(Message.newActionPerformed(this));
 			}

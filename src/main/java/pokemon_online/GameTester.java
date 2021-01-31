@@ -18,6 +18,8 @@ import pokemon_online.game.GameObject;
 import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
+import pokemon_online.game.messages.MessageHandler;
+import pokemon_online.game.messages.TextMessageHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
@@ -33,7 +35,7 @@ public class GameTester extends JFrame {
 
 	private static final String START_LAND = "Pokecity";
 	
-	private static final int START_ROW = 8;
+	private static final int START_ROW = 10;
 	
 	private static final int START_COL = 9;
 	
@@ -55,6 +57,10 @@ public class GameTester extends JFrame {
 			obj.setGraphicsComponent(gComp);
 			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
 			obj.setPhysicsComponent(phComp);
+			
+			// NPC dialogue
+			obj.addMessageHandler(new TextMessageHandler("Dialogo"));
+			
 			tester.spawnObject(obj, 9, i);
 		}
 		

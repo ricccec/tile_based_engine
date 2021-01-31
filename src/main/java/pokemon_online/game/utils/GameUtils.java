@@ -45,5 +45,16 @@ public class GameUtils {
 		float rand = RANDOM.nextFloat();
 		return (rand <= eventProbability);
 	}
+	
+	/**
+	 * Convert an angle expressed in radiant between -PI and +PI into its equivalent in degrees
+	 * @param angRad
+	 * @return
+	 */
+	public static double radiant2degree(double angRad) {
+		double angNorm = angRad/Math.PI;
+		double angDegr = ((angNorm < 0) ? 360 : 0) + 180*angNorm;
+		return angDegr;
+	}
 
 }

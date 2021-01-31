@@ -78,6 +78,10 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 		Image tileImg = ResourcesManager.getMgr().getImage(imgName, 2);
 		grap.drawImage(tileImg,scrX, scrY, null);
 		
+//		if ((phyComp != null) && (phyComp.isFrozen())) {
+//			System.out.println(obj + " " + obj.getFacingDirection());
+//		}
+		
 	}
 
 	public void updateAnimation(long dt) {

@@ -9,7 +9,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +39,7 @@ public class GameWorld {
 	
 	private final GameObjectsContainer objContainer;
 	
-	private final Map<Message.Type, Collection<GameObject>> msgListeners;
+	private final Map<Message.Type, Set<GameObject>> msgListeners;
 
 	private Land currLand;
 	
@@ -63,6 +65,15 @@ public class GameWorld {
 
 	public void sendMessage(Message msg) { // FIXME Use "event" instead?
 		 game.queueMessage(msg);
+	}
+	
+	// FIXME sendMessage and sendMessageToObjects 
+	public void sendMessageToObjects(Message msg) {
+		if (msgListeners.containsKey(msg.getType())) {
+			for (GameObject listener : msgListeners.get(msg.getType())) {
+				listener.sendMessage(msg);
+			}
+		}
 	}
 	
 	public void spanObject(GameObject obj, int row, int col) {
@@ -250,6 +261,19 @@ public class GameWorld {
 
 	public Collection<GameObject> getObjects(int row, int col) {
 		return objContainer.getObjects(row, col);
+	}
+
+	public void addMessageListener(Message.Type msgType, GameObject listener) {
+		if (!msgListeners.containsKey(msgType)) {
+			msgListeners.put(msgType, new HashSet<>());
+		}
+		msgListeners.get(msgType).add(listener);
+	}
+	
+	public void removeMessageListener(Message.Type msgType, GameObject listener) {
+		if (msgListeners.containsKey(msgType)) {
+			msgListeners.get(msgType).remove(listener);
+		}
 	}
 
 }
