@@ -7,6 +7,8 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.messages.Message;
+import pokemon_online.game.messages.MessageHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 

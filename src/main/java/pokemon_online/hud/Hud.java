@@ -8,17 +8,26 @@ import java.awt.Graphics2D;
 import java.util.ListIterator;
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
+
 import pokemon_online.game.Controller;
+import pokemon_online.game.Game;
+import pokemon_online.game.messages.Message;
+import pokemon_online.game.messages.Message.Type;
 
 /**
  * @author Cecchi
  *
  */
 public class Hud {
-
+	private static final Logger LOGGER = Logger.getLogger(Hud.class);
+	
 	private final Stack<HudText> elements;
 	
-	public Hud() {
+	private final Game game;
+	
+	public Hud(Game game) {
+		this.game = game;
 		this.elements = new Stack<>();
 	}
 	
@@ -30,6 +39,7 @@ public class Hud {
 		ListIterator<HudText> itrts = elements.listIterator(elements.size());
 		while(itrts.hasPrevious()) {
 			HudText currElement = itrts.previous();
+//			LOGGER.debug("Rendering HUD element " + currElement);
 			grap.setColor(Color.BLUE);
 			grap.drawString(currElement.getText(), 32, 32); // FIXME Make the element draw itself
 		}
@@ -39,9 +49,15 @@ public class Hud {
 		if (elements.isEmpty()) {
 			return;
 		}
+		
 		HudText activeElement = elements.pop();
-		if (!activeElement.handleInput(controller)) {
+		activeElement.handleInput(controller);
+		if (!activeElement.isDisposed()) {
 			elements.push(activeElement);
+		} else if (elements.isEmpty()) {
+			game.queueMessage(new Message(Type.HUD_DISPOSED));
 		}
+		
+		
 	}
 }

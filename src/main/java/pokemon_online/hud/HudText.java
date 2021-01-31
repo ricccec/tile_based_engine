@@ -12,21 +12,29 @@ import pokemon_online.game.Controller.Control;
  */
 public class HudText { // FIXME Better HudMessage?
 
+	// TODO Make this inherit from an abstract class
+	
 	private final String text;
+	
+	private boolean disposed;
 	
 	public HudText(String text) {
 		this.text = text;
+		
+		disposed = false;
 	}
 
 	public String getText() {
 		return text;
 	}
 
-	public boolean handleInput(Controller controller) {
+	public void handleInput(Controller controller) {
 		if (controller.isStatusChanged(Control.ACTION_1) && controller.isActive(Control.ACTION_1))
-			return true;
-		else 
-			return false;
+			disposed = true;
+	}
+	
+	public boolean isDisposed() {
+		return disposed;
 	}
 	
 }

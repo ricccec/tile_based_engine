@@ -33,9 +33,9 @@ public class GameTester extends JFrame {
 
 	private static final String START_LAND = "Pokecity";
 	
-	private static final int START_ROW = 10;
+	private static final int START_ROW = 8;
 	
-	private static final int START_COL = 8;
+	private static final int START_COL = 9;
 	
 	public static void main(String s[]) {  
 		
@@ -63,8 +63,6 @@ public class GameTester extends JFrame {
 		tester.startGameLoop();
 		
 		tester.setVisible(true);
-		
-		tester.game.getHud().displayText("PROVA");
 	}
 	
 	private static final long serialVersionUID = 4022568139447850178L;

@@ -1,10 +1,12 @@
 package pokemon_online.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
+import pokemon_online.game.messages.Message;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;
@@ -23,6 +25,8 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
+	private final Stack<Message> msgQueue;
+	
 	private final GameWorld world;
 	
 	private final Hud hud;
@@ -39,9 +43,11 @@ public class Game extends Thread {
 	
 	public Game() {
 		player = new Player();
-		world = new GameWorld();
-		hud = new Hud();
+		world = new GameWorld(this);
+		hud = new Hud(this);
 		stats = new GameStatistics();
+		
+		msgQueue = new Stack<>();
 		
 		keyboard = new Keyboard();
 		keyboard.attachController(player.getController());
@@ -92,6 +98,8 @@ public class Game extends Thread {
 			
 			stats.beforeUpdate();
 			
+			handleMessages(); // Dispatch prev. frame messages
+			
 			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
 			
@@ -99,6 +107,8 @@ public class Game extends Thread {
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			
 			player.handleInput(world);
+			
+			
 			hud.update(player.getController());
 			
 			stats.afterUpdate();
@@ -106,6 +116,10 @@ public class Game extends Thread {
 			lag -= Configuration.MS_PER_UPDATE;
 		}
 
+	}
+	
+	public void queueMessage(Message msg) {
+		msgQueue.push(msg);
 	}
 
 	public long getLag() {
@@ -134,4 +148,25 @@ public class Game extends Thread {
 		
 		stats.print(GraphicsUtils.translate(grap, 0,  80));
 	}
+
+	private void handleMessages() {
+		while(!msgQueue.isEmpty()) {
+			Message msg = msgQueue.pop();
+			switch (msg.getType()) {
+				case HUD_DISPOSED:
+					player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsability of the Game world
+					break;
+				case HUD_DISPLAY_TEXT:
+					String msgText = msg.getArguments().iterator().next().toString();
+					System.out.println("MESSAGE: " + msgText);
+					hud.displayText(msgText);
+					break;
+				default:
+				case ACTION_PERFORMED:
+					break;
+				
+			}
+		}
+	}
+
 }

@@ -12,8 +12,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.game.MessageHandler;
-import pokemon_online.game.TextMessageHandler;
+import pokemon_online.game.messages.MessageHandler;
+import pokemon_online.game.messages.TextMessageHandler;
 
 /**
  * @author Cecchi

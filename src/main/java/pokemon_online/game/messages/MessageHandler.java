@@ -1,7 +1,10 @@
 /**
  * 
  */
-package pokemon_online.game;
+package pokemon_online.game.messages;
+
+import pokemon_online.game.GameObject;
+import pokemon_online.game.GameWorld;
 
 /**
  * @author Cecchi

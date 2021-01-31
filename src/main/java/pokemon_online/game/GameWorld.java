@@ -8,12 +8,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.messages.Message;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
@@ -30,14 +33,21 @@ public class GameWorld {
 	
 	private static final boolean DRAW_B_BOX = true;
 	
+	private final Game game;
+	
 	private final GameObjectsContainer objContainer;
+	
+	private final Map<Message.Type, Collection<GameObject>> msgListeners;
 
 	private Land currLand;
 	
 	private long worldTimeMs;
 
-	public GameWorld() {
+	public GameWorld(Game game) {
+		this.game = game;
 		objContainer = new GameObjectsContainer(this);
+		
+		msgListeners = new HashMap<>();
 	}
 
 	public void jumpToLand(Land land) {
@@ -51,19 +61,24 @@ public class GameWorld {
 		}
 	}
 
+	public void sendMessage(Message msg) { // FIXME Use "event" instead?
+		 game.queueMessage(msg);
+	}
+	
 	public void spanObject(GameObject obj, int row, int col) {
+		obj.setWorld(this);
 		obj.setPosition(32*col, 32*row); // FIXME Remove all hard-coded shit
 		objContainer.addObject(obj);
 		
 		LOGGER.debug("Object " + obj + " spawned at (" + row + ", " + col + ")");
 	}
 	
-	public Collection<GameObject> getObjects() {
+	public Collection<GameObject> getAllObjects() {
 		return objContainer.getAllObjects();
 	}
 	
 	public void updateIA(long dtMillisec) {
-		for (GameObject obj : getObjects()) { // FIXME Only active objects
+		for (GameObject obj : getAllObjects()) { // FIXME Only active objects
 			IAComponent iaComp = obj.getIAComponent();
 			if (iaComp != null) {
 				iaComp.updateIA(this, dtMillisec);
@@ -73,7 +88,7 @@ public class GameWorld {
 	
 	public void updateWorld(long dtMillisec) {
 		// Update physics
-		for (GameObject obj : getObjects()) {
+		for (GameObject obj : getAllObjects()) {
 			PhysicsComponent phyComp = obj.getPhysicsComponent();
 			if (phyComp != null) {
 				phyComp.update(this, dtMillisec);
@@ -85,7 +100,7 @@ public class GameWorld {
 	}
 	
 	public void updateAnimation(long dtMillisec) {
-		for (GameObject obj : getObjects()) {
+		for (GameObject obj : getAllObjects()) {
 			// FIXME Only update active objects
 			GraphicsComponent gComp = obj.getGraphicsComponent();
 			if (gComp != null) {
@@ -95,7 +110,7 @@ public class GameWorld {
 	}
 
 	public void updateControllers() {
-		for (GameObject obj : getObjects()) {
+		for (GameObject obj : getAllObjects()) {
 			// FIXME Only update active objects
 			Controller controller = obj.getController();
 			if (controller != null) {

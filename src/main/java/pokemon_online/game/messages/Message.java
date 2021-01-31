@@ -1,10 +1,12 @@
 /**
  * 
  */
-package pokemon_online.game;
+package pokemon_online.game.messages;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pokemon_online.game.GameObject;
 
 /**
  * @author Cecchi
@@ -15,12 +17,19 @@ public class Message {
 	public static final Message newActionPerformed(GameObject sender) {
 		Message result = new Message(Type.ACTION_PERFORMED);
 		result.addArgument(sender);
-		
+		return result;
+	}
+	
+	public static final Message newHudDisplayText(String text) {
+		Message result = new Message(Type.HUD_DISPLAY_TEXT);
+		result.addArgument(text);
 		return result;
 	}
 	
 	public enum Type {
-		ACTION_PERFORMED
+		ACTION_PERFORMED,
+		HUD_DISPLAY_TEXT,
+		HUD_DISPOSED
 	}
 	
 	private final Type type;
