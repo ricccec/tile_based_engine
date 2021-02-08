@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -86,6 +87,28 @@ public class GameWorld {
 	
 	public Collection<GameObject> getAllObjects() {
 		return objContainer.getAllObjects();
+	}
+	
+	public void beforeUpdate() {
+		for (GameObject obj : getAllObjects()) { // FIXME Only active objects
+			
+			// Prepare the objects's event queue
+			Deque<Message> evtQueue = obj.getPendingEventsQueue();
+			
+			// Remove events generated at frame i-2
+			Message currEvent = null;
+			while(!evtQueue.isEmpty()) {
+				currEvent = evtQueue.pollFirst();
+				if (currEvent == GameObject.EVT_QUEUE_END) {
+					break;
+				}
+			}
+			assert(currEvent == GameObject.EVT_QUEUE_END); // Event queue contains at least the EVT_QUEUE_END event
+			
+			// Move  the EVT_QUEUE_END event after the events generated at frame i-1
+			evtQueue.addLast(currEvent);
+
+		}
 	}
 	
 	public void updateIA(long dtMillisec) {

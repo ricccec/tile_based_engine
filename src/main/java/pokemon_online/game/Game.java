@@ -98,7 +98,9 @@ public class Game extends Thread {
 			
 			stats.beforeUpdate();
 			
-			handleMessages(); // Dispatch prev. frame messages
+			dispatchMessages(); // Dispatch prev. frame messages
+			
+			world.beforeUpdate();
 			
 			world.updateIA(Configuration.MS_PER_UPDATE);
 			world.updateControllers();
@@ -149,7 +151,7 @@ public class Game extends Thread {
 		stats.print(GraphicsUtils.translate(grap, 0,  80));
 	}
 
-	private void handleMessages() {
+	private void dispatchMessages() {
 		while(!msgQueue.isEmpty()) {
 			Message msg = msgQueue.pop();
 			switch (msg.getType()) { // FIXME Move this logic inside the components

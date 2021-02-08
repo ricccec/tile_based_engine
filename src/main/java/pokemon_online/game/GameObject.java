@@ -1,7 +1,11 @@
 package pokemon_online.game;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
@@ -25,8 +29,12 @@ public class GameObject {
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
+	public static final Message EVT_QUEUE_END = new Message(null);
+	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
+	
+	private final Deque<Message> pendingEvents;
 	
 	private final Stack<Message> pendingMsgs;
 	
@@ -61,6 +69,9 @@ public class GameObject {
 		listeners = new ArrayList<>();
 		msgHandlers = new ArrayList<>();
 		pendingMsgs = new Stack<>();
+		
+		pendingEvents = new ArrayDeque<>();
+		pendingEvents.add(EVT_QUEUE_END);
 	}
 
 	public Controller getCtrl() {
@@ -189,6 +200,10 @@ public class GameObject {
 		}
 		pendingMsgs.push(msg); // No handler found. Put the message into the queue and hope it will be handled by one of the object's components
 		return true;
+	}
+	
+	public Deque<Message> getPendingEventsQueue() {
+		return pendingEvents;
 	}
 	
 	public void addMessageHandler(MessageHandler handler) {
