@@ -108,7 +108,7 @@ public class Game extends Thread {
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			
-			player.handleInput(world);
+			player.handleInput(world); // FIXME use a world.interact kind of thing instead
 			
 			
 			hud.update(player.getController());
@@ -144,9 +144,9 @@ public class Game extends Thread {
 		int plyrRow = GameUtils.getColumn(plyrY);
 		grap.drawString("Player X: " + String.valueOf(plyrX) + "(" + String.valueOf(plyrCol) + ")", 0, 0);
 		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(" + String.valueOf(plyrRow) + ")", 0, 16);
-		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getSpeedX()), 0, 32);
-		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getSpeedY()), 0, 48);
-		grap.drawString("Player direction: " + String.valueOf(getPlayer().getMovingDirection()), 0, 64);
+		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getPhysicsComponent().getSpeedX()), 0, 32);
+		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getPhysicsComponent().getSpeedY()), 0, 48);
+		grap.drawString("Player direction: " + String.valueOf(getPlayer().getPhysicsComponent().getMovingDirection()), 0, 64);
 		
 		stats.print(GraphicsUtils.translate(grap, 0,  80));
 	}

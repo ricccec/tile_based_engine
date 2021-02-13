@@ -28,6 +28,7 @@ public class Keyboard {
 		KEY_MAPPING.put(40, Control.MOVE_DWN);
 		
 		KEY_MAPPING.put(81, Control.ACTION_1); // 'Q' key
+		KEY_MAPPING.put(87, Control.ACTION_2); // 'W' key
 	}
 	
 	private final Collection<Controller> controllers;

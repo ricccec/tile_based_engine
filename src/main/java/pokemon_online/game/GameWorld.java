@@ -72,13 +72,12 @@ public class GameWorld {
 	public void sendMessageToObjects(Message msg) {
 		if (msgListeners.containsKey(msg.getType())) {
 			for (GameObject listener : msgListeners.get(msg.getType())) {
-				listener.sendMessage(msg);
+				listener.sendMessage(this, msg);
 			}
 		}
 	}
 	
 	public void spanObject(GameObject obj, int row, int col) {
-		obj.setWorld(this);
 		obj.setPosition(32*col, 32*row); // FIXME Remove all hard-coded shit
 		objContainer.addObject(obj);
 		
@@ -282,6 +281,10 @@ public class GameWorld {
 		return objContainer.getProps(row, col);
 	}
 
+	public Collection<GameObject> getObjects(Cell cell) {
+		return objContainer.getObjects(cell.row, cell.col);
+	}
+	
 	public Collection<GameObject> getObjects(int row, int col) {
 		return objContainer.getObjects(row, col);
 	}

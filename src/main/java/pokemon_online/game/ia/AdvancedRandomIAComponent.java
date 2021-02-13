@@ -14,10 +14,10 @@ import pokemon_online.physics.PkmnPhyState;
 public class AdvancedRandomIAComponent extends IAComponent {
 
 	// FIXME Move these to a centralized place? Or make them instance attributes
-	public static final float PROB_START_MOVING = 0.005f;
+	public static final float PROB_START_MOVING = 1f;//0.005f;
 	public static final float PROB_CHANGE_DIR_WHEN_STOPPED = 0.01f;
 	public static final float PROB_CHANGE_DIR_WHEN_MOVING = 0.125f;
-	public static final float PROB_STOP_MOVING = 0.01f;
+	public static final float PROB_STOP_MOVING = 0;//0.01f;
 	
 	private RandomIAState state;
 	

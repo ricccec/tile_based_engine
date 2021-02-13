@@ -52,10 +52,26 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 	}
 	
 	public Cell getBoundingBox() {
-		if ((bBoxCol == null) || (bBoxRow == null)) {
-			bBoxCol = GameUtils.getColumn(obj.getX());
-			bBoxRow = GameUtils.getRow(obj.getY());
+//		if ((bBoxCol == null) || (bBoxRow == null)) {
+//			bBoxCol = GameUtils.getColumn(obj.getX());
+//			bBoxRow = GameUtils.getRow(obj.getY());
+//		}
+//		
+		// Bounding box changed
+		int bBoxX = obj.getX();
+		if (getCardinalMovingDir().isAlongX() &&
+			(getCardinalMovingDir().sign > 0) &&
+			((obj.getX() % 32) != 0)) { // Object is moving (in the +X direction) and has not reached the next cell 
+			bBoxX += 32;
 		}
+		bBoxCol = GameUtils.getColumn(bBoxX);
+		int bBoxY = obj.getY();
+		if (getCardinalMovingDir().isAlongY()
+			&& (getCardinalMovingDir().sign > 0) &&
+			((obj.getY() % 32) != 0)) { // Object is moving (in the +Y direction) and has not reached the next cell 
+			bBoxY += 32;
+		}
+		bBoxRow = GameUtils.getRow(bBoxY);
 		
 		return new Cell(bBoxRow, bBoxCol);
 		
@@ -81,14 +97,14 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		
 		if (collides) {
 			// Cell is not walkable: resolve collision
-			int newRow = cornerRow - (getMovingDirection().isAlongY() ? getMovingDirection().sign : 0);
-			int newCol = cornerCol - (getMovingDirection().isAlongX() ? getMovingDirection().sign : 0);
+			int newRow = cornerRow - (getCardinalMovingDir().isAlongY() ? getCardinalMovingDir().sign : 0);
+			int newCol = cornerCol - (getCardinalMovingDir().isAlongX() ? getCardinalMovingDir().sign : 0);
 			
 			obj.setPosition(GameUtils.getX(newCol), GameUtils.getY(newRow));
 
 			// Update bounding box
-			bBoxCol = GameUtils.getColumn(obj.getX());
-			bBoxRow = GameUtils.getRow(obj.getY());
+//			bBoxCol = GameUtils.getColumn(obj.getX());
+//			bBoxRow = GameUtils.getRow(obj.getY());
 			notifyBoundingBoxChanged(getBoundingBox());
 		}
 
@@ -103,12 +119,12 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		assert(dPxlsMax > 0);
 		
 		// Compute distance from next cell
-		int currPos = (getMovingDirection().isAlongX() ? obj.getX() : obj.getY());
+		int currPos = (getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
 		int dPxls = 0;
 		if ((currPos % 32) == 0) {
 			dPxls = 32;
 		} else {
-			if (getMovingDirection().sign*currPos > 0) {
+			if (getCardinalMovingDir().sign*currPos > 0) {
 				dPxls = 32 - (Math.abs(currPos) % 32);
 			} else {
 				dPxls = (Math.abs(currPos) % 32);
@@ -119,87 +135,85 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		
 		assert(dPxls > 0);
 		
-		if (getMovingDirection().isAlongX()) {
-			obj.setX(obj.getX() + getMovingDirection().sign*dPxls);
+		if (getCardinalMovingDir().isAlongX()) {
+			obj.setX(obj.getX() + getCardinalMovingDir().sign*dPxls);
 		} else {
-			obj.setY(obj.getY() + getMovingDirection().sign*dPxls);
+			obj.setY(obj.getY() + getCardinalMovingDir().sign*dPxls);
 		}
 		
 		// Bounding box changed
-		int bBoxX = obj.getX();
-		if (getMovingDirection().isAlongX() &&
-			(getMovingDirection().sign > 0) &&
-			((obj.getX() % 32) != 0)) { // Object is moving (in the +X direction) and has not reached the next cell 
-			bBoxX += 32;
-		}
-		bBoxCol = GameUtils.getColumn(bBoxX);
-		int bBoxY = obj.getY();
-		if (getMovingDirection().isAlongY()
-			&& (getMovingDirection().sign > 0) &&
-			((obj.getY() % 32) != 0)) { // Object is moving (in the +Y direction) and has not reached the next cell 
-			bBoxY += 32;
-		}
-		bBoxRow = GameUtils.getRow(bBoxY);
+//		int bBoxX = obj.getX();
+//		if (getMovingDirection().isAlongX() &&
+//			(getMovingDirection().sign > 0) &&
+//			((obj.getX() % 32) != 0)) { // Object is moving (in the +X direction) and has not reached the next cell 
+//			bBoxX += 32;
+//		}
+//		bBoxCol = GameUtils.getColumn(bBoxX);
+//		int bBoxY = obj.getY();
+//		if (getMovingDirection().isAlongY()
+//			&& (getMovingDirection().sign > 0) &&
+//			((obj.getY() % 32) != 0)) { // Object is moving (in the +Y direction) and has not reached the next cell 
+//			bBoxY += 32;
+//		}
+//		bBoxRow = GameUtils.getRow(bBoxY);
 //		System.out.println("Y: " + bBoxY + " row: " + bBoxRow);
 		notifyBoundingBoxChanged(getBoundingBox());
 		
 	}
 
 	public boolean isMovingRight() {
-		return ((getSpeed() > 0) && (getMovingDirection() == Direction.DIR_RIGHT));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_RIGHT));
 	}
 	
 	public boolean isMovingDown() {
-		return ((getSpeed() > 0) && (getMovingDirection() == Direction.DIR_DOWN));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_DOWN));
 	}
 	
 	
 	public boolean isMovingLeft() {
-		return ((getSpeed() > 0) && (getMovingDirection() == Direction.DIR_LEFT));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_LEFT));
 	}
 	
 	public boolean isMovingUp() {
-		return ((getSpeed() > 0) && (getMovingDirection() == Direction.DIR_UP));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_UP));
 	}
 	
-	public Direction getMovingDirection() {
-		double movingDir = obj.getMovingDirection();
-		return Direction.degree2direction(movingDir);
-	}
-	
-	public Direction getFacingDirection() {
-		// FIXME Merge with the previous method
-		double movingDir = obj.getFacingDirection();
+	public Direction getCardinalMovingDir() {
+		double movingDir = getMovingDirection();
 		return Direction.degree2direction(movingDir);
 	}
 	
 	public void setVelocity(Direction dir, int speed) {
 		switch(dir) {
 			case DIR_DOWN:
-				obj.setSpeedX(0);
-				obj.setSpeedY(speed);
+				setSpeedX(0);
+				setSpeedY(speed);
 				obj.setFacingDirection(270);
 				break;
 			case DIR_LEFT:
-				obj.setSpeedX(-speed);
-				obj.setSpeedY(0);
+				setSpeedX(-speed);
+				setSpeedY(0);
 				obj.setFacingDirection(180);
 				break;
 			case DIR_RIGHT:
-				obj.setSpeedX(speed);
-				obj.setSpeedY(0);
+				setSpeedX(speed);
+				setSpeedY(0);
 				obj.setFacingDirection(0);
 				break;
 			case DIR_UP:
-				obj.setSpeedX(0);
-				obj.setSpeedY(-speed);
+				setSpeedX(0);
+				setSpeedY(-speed);
 				obj.setFacingDirection(90);
 				break;
 		}
 	}
 	
+	/**
+	 * Return the velocity (modulus of the speed) of the associated Entity
+	 * @return
+	 */
 	public int getSpeed() {
-		return (int)Math.ceil(Math.sqrt(Math.pow(obj.getSpeedX(), 2) + Math.pow( obj.getSpeedY(), 2)));
+		return (int)Math.ceil(Math.sqrt(Math.pow(getSpeedX(), 2) + Math.pow(getSpeedY(), 2)));
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
-import java.util.Queue;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
@@ -14,7 +12,6 @@ import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.messages.Message;
 import pokemon_online.game.messages.MessageHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
-import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
 
 /**
@@ -40,23 +37,17 @@ public class GameObject {
 	
 	private final Collection<MessageHandler> msgHandlers;
 	
-	private GameWorld world;
-	
 	private int x;
 	
 	private int y;
 	
 	protected GraphicsComponent grapComp;
 	
-	protected PhysicsComponent physComp;
+	private final Stack<PhysicsComponent> physComps;
 	
 	protected IAComponent iaComp;
 	
 	protected final Controller ctrl;
-	
-	protected int speedX; // In pxl/tick
-
-	protected int speedY; // In pxl/tick
 	
 	/**
 	 * The direction the object is facing. Doesn't have to match the moving direction;
@@ -72,10 +63,8 @@ public class GameObject {
 		
 		pendingEvents = new ArrayDeque<>();
 		pendingEvents.add(EVT_QUEUE_END);
-	}
-
-	public Controller getCtrl() {
-		return ctrl;
+		
+		physComps = new Stack<>();
 	}
 
 	/**
@@ -90,14 +79,6 @@ public class GameObject {
 	 */
 	public int getY() {
 		return y;
-	}
-	
-	/**
-	 * @return the moving direction, in degrees
-	 */
-	public double getMovingDirection() {
-		double angRad = Math.atan2(-speedY, speedX);
-		return GameUtils.radiant2degree(angRad);
 	}
 	
 	/**
@@ -132,15 +113,24 @@ public class GameObject {
 	}
 	
 	public PhysicsComponent getPhysicsComponent() {
-		return physComp;
+		if (physComps.isEmpty()) {
+			return null;
+		} else {
+			return physComps.peek();
+		}
 	}
 
 	public void setPhysicsComponent(PhysicsComponent physComp) {
-		this.physComp = physComp;
+		physComps.clear();
+		physComps.push(physComp);
 	}
-
-	public void setWorld(GameWorld world) {
-		this.world = world;
+	
+	public void pushPhysicsComponent(PhysicsComponent physComp) {
+		physComps.push(physComp);
+	}
+	
+	public void popPhysicsComponent(PhysicsComponent physComp) {
+		physComps.pop();
 	}
 	
 	public void setX(int x) {
@@ -164,33 +154,12 @@ public class GameObject {
 			}
 		}
 	}
-	
-	public int getSpeedX() {
-		return speedX;
-	}
-
-	public void setSpeedX(int speedX) {
-		this.speedX = speedX;
-	}
-
-	public int getSpeedY() {
-		return speedY;
-	}
-
-	public void setSpeedY(int speedY) {
-		this.speedY = speedY;
-	}
-	
-	public boolean isMoving() {
-		return ((getSpeedX() != 0) || (getSpeedY() != 0));
-	}
-	
 
 	/**
 	 * @param msg
 	 * @return <code>true</code> if the message has been delivered (not necessarily handled)
 	 */
-	public boolean sendMessage(Message msg) {
+	public boolean sendMessage(GameWorld world, Message msg) {
 		// Check weather there is a message handler for this message
 		LOGGER.debug("Object " + this + " has received a message");
 		for (MessageHandler handler : msgHandlers) {
@@ -219,8 +188,8 @@ public class GameObject {
 	}
 	
 	public void setFrozen(boolean b) {
-		if (physComp != null) {
-			physComp.setFrozen(b);
+		if (!physComps.isEmpty()) {
+			getPhysicsComponent().setFrozen(b);
 		}
 		// TODO Freeze all components
 	}

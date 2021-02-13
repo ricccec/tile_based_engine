@@ -6,6 +6,7 @@ package pokemon_online.physics;
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
+import pokemon_online.game.utils.GameObjectUtils;
 
 /**
  * @author Cecchi
@@ -36,7 +37,7 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 			return new PkmnPhyStateIdle(phyComp);
 		}
 		
-		if (phyComp.getFacingDirection() != ctrlerDir) {
+		if (GameObjectUtils.getCardinalFacingDir(obj) != ctrlerDir) {
 			// Controller changed, reset timer
 			timerMillisec = 0;
 		}

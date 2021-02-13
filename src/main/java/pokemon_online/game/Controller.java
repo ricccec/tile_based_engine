@@ -22,7 +22,8 @@ public class Controller {
 		MOVE_LEFT,
 		MOVE_RIGHT,
 		
-		ACTION_1;
+		ACTION_1,
+		ACTION_2;
 		
 	}
 

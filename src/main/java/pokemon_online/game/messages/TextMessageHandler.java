@@ -6,6 +6,7 @@ package pokemon_online.game.messages;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.messages.Message.Type;
+import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.physics.PhysicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 
@@ -42,6 +43,8 @@ public class TextMessageHandler extends MessageHandler { // FIXME Better "TextEv
 
 	private void sendTextDisplayReqs(GameWorld world, GameObject sender, GameObject receiver) {
 		
+		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
+		
 		// Handle the case of a receiver with a Physical Component
 		PhysicsComponent phyComp = receiver.getPhysicsComponent();
 		if (phyComp != null) {
@@ -54,7 +57,6 @@ public class TextMessageHandler extends MessageHandler { // FIXME Better "TextEv
 				}
 			}
 			
-			phyComp.lookToward(sender.getX(), sender.getY());
 			phyComp.setFrozen(true);
 		}
 		

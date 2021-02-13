@@ -462,6 +462,7 @@
 			"type": 0
 		}
 	],
+	"texts": [{"col":10, "row": 8, "text": "Prova"}],
 	"rowsCount": 26,
 	"name": "Pokecity",
 	"rows": [

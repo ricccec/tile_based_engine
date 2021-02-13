@@ -3,11 +3,9 @@
  */
 package pokemon_online.physics;
 
-import org.apache.commons.math3.analysis.function.Atan2;
 import org.apache.log4j.Logger;
 
 import pokemon_online.game.Component;
-import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObjectsContainer;
 import pokemon_online.game.GameWorld;
@@ -24,6 +22,10 @@ public abstract class PhysicsComponent extends Component {
 	private static final Logger LOGGER = Logger.getLogger(PhysicsComponent.class);
 
 	private GameObjectsContainer objContainer;
+
+	protected int speedX; // In pxl/tick
+
+	protected int speedY; // In pxl/tick
 	
 	private boolean frozen;
 	
@@ -56,14 +58,32 @@ public abstract class PhysicsComponent extends Component {
 		return frozen;
 	}
 	
-	public void lookToward(int x, int y) {
-		int xDiff = x - obj.getX();
-		int yDiff = y - obj.getY(); // TODO Move vector operations to a dedicated class?
-		
-		double angleDiffRad = Math.atan2(-yDiff, xDiff);
-		double angleDiffDeg = GameUtils.radiant2degree(angleDiffRad);
-		
-		obj.setFacingDirection((int)angleDiffDeg);
+	/**
+	 * @return the moving direction, in degrees
+	 */
+	public double getMovingDirection() {
+		double angRad = Math.atan2(-speedY, speedX);
+		return GameUtils.radiant2degree(angRad);
+	}
+	
+	public int getSpeedX() {
+		return speedX;
+	}
+
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
+	}
+
+	public int getSpeedY() {
+		return speedY;
+	}
+
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
+	}
+	
+	public boolean isMoving() {
+		return ((getSpeedX() != 0) || (getSpeedY() != 0));
 	}
 
 }

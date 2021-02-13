@@ -20,6 +20,12 @@ public class Message {
 		return result;
 	}
 	
+	public static final Message newActionBPerformed(GameObject sender) {
+		Message result = new Message(Type.ACTION_B_PERFORMED);
+		result.addArgument(sender);
+		return result;
+	}
+	
 	public static final Message newHudDisplayText(String text) {
 		Message result = new Message(Type.HUD_DISPLAY_TEXT);
 		result.addArgument(text);
@@ -28,6 +34,7 @@ public class Message {
 	
 	public enum Type {
 		ACTION_PERFORMED,
+		ACTION_B_PERFORMED,
 		HUD_DISPLAY_TEXT,
 		HUD_DISPOSED
 	}

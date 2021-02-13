@@ -5,6 +5,7 @@ package pokemon_online.physics;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
+import pokemon_online.game.utils.GameObjectUtils;
 
 /**
  * @author Cecchi
@@ -31,7 +32,7 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 			return null;
 		}
 		
-		if (ctrlerDir == phyComp.getFacingDirection()) {
+		if (ctrlerDir == GameObjectUtils.getCardinalFacingDir(obj)) {
 			return new PkmnPhyStateMoving(phyComp);
 		}
 		
