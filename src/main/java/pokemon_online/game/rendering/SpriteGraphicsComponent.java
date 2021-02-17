@@ -58,9 +58,8 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 		
 		// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution)
 		PhysicsComponent phyComp = obj.getPhysicsComponent();
-		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) {
-			PokemonPhysicsComponent pkmnPhyComp = (PokemonPhysicsComponent) phyComp;
-			Cell bBox = pkmnPhyComp.getBoundingBox();
+		if ((phyComp != null) ) {
+			Cell bBox = phyComp.getBoundingBox();
 			
 			int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
 			int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());

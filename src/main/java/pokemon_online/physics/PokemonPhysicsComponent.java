@@ -16,7 +16,7 @@ import pokemon_online.game.utils.GameUtils;
  * @author Cecchi
  *
  */
-public class PokemonPhysicsComponent extends PhysicsComponent implements GameObjectListener {
+public class PokemonPhysicsComponent extends PhysicsComponent {
 	
 	private final DirectionFilter dirFilter;
 	
@@ -29,7 +29,6 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 	public PokemonPhysicsComponent(GameObject obj) {
 		super(obj);
 		
-		obj.addListener(this);
 		bBoxCol = null;
 		bBoxRow = null;
 		
@@ -51,6 +50,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 		
 	}
 	
+	@Override
 	public Cell getBoundingBox() {
 //		if ((bBoxCol == null) || (bBoxRow == null)) {
 //			bBoxCol = GameUtils.getColumn(obj.getX());
@@ -214,12 +214,6 @@ public class PokemonPhysicsComponent extends PhysicsComponent implements GameObj
 	 */
 	public int getSpeed() {
 		return (int)Math.ceil(Math.sqrt(Math.pow(getSpeedX(), 2) + Math.pow(getSpeedY(), 2)));
-	}
-
-	@Override
-	public void positionChanged(GameObject obj, int prevX, int prevY, int currX, int currY) {
-		bBoxRow = null;
-		bBoxCol = null;
 	}
 	
 }

@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.game.Component;
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameObjectListener;
 import pokemon_online.game.GameObjectsContainer;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
@@ -21,8 +22,6 @@ public abstract class PhysicsComponent extends Component {
 
 	private static final Logger LOGGER = Logger.getLogger(PhysicsComponent.class);
 
-	private GameObjectsContainer objContainer;
-
 	protected int speedX; // In pxl/tick
 
 	protected int speedY; // In pxl/tick
@@ -33,21 +32,15 @@ public abstract class PhysicsComponent extends Component {
 		super(obj);
 	}
 	
-	public void addListener(GameObjectsContainer container) { // FIXME Use setContainer instead?
-		objContainer = container;
-	}
-	
 	protected void notifyBoundingBoxChanged(Cell cell) {
-		if (objContainer != null) {
-			objContainer.boundingBoxChanged(obj, cell);
+		for(GameObjectListener listener : obj.getListeners()) {
+			listener.boundingBoxChanged(obj, cell);
 		}
 	}
 	
 	public abstract void update(GameWorld world, long dtMillisec);
-
-	public void removeListener() {
-		objContainer = null;
-	}
+	
+	public abstract Cell getBoundingBox();
 	
 	public void setFrozen(boolean b) {
 		frozen = b;

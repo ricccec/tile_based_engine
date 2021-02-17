@@ -187,6 +187,10 @@ public class GameObject {
 		listeners.remove(listener);
 	}
 	
+	public Iterable<GameObjectListener> getListeners() {
+		return listeners;
+	}
+	
 	public void setFrozen(boolean b) {
 		if (!physComps.isEmpty()) {
 			getPhysicsComponent().setFrozen(b);

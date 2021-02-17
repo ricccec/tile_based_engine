@@ -17,14 +17,13 @@ import java.util.Set;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
-import pokemon_online.physics.PhysicsListener;
 import pokemon_online.physics.ZoneDebugObject;
 
 /**
  * @author Cecchi
  *
  */
-public class GameObjectsContainer implements GameObjectListener, PhysicsListener {
+public class GameObjectsContainer implements GameObjectListener {
 	
 	private final static boolean ADD_ZONE_OBJECTS = false;
 	
@@ -101,12 +100,6 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 	public void clear() {
 		for (GameObject object : getAllObjects()) {
 			object.removeListener(this);
-			
-			// Remove physics listener
-			PhysicsComponent pyComp = object.getPhysicsComponent();
-			if (pyComp != null) {
-				pyComp.removeListener();
-			}
 		}
 		objects.clear();
 		cell2objs.clear();
@@ -133,7 +126,6 @@ public class GameObjectsContainer implements GameObjectListener, PhysicsListener
 		// Add physics listener
 		PhysicsComponent pyComp = obj.getPhysicsComponent();
 		if (pyComp != null) {
-			pyComp.addListener(this);
 			
 			// FIXME
 			if (ADD_ZONE_OBJECTS) {

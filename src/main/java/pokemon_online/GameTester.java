@@ -63,7 +63,7 @@ public class GameTester extends JFrame {
 			obj.addMessageHandler(new TextMessageHandler("Dialogo"));
 			obj.addMessageHandler(new PushMessageHandler());
 			
-			tester.spawnObject(obj, 9, i);
+			tester.spawnObject(obj, i, i);
 		}
 		
 		

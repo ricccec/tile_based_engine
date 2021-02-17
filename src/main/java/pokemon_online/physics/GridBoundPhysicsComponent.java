@@ -150,6 +150,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		return (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0));
 	}
 	
+	@Override
 	public final Cell getBoundingBox() { // FIXME Move to superclass?
 
 			int bBoxX = obj.getX();
