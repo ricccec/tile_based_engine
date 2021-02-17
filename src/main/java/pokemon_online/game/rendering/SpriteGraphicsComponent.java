@@ -94,7 +94,7 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 				}
 				break;
 			case WALKING:
-				if ((obj.getPhysicsComponent() != null) || (!obj.getPhysicsComponent().isMoving())) {
+				if ((obj.getPhysicsComponent() == null) || (!obj.getPhysicsComponent().isMoving())) {
 					currState = GraphicsState.IDLE;
 					resetStateAnimation();
 				}
