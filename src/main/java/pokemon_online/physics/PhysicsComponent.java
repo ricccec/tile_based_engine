@@ -26,8 +26,6 @@ public abstract class PhysicsComponent extends Component {
 
 	protected int speedY; // In pxl/tick
 	
-	private boolean frozen;
-	
 	public PhysicsComponent(GameObject obj) {
 		super(obj);
 	}
@@ -41,15 +39,6 @@ public abstract class PhysicsComponent extends Component {
 	public abstract void update(GameWorld world, long dtMillisec);
 	
 	public abstract Cell getBoundingBox();
-	
-	public void setFrozen(boolean b) {
-		frozen = b;
-		LOGGER.debug("Object " + this + (frozen ? " freezed" : " unfreezed"));
-	}
-	
-	public boolean isFrozen() {
-		return frozen;
-	}
 	
 	/**
 	 * @return the moving direction, in degrees

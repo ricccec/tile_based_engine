@@ -6,7 +6,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
-import pokemon_online.game.messages.Message;
+import pokemon_online.game.event.Event;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;
@@ -25,7 +25,7 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
-	private final Stack<Message> msgQueue;
+	private final Stack<Event> msgQueue;
 	
 	private final GameWorld world;
 	
@@ -120,7 +120,7 @@ public class Game extends Thread {
 
 	}
 	
-	public void queueMessage(Message msg) {
+	public void queueMessage(Event msg) {
 		msgQueue.push(msg);
 	}
 
@@ -153,10 +153,10 @@ public class Game extends Thread {
 
 	private void dispatchMessages() {
 		while(!msgQueue.isEmpty()) {
-			Message msg = msgQueue.pop();
+			Event msg = msgQueue.pop();
 			switch (msg.getType()) { // FIXME Move this logic inside the components
 				case HUD_DISPOSED:
-					player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
+					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
 					world.sendMessageToObjects(msg);
 					break;
 				case HUD_DISPLAY_TEXT:

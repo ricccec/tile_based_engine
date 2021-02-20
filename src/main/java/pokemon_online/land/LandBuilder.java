@@ -12,8 +12,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.game.messages.MessageHandler;
-import pokemon_online.game.messages.TextMessageHandler;
+import pokemon_online.game.event.EventHandler;
+import pokemon_online.game.event.TextEventHandler;
 
 /**
  * @author Cecchi
@@ -119,7 +119,7 @@ public class LandBuilder {
 			int initCol = ((Long)textJSON.get(JsonField.TEXT_COL.key)).intValue();
 			
 			GameObject text = new GameObject();
-			text.addMessageHandler(new TextMessageHandler(textMsg));
+			text.addEventHandler(new TextEventHandler(textMsg));
 			land.addObject(text, initRow, initCol);
 		}
 		

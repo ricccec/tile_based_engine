@@ -3,7 +3,9 @@ package pokemon_online.game;
 import java.util.Collection;
 
 import pokemon_online.game.Controller.Control;
-import pokemon_online.game.messages.Message;
+import pokemon_online.game.GameObject.State;
+import pokemon_online.game.event.Event;
+import pokemon_online.game.event.HudEventHandler;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
@@ -21,6 +23,8 @@ public class Player extends GameObject {
 	public Player() {
 		setPhysicsComponent(new PokemonPhysicsComponent(this));
 		grapComp = new SpriteGraphicsComponent(this);
+		
+		addEventHandler(new HudEventHandler());
 	}
 
 	public PokemonPhysicsComponent getPhysicsComponent() {
@@ -29,7 +33,7 @@ public class Player extends GameObject {
 	
 	public void handleInput(GameWorld world) { // TODO Chose a better name
 		if (getPhysicsComponent().isCrossingCells() ||
-			getPhysicsComponent().isFrozen()) {
+			getState() != State.ACTIVE) {
 			return;
 		}
 		
@@ -64,15 +68,15 @@ public class Player extends GameObject {
 			
 			// Send message
 			// Froze the player
-			getPhysicsComponent().setFrozen(true);
+			setState(State.FROZEN);
 			
 			GameObject obj = objects.iterator().next();
-			obj.sendMessage(world, Message.newActionPerformed(this));
+			obj.notifyEvent(world, Event.newActionPerformed(this));
 		}
 		
 		if (ctrl.isStatusChanged(Control.ACTION_2) && ctrl.isActive(Control.ACTION_2)) {
 			GameObject obj = objects.iterator().next();
-			obj.sendMessage(world, Message.newActionBPerformed(this));
+			obj.notifyEvent(world, Event.newActionBPerformed(this));
 		}
 	}
 

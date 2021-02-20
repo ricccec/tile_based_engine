@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.game.Controller;
 import pokemon_online.game.Game;
-import pokemon_online.game.messages.Message;
-import pokemon_online.game.messages.Message.Type;
+import pokemon_online.game.event.Event;
+import pokemon_online.game.event.Event.Type;
 
 /**
  * @author Cecchi
@@ -55,7 +55,7 @@ public class Hud {
 		if (!activeElement.isDisposed()) {
 			elements.push(activeElement);
 		} else if (elements.isEmpty()) {
-			game.queueMessage(new Message(Type.HUD_DISPOSED));
+			game.queueMessage(new Event(Type.HUD_DISPOSED));
 		}
 		
 		

@@ -8,9 +8,9 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
+import pokemon_online.game.event.Event;
+import pokemon_online.game.event.EventHandler;
 import pokemon_online.game.ia.IAComponent;
-import pokemon_online.game.messages.Message;
-import pokemon_online.game.messages.MessageHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -23,19 +23,26 @@ import pokemon_online.physics.PhysicsComponent;
  *
  */
 public class GameObject {
+	
+	public enum State {
+		ACTIVE,
+		FROZEN;
+	}
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
-	public static final Message EVT_QUEUE_END = new Message(null);
+	public static final Event EVT_QUEUE_END = new Event(null);
 	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
 	
-	private final Deque<Message> pendingEvents;
+	private final Deque<Event> pendingEvents;
 	
-	private final Stack<Message> pendingMsgs;
+	private final Stack<Event> pendingMsgs;
 	
-	private final Collection<MessageHandler> msgHandlers;
+	private final Collection<EventHandler> msgHandlers;
+	
+	private State state;
 	
 	private int x;
 	
@@ -55,6 +62,8 @@ public class GameObject {
 	protected double direction;
 	
 	public GameObject() {
+		state = State.ACTIVE;
+		
 		ctrl = new Controller();
 		
 		listeners = new ArrayList<>();
@@ -155,27 +164,31 @@ public class GameObject {
 		}
 	}
 
-	/**
-	 * @param msg
-	 * @return <code>true</code> if the message has been delivered (not necessarily handled)
-	 */
-	public boolean sendMessage(GameWorld world, Message msg) {
-		// Check weather there is a message handler for this message
-		LOGGER.debug("Object " + this + " has received a message");
-		for (MessageHandler handler : msgHandlers) {
-			if (handler.handleMessage(world, this, msg)) {
-				return true;
-			}
-		}
-		pendingMsgs.push(msg); // No handler found. Put the message into the queue and hope it will be handled by one of the object's components
-		return true;
+	public State getState() {
+		return state;
 	}
 	
-	public Deque<Message> getPendingEventsQueue() {
+	public void setState(State state) {
+		this.state = state;
+	}
+	
+	/**
+	 * @param msg
+	 */
+	public void notifyEvent(GameWorld world, Event msg) {
+		// Pass event to handlers (if any) to process it during the current frame
+		LOGGER.debug("Object " + this + " has received a message");
+		for (EventHandler handler : msgHandlers) {
+			handler.handleEvent(world, this, msg);
+		}
+		pendingMsgs.push(msg); // Put the message into the queue so it can be processed during the next frame
+	}
+	
+	public Deque<Event> getPendingEventsQueue() {
 		return pendingEvents;
 	}
 	
-	public void addMessageHandler(MessageHandler handler) {
+	public void addEventHandler(EventHandler handler) {
 		msgHandlers.add(handler);
 	}
 
@@ -189,13 +202,6 @@ public class GameObject {
 	
 	public Iterable<GameObjectListener> getListeners() {
 		return listeners;
-	}
-	
-	public void setFrozen(boolean b) {
-		if (!physComps.isEmpty()) {
-			getPhysicsComponent().setFrozen(b);
-		}
-		// TODO Freeze all components
 	}
 
 }

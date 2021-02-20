@@ -18,8 +18,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
+import pokemon_online.game.event.Event;
 import pokemon_online.game.ia.IAComponent;
-import pokemon_online.game.messages.Message;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
@@ -40,7 +40,7 @@ public class GameWorld {
 	
 	private final GameObjectsContainer objContainer;
 	
-	private final Map<Message.Type, Set<GameObject>> msgListeners;
+	private final Map<Event.Type, Set<GameObject>> msgListeners;
 
 	private Land currLand;
 	
@@ -64,15 +64,15 @@ public class GameWorld {
 		}
 	}
 
-	public void sendMessage(Message msg) { // FIXME Use "event" instead?
+	public void sendMessage(Event msg) { // FIXME Use "event" instead?
 		 game.queueMessage(msg);
 	}
 	
 	// FIXME sendMessage and sendMessageToObjects 
-	public void sendMessageToObjects(Message msg) {
+	public void sendMessageToObjects(Event msg) {
 		if (msgListeners.containsKey(msg.getType())) {
 			for (GameObject listener : msgListeners.get(msg.getType())) {
-				listener.sendMessage(this, msg);
+				listener.notifyEvent(this, msg);
 			}
 		}
 	}
@@ -92,10 +92,10 @@ public class GameWorld {
 		for (GameObject obj : getAllObjects()) { // FIXME Only active objects
 			
 			// Prepare the objects's event queue
-			Deque<Message> evtQueue = obj.getPendingEventsQueue();
+			Deque<Event> evtQueue = obj.getPendingEventsQueue();
 			
 			// Remove events generated at frame i-2
-			Message currEvent = null;
+			Event currEvent = null;
 			while(!evtQueue.isEmpty()) {
 				currEvent = evtQueue.pollFirst();
 				if (currEvent == GameObject.EVT_QUEUE_END) {
@@ -289,14 +289,14 @@ public class GameWorld {
 		return objContainer.getObjects(row, col);
 	}
 
-	public void addMessageListener(Message.Type msgType, GameObject listener) {
+	public void addMessageListener(Event.Type msgType, GameObject listener) {
 		if (!msgListeners.containsKey(msgType)) {
 			msgListeners.put(msgType, new HashSet<>());
 		}
 		msgListeners.get(msgType).add(listener);
 	}
 	
-	public void removeMessageListener(Message.Type msgType, GameObject listener) {
+	public void removeMessageListener(Event.Type msgType, GameObject listener) {
 		if (msgListeners.containsKey(msgType)) {
 			msgListeners.get(msgType).remove(listener);
 		}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.messages;
+package pokemon_online.game.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +12,22 @@ import pokemon_online.game.GameObject;
  * @author Cecchi
  *
  */
-public class Message {
+public class Event {
 
-	public static final Message newActionPerformed(GameObject sender) {
-		Message result = new Message(Type.ACTION_PERFORMED);
+	public static final Event newActionPerformed(GameObject sender) {
+		Event result = new Event(Type.ACTION_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Message newActionBPerformed(GameObject sender) {
-		Message result = new Message(Type.ACTION_B_PERFORMED);
+	public static final Event newActionBPerformed(GameObject sender) {
+		Event result = new Event(Type.ACTION_B_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Message newHudDisplayText(String text) {
-		Message result = new Message(Type.HUD_DISPLAY_TEXT);
+	public static final Event newHudDisplayText(String text) {
+		Event result = new Event(Type.HUD_DISPLAY_TEXT);
 		result.addArgument(text);
 		return result;
 	}
@@ -43,7 +43,7 @@ public class Message {
 	
 	private final List<Object> args;
 	
-	public Message(Type type) {
+	public Event(Type type) {
 		this.type = type;
 		this.args = new ArrayList<>();
 	}

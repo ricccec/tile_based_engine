@@ -6,6 +6,7 @@ package pokemon_online.physics;
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
+import pokemon_online.game.GameObject.State;
 
 /**
  * @author Cecchi
@@ -42,8 +43,8 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		}
 		
 		
-		if (((obj.getX() % 32) == 0) && ((obj.getY() % 32) == 0))  { // The state of the object's controller gets read only when the object reach the next cell
-			if ((ctrlerDir == null) || (phyComp.isFrozen())) {
+		if (!phyComp.isCrossingCells())  { // The state of the object's controller gets read only when the object reach the next cell
+			if ((ctrlerDir == null) || (obj.getState() != State.ACTIVE)) {
 				phyComp.setSpeedX(0);
 				phyComp.setSpeedY(0);
 			} else {
@@ -51,8 +52,9 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			}
 		}
 		
-		if ((phyComp.getSpeed() == 0))
+		if (phyComp.getSpeed() == 0) {
 			return new PkmnPhyStateIdle(phyComp);
+		}
 		
 		// Start a new cell-by-cell movement
 		while(residueDist > 0) { // Each iteration move the Entity one cell and resolve the collisions
