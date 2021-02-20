@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import pokemon_online.game.event.Event;
 import pokemon_online.game.event.EventHandler;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -49,6 +50,8 @@ public class GameObject {
 	private int y;
 	
 	protected GraphicsComponent grapComp;
+	
+	protected InteractionComponent interComp;
 	
 	private final Stack<PhysicsComponent> physComps;
 	
@@ -119,6 +122,14 @@ public class GameObject {
 	
 	public void setGraphicsComponent(GraphicsComponent grapComp) {
 		this.grapComp = grapComp;
+	}
+	
+	public InteractionComponent getInteractionComponent() {
+		return interComp;
+	}
+	
+	public void setInteractionComponent(InteractionComponent interComp) {
+		this.interComp = interComp;
 	}
 	
 	public PhysicsComponent getPhysicsComponent() {

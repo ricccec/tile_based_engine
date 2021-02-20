@@ -108,7 +108,7 @@ public class Game extends Thread {
 			world.updateWorld(Configuration.MS_PER_UPDATE);
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			
-			player.handleInput(world); // FIXME use a world.interact kind of thing instead
+			player.getInteractionComponent().updateInteraction(world); // FIXME make all objects interact
 			
 			
 			hud.update(player.getController());

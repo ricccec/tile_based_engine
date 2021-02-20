@@ -1,14 +1,8 @@
 package pokemon_online.game;
 
-import java.util.Collection;
-
-import pokemon_online.game.Controller.Control;
-import pokemon_online.game.GameObject.State;
-import pokemon_online.game.event.Event;
 import pokemon_online.game.event.HudEventHandler;
+import pokemon_online.game.interaction.PkmnControlHandler;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
-import pokemon_online.game.utils.GameObjectUtils;
-import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PokemonPhysicsComponent;
 /**
  * 
@@ -24,6 +18,8 @@ public class Player extends GameObject {
 		setPhysicsComponent(new PokemonPhysicsComponent(this));
 		grapComp = new SpriteGraphicsComponent(this);
 		
+		interComp = PkmnControlHandler.getInteractionComponent(this);
+		
 		addEventHandler(new HudEventHandler());
 	}
 
@@ -31,53 +27,4 @@ public class Player extends GameObject {
 		return (PokemonPhysicsComponent)super.getPhysicsComponent();
 	}
 	
-	public void handleInput(GameWorld world) { // TODO Chose a better name
-		if (getPhysicsComponent().isCrossingCells() ||
-			getState() != State.ACTIVE) {
-			return;
-		}
-		
-		Controller ctrl = getController();
-		
-		// Get the object the action has been performed onto
-		int objRow = GameUtils.getRow(getY());
-		int objCol = GameUtils.getColumn(getX());
-		switch(GameObjectUtils.getCardinalFacingDir(this)) { // FIXME Move this logic somewhere else
-			case DIR_DOWN:
-				objRow++;
-				break;
-			case DIR_LEFT:
-				objCol--;
-				break;
-			case DIR_RIGHT:
-				objCol++;
-				break;
-			case DIR_UP:
-				objRow--;
-				break;
-			default:
-				break;
-		}
-		Collection<GameObject> objects = world.getObjects(objRow, objCol);
-		if (objects.isEmpty()) {
-			return;
-		}
-		
-		// FIXME  
-		if (ctrl.isStatusChanged(Control.ACTION_1) && ctrl.isActive(Control.ACTION_1)) {
-			
-			// Send message
-			// Froze the player
-			setState(State.FROZEN);
-			
-			GameObject obj = objects.iterator().next();
-			obj.notifyEvent(world, Event.newActionPerformed(this));
-		}
-		
-		if (ctrl.isStatusChanged(Control.ACTION_2) && ctrl.isActive(Control.ACTION_2)) {
-			GameObject obj = objects.iterator().next();
-			obj.notifyEvent(world, Event.newActionBPerformed(this));
-		}
-	}
-
 }
