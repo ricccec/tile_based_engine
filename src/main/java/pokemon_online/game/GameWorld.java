@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
@@ -71,7 +72,8 @@ public class GameWorld {
 	// FIXME sendMessage and sendMessageToObjects 
 	public void sendMessageToObjects(Event msg) {
 		if (msgListeners.containsKey(msg.getType())) {
-			for (GameObject listener : msgListeners.get(msg.getType())) {
+			Collection<GameObject> listeners = new ArrayList<GameObject>(msgListeners.get(msg.getType())); // Create a copy 'cause during notifyEvent the listener could remove inself
+			for (GameObject listener : listeners) {
 				listener.notifyEvent(this, msg);
 			}
 		}

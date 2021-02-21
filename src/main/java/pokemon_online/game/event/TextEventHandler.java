@@ -58,12 +58,12 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 			System.out.println(receiver.getX() + " " + receiver.getY());
 			if (((PokemonPhysicsComponent)phyComp).isCrossingCells()) {
 				// Ignore message and un-freeze the sender
-				sender.setState(State.ACTIVE);
 				return;
 			}
 		}
 		
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
+		sender.setState(State.FROZEN);
 		receiver.setState(State.FROZEN); // Ignore any other events
 		world.sendMessage(Event.newHudDisplayText(text));
 		

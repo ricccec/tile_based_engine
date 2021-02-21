@@ -21,6 +21,8 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 	@Override
 	public void enterState(GameWorld world) {
 		// TODO Auto-generated method stub
+		phyComp.setSpeedX(0);
+		phyComp.setSpeedY(0);
 		phyComp.moveOneCell(world, 0);
 	}
 
@@ -32,7 +34,7 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		if (obj.getState() != State.ACTIVE) {
 			return null;
 		}
-		
+//		System.out.println("AAAAA " + obj.getState());
 		if (ctrlerDir == GameObjectUtils.getCardinalFacingDir(obj)) {
 			return new PkmnPhyStateMoving(phyComp);
 		}

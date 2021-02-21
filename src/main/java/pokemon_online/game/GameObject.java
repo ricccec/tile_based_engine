@@ -41,8 +41,6 @@ public class GameObject {
 	
 	private final Stack<Event> pendingMsgs;
 	
-	private final Collection<EventHandler> msgHandlers;
-	
 	private State state;
 	
 	private int x;
@@ -70,7 +68,6 @@ public class GameObject {
 		ctrl = new Controller();
 		
 		listeners = new ArrayList<>();
-		msgHandlers = new ArrayList<>();
 		pendingMsgs = new Stack<>();
 		
 		pendingEvents = new ArrayDeque<>();
@@ -180,27 +177,25 @@ public class GameObject {
 	}
 	
 	public void setState(State state) {
-		this.state = state;
+		if (state != this.state) {
+			LOGGER.debug(this + "state: " + this.state + "->" + state);
+			this.state = state;
+		}
 	}
 	
 	/**
 	 * @param msg
 	 */
 	public void notifyEvent(GameWorld world, Event msg) {
-		// Pass event to handlers (if any) to process it during the current frame
 		LOGGER.debug("Object " + this + " has received a message " + getX() + " " + getY());
-		for (EventHandler handler : msgHandlers) {
-			handler.handleEvent(world, this, msg);
+		if (interComp != null) {
+			interComp.notifyEvent(world, msg); // Event preprocessing
 		}
 		pendingMsgs.push(msg); // Put the message into the queue so it can be processed during the next frame
 	}
 	
 	public Deque<Event> getPendingEventsQueue() {
 		return pendingEvents;
-	}
-	
-	public void addEventHandler(EventHandler handler) {
-		msgHandlers.add(handler);
 	}
 
 	public void addListener(GameObjectListener listener) {

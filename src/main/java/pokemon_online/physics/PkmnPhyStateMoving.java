@@ -31,8 +31,9 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		
 		// Complete any previous movement
 		int residueDist = Configuration.PLAYER_SPEED;//phyComp.getSpeed();
-		if (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0)) {
+		if (phyComp.isCrossingCells()) {
 			assert(phyComp.getSpeed() > 0);
+			assert(obj.getState() != State.ACTIVE); // This object can't interact while moving
 			// A movement from the previous tick is still ongoing
 			// Complete the movement
 			int prevPos = (phyComp.getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
@@ -40,6 +41,9 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			phyComp.resolveCollision(world);
 			int currPos = (phyComp.getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
 			residueDist -= Math.abs(prevPos - currPos);
+		} else if (obj.getState() != State.ACTIVE) {
+			// Someone else freeze the object during the previous frame
+			return new PkmnPhyStateIdle(phyComp);
 		}
 		
 		

@@ -19,8 +19,7 @@ public class Player extends GameObject {
 		grapComp = new SpriteGraphicsComponent(this);
 		
 		interComp = PkmnControlHandler.getInteractionComponent(this);
-		
-		addEventHandler(new HudEventHandler());
+		interComp.addEventHandler(new HudEventHandler());
 	}
 
 	public PokemonPhysicsComponent getPhysicsComponent() {

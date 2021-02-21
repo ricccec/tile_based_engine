@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.event.EventHandler;
 import pokemon_online.game.event.TextEventHandler;
+import pokemon_online.game.interaction.InteractionComponent;
 
 /**
  * @author Cecchi
@@ -119,7 +120,11 @@ public class LandBuilder {
 			int initCol = ((Long)textJSON.get(JsonField.TEXT_COL.key)).intValue();
 			
 			GameObject text = new GameObject();
-			text.addEventHandler(new TextEventHandler(textMsg));
+			
+			InteractionComponent intrComp = new InteractionComponent(text);
+			intrComp.addEventHandler(new TextEventHandler(textMsg));
+			text.setInteractionComponent(intrComp);
+			
 			land.addObject(text, initRow, initCol);
 		}
 		
