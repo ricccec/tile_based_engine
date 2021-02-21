@@ -188,7 +188,7 @@ public class GameObject {
 	 */
 	public void notifyEvent(GameWorld world, Event msg) {
 		// Pass event to handlers (if any) to process it during the current frame
-		LOGGER.debug("Object " + this + " has received a message");
+		LOGGER.debug("Object " + this + " has received a message " + getX() + " " + getY());
 		for (EventHandler handler : msgHandlers) {
 			handler.handleEvent(world, this, msg);
 		}

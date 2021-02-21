@@ -23,7 +23,7 @@ public class Configuration {
 	 * Since no object can move slower than 1 pxl/frame, the gamerate gives also the speed of the slower object:
 	 *  SLOWEST_SPEED = 32/MS_PER_UPDATE tile/sec
 	 */
-	public static final int PLAYER_SPEED = 3; // In px/tick
+	public static final int PLAYER_SPEED = 4; // In px/tick
 	
 	public static final boolean EMPTY_CELLS_WALKABLE = true;  
 	

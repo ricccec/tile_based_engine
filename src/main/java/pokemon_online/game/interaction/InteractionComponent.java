@@ -28,6 +28,7 @@ public class InteractionComponent extends Component {
 
 	public void updateInteraction(GameWorld world) {
 		
+//		System.out.println(obj.getX() + " " + obj.getY() + " " + obj.getState());
 		if (//obj.getPhysicsComponent().isCrossingCells() || FIXME see below
 			(obj.getState() != State.ACTIVE)) {
 			return;

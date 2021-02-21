@@ -43,10 +43,12 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		}
 		
 		
-		if (!phyComp.isCrossingCells())  { // The state of the object's controller gets read only when the object reach the next cell
-			if ((ctrlerDir == null) || (obj.getState() != State.ACTIVE)) {
+		if (!phyComp.isCrossingCells())  { 	// The state of the object's controller gets read only when the object reach the next cell
+											// Depending on the controller's state the object can either stop or change direction
+			if ((ctrlerDir == null)) {
 				phyComp.setSpeedX(0);
 				phyComp.setSpeedY(0);
+				obj.setState(State.ACTIVE);
 			} else {
 				phyComp.setVelocity(ctrlerDir, Configuration.PLAYER_SPEED);
 			}
@@ -66,6 +68,12 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			if (dPxls == 0) // Collision detected
 				return null;
 			residueDist -= dPxls;
+		}
+		
+		if (phyComp.isCrossingCells()) {
+			obj.setState(State.FROZEN);
+		} else {
+			obj.setState(State.ACTIVE);
 		}
 		
 		return null;
