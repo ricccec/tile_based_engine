@@ -52,15 +52,15 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 	 */
 	private void sendHudTextDisplayReqs(GameWorld world, GameObject sender, GameObject receiver) {
 		
-		// Handle the case of a receiver with a Physical Component
-		PhysicsComponent phyComp = receiver.getPhysicsComponent();
-		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) { // FIXME This breaks polymorphism. Add some sort of canHandleMessage method to GameObject?
-			System.out.println(receiver.getX() + " " + receiver.getY());
-			if (((PokemonPhysicsComponent)phyComp).isCrossingCells()) {
-				// Ignore message and un-freeze the sender
-				return;
-			}
-		}
+//		// Handle the case of a receiver with a Physical Component
+//		PhysicsComponent phyComp = receiver.getPhysicsComponent();
+//		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) { // FIXME This breaks polymorphism. Add some sort of canHandleMessage method to GameObject?
+//			System.out.println(receiver.getX() + " " + receiver.getY());
+//			if (((PokemonPhysicsComponent)phyComp).isCrossingCells()) {
+//				// Ignore message and un-freeze the sender
+//				return;
+//			}
+//		}
 		
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
 		sender.setState(State.FROZEN);
