@@ -5,7 +5,7 @@ package pokemon_online.game;
 
 import org.apache.log4j.Logger;
 
-import pokemon_online.game.event.Event;
+import pokemon_online.game.interaction.event.Event;
 
 /**
  * @author Cecchi

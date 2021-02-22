@@ -19,7 +19,7 @@ import pokemon_online.game.Controller;
  */
 public class DirectionFilter {
 
-	private Direction controllerDirection;
+	private CardinalDirection controllerDirection;
 	
 	private final Controller ctrl;
 	
@@ -27,7 +27,7 @@ public class DirectionFilter {
 		ctrl = controller;
 	}
 	
-	public Direction getControllerDirection() {
+	public CardinalDirection getControllerDirection() {
 		return controllerDirection;
 	}
 	
@@ -42,7 +42,7 @@ public class DirectionFilter {
 		} else if (ctrl.isStatusChanged(MOVE_RIGHT)) {
 			if (ctrl.isActive(MOVE_RIGHT)) {
 				// RIGHT pressed
-				controllerDirection = Direction.DIR_RIGHT;
+				controllerDirection = CardinalDirection.DIR_RIGHT;
 			} else {
 				// RIGHT released
 				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
@@ -50,7 +50,7 @@ public class DirectionFilter {
 		} else if (ctrl.isStatusChanged(MOVE_DWN)) {
 			if (ctrl.isActive(MOVE_DWN)) {
 				// DOWN pressed
-				controllerDirection = Direction.DIR_DOWN;
+				controllerDirection = CardinalDirection.DIR_DOWN;
 			} else {
 				// DOWN released
 				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
@@ -58,7 +58,7 @@ public class DirectionFilter {
 		} else if (ctrl.isStatusChanged(MOVE_LEFT)) {
 			if (ctrl.isActive(MOVE_LEFT)) {
 				// LEFT pressed
-				controllerDirection = Direction.DIR_LEFT;
+				controllerDirection = CardinalDirection.DIR_LEFT;
 			} else {
 				// LEFT released
 				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
@@ -66,7 +66,7 @@ public class DirectionFilter {
 		} else if (ctrl.isStatusChanged(MOVE_UP)) {
 			if (ctrl.isActive(MOVE_UP)) {
 				// UP pressed
-				controllerDirection = Direction.DIR_UP;
+				controllerDirection = CardinalDirection.DIR_UP;
 			} else {
 				// UP released
 				controllerDirection = getHighestPriorityActiveCntrl(ctrl);
@@ -74,18 +74,18 @@ public class DirectionFilter {
 		} 
 	}
 	
-	private Direction getHighestPriorityActiveCntrl(Controller ctrl) {
+	private CardinalDirection getHighestPriorityActiveCntrl(Controller ctrl) {
 		if (ctrl.isActive(MOVE_RIGHT)) {
-			return Direction.DIR_RIGHT;
+			return CardinalDirection.DIR_RIGHT;
 		}
 		if (ctrl.isActive(MOVE_DWN)) {
-			return Direction.DIR_DOWN;
+			return CardinalDirection.DIR_DOWN;
 		}
 		if (ctrl.isActive(MOVE_LEFT)) {
-			return Direction.DIR_LEFT;
+			return CardinalDirection.DIR_LEFT;
 		}
 		if (ctrl.isActive(MOVE_UP)) {
-			return Direction.DIR_UP;
+			return CardinalDirection.DIR_UP;
 		}
 		return null;
 	}

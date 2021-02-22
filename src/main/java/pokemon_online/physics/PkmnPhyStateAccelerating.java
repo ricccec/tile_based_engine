@@ -28,7 +28,7 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 	}
 
 	@Override
-	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir) {
+	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, CardinalDirection ctrlerDir) {
 		if (ctrlerDir == null) {
 			// Controller released, go back to idle
 			return new PkmnPhyStateIdle(phyComp);

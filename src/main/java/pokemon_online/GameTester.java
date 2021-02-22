@@ -15,13 +15,13 @@ import org.json.simple.parser.ParseException;
 
 import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.event.EventHandler;
-import pokemon_online.game.event.PushMessageHandler;
-import pokemon_online.game.event.TextEventHandler;
 import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
+import pokemon_online.game.interaction.event.EventHandler;
+import pokemon_online.game.interaction.event.PushMessageHandler;
+import pokemon_online.game.interaction.event.TextEventHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;

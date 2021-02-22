@@ -4,7 +4,7 @@
 package pokemon_online.game.utils;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.physics.Direction;
+import pokemon_online.physics.CardinalDirection;
 
 /**
  * @author Cecchi
@@ -21,11 +21,15 @@ public class GameObjectUtils {
 		
 		obj.setFacingDirection((int)angleDiffDeg);
 	}
+	
+	public static void lookToward(GameObject obj, GameObject otherObj) {
+		lookToward(obj, otherObj.getX(), otherObj.getY());
+	}
 
-	public static Direction getCardinalFacingDir(GameObject obj) {
+	public static CardinalDirection getCardinalFacingDir(GameObject obj) {
 		// FIXME Merge with the previous method
 		double movingDir = obj.getFacingDirection();
-		return Direction.degree2direction(movingDir);
+		return CardinalDirection.degree2direction(movingDir);
 	}
 	
 	

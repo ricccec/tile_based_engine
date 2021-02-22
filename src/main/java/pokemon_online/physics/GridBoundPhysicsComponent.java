@@ -5,14 +5,17 @@ package pokemon_online.physics;
 
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameObjectListener;
+import pokemon_online.game.GameObject.State;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 
 /**
  * Represents the physics of an Entity that can only move in the UP, DOWN, RIGHT
- * and LEFT {@link Direction}, each time walking an integer number of cells of a grid
+ * and LEFT {@link CardinalDirection}, each time walking an integer number of cells of a grid
  * (i.e. the Entity cannot stop nor can change direction while crossing between
  * two cells)
  * 
@@ -24,35 +27,36 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 	/**
 	 * The Entity moving direction.
 	 */
-	private Direction movingDirection;
+	private CardinalDirection movingDirection;
 	
 	public GridBoundPhysicsComponent(GameObject obj) {
 		super(obj);
 	}
 	
-	public void move(Direction dir) {
+	public void move(CardinalDirection dir) {
 		if (movingDirection == null) {
 			// TODO Queue commands?
 			movingDirection = dir;
 			setSpeedX(0);
 			setSpeedY(0);
+			obj.setState(State.FROZEN);
 		}
 	}
 	
 	public void moveUp() {
-		move(Direction.DIR_UP);
+		move(CardinalDirection.DIR_UP);
 	}
 	
 	public void moveRight() {
-		move(Direction.DIR_RIGHT);
+		move(CardinalDirection.DIR_RIGHT);
 	}
 	
 	public void moveDown() {
-		move(Direction.DIR_DOWN);
+		move(CardinalDirection.DIR_DOWN);
 	}
 	
 	public void moveLeft() {
-		move(Direction.DIR_LEFT);
+		move(CardinalDirection.DIR_LEFT);
 	}
 	
 	public boolean isMoving() {
@@ -67,9 +71,12 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		
 		// Complete any previous movement
 		int residueDist = Configuration.PLAYER_SPEED;//phyComp.getSpeed();
-		if (((obj.getX() % 32) != 0) || ((obj.getY() % 32) != 0)) {
-			assert(movingDirection != null);
+		if (isCrossingCells()) {
 			// A movement from the previous tick is still ongoing
+			assert(movingDirection != null);
+			assert((getSpeedX() > 0) || (getSpeedY() > 0));
+			assert(obj.getState() != State.ACTIVE); // This object can't interact while moving
+			
 			// Complete the movement
 			int prevPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
 			moveOneCell(world, residueDist);
@@ -83,11 +90,14 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		}
 		
 		if (!isCrossingCells()) {
+			// Object is centered on a cell
 			if (getObjectSpeed() > 0) {
 				// Movement completed, stop object
 				movingDirection = null;
 				setSpeedX(0);
 				setSpeedY(0);
+				obj.setState(State.ACTIVE);
+				obj.notifyEvent(world, new Event(Type.PUSH_COMPLETED));
 				return;
 			} else {
 				// Moving has just started
@@ -106,6 +116,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 				break;
 			residueDist -= dPxls;
 		}
+		
 	}
 	
 	/**
@@ -116,34 +127,30 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		return (int)Math.ceil(Math.sqrt(Math.pow(getSpeedX(), 2) + Math.pow(getSpeedY(), 2)));
 	}
 	
-	public final void setObjectVelocity(Direction dir, int speed) {
+	public final void setObjectVelocity(CardinalDirection dir, int speed) {
 		switch(dir) {
 			case DIR_DOWN:
 				setSpeedX(0);
 				setSpeedY(speed);
-				obj.setFacingDirection(270);
 				break;
 			case DIR_LEFT:
 				setSpeedX(-speed);
 				setSpeedY(0);
-				obj.setFacingDirection(180);
 				break;
 			case DIR_RIGHT:
 				setSpeedX(speed);
 				setSpeedY(0);
-				obj.setFacingDirection(0);
 				break;
 			case DIR_UP:
 				setSpeedX(0);
 				setSpeedY(-speed);
-				obj.setFacingDirection(90);
 				break;
 		}
 	}
 	
-	public final Direction getObjectMovingDirection() {
+	public final CardinalDirection getObjectMovingDirection() {
 		double movingDir = getMovingDirection();
-		return Direction.degree2direction(movingDir);
+		return CardinalDirection.degree2direction(movingDir);
 	}
 	
 	public final boolean isCrossingCells() {

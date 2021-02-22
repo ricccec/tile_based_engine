@@ -4,7 +4,7 @@
 package pokemon_online.game.interaction;
 
 import pokemon_online.game.Controller.Control;
-import pokemon_online.game.event.Event;
+import pokemon_online.game.interaction.event.Event;
 
 import java.util.Collection;
 

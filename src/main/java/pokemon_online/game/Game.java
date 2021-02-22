@@ -6,7 +6,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
-import pokemon_online.game.event.Event;
+import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;

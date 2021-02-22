@@ -1,7 +1,7 @@
 package pokemon_online.game;
 
-import pokemon_online.game.event.HudEventHandler;
 import pokemon_online.game.interaction.PkmnControlHandler;
+import pokemon_online.game.interaction.event.HudEventHandler;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 /**

@@ -8,10 +8,10 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
-import pokemon_online.game.event.Event;
-import pokemon_online.game.event.EventHandler;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
+import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.EventHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -146,7 +146,7 @@ public class GameObject {
 		physComps.push(physComp);
 	}
 	
-	public void popPhysicsComponent(PhysicsComponent physComp) {
+	public void popPhysicsComponent() {
 		physComps.pop();
 	}
 	
@@ -178,7 +178,7 @@ public class GameObject {
 	
 	public void setState(State state) {
 		if (state != this.state) {
-			LOGGER.debug(this + "state: " + this.state + "->" + state);
+//			LOGGER.debug(this + "state: " + this.state + "->" + state);
 			this.state = state;
 		}
 	}

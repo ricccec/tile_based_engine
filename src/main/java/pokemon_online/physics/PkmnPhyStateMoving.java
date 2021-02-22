@@ -26,15 +26,16 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 	}
 
 	@Override
-	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir) {
+	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, CardinalDirection ctrlerDir) {
 		// FIXME dtMillisec is ignored
 		
 		// Complete any previous movement
 		int residueDist = Configuration.PLAYER_SPEED;//phyComp.getSpeed();
 		if (phyComp.isCrossingCells()) {
+			// A movement from the previous tick is still ongoing
 			assert(phyComp.getSpeed() > 0);
 			assert(obj.getState() != State.ACTIVE); // This object can't interact while moving
-			// A movement from the previous tick is still ongoing
+			
 			// Complete the movement
 			int prevPos = (phyComp.getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
 			phyComp.moveOneCell(world, residueDist);

@@ -162,28 +162,28 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 	}
 
 	public boolean isMovingRight() {
-		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_RIGHT));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == CardinalDirection.DIR_RIGHT));
 	}
 	
 	public boolean isMovingDown() {
-		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_DOWN));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == CardinalDirection.DIR_DOWN));
 	}
 	
 	
 	public boolean isMovingLeft() {
-		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_LEFT));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == CardinalDirection.DIR_LEFT));
 	}
 	
 	public boolean isMovingUp() {
-		return ((getSpeed() > 0) && (getCardinalMovingDir() == Direction.DIR_UP));
+		return ((getSpeed() > 0) && (getCardinalMovingDir() == CardinalDirection.DIR_UP));
 	}
 	
-	public Direction getCardinalMovingDir() {
+	public CardinalDirection getCardinalMovingDir() {
 		double movingDir = getMovingDirection();
-		return Direction.degree2direction(movingDir);
+		return CardinalDirection.degree2direction(movingDir);
 	}
 	
-	public void setVelocity(Direction dir, int speed) {
+	public void setVelocity(CardinalDirection dir, int speed) {
 		switch(dir) {
 			case DIR_DOWN:
 				setSpeedX(0);

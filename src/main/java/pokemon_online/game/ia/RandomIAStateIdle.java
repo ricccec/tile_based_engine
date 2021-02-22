@@ -7,7 +7,7 @@ import pokemon_online.game.Controller;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.Controller.Control;
 import pokemon_online.game.utils.GameUtils;
-import pokemon_online.physics.Direction;
+import pokemon_online.physics.CardinalDirection;
 
 /**
  * @author Cecchi
@@ -36,7 +36,7 @@ public class RandomIAStateIdle extends RandomIAState {
 			double currDirDegree = obj.getFacingDirection();
 			double newDirDegree = (currDirDegree + (1 + rand.nextInt(3))*90) % 360;
 			
-			Direction newDirection = Direction.degree2direction(newDirDegree);
+			CardinalDirection newDirection = CardinalDirection.degree2direction(newDirDegree);
 			switch(newDirection)  {
 			case DIR_DOWN:
 				ctrl.setActivated(Control.MOVE_DWN);

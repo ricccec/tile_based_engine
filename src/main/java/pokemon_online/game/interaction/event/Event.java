@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.event;
+package pokemon_online.game.interaction.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,8 @@ public class Event {
 		ACTION_PERFORMED,
 		ACTION_B_PERFORMED,
 		HUD_DISPLAY_TEXT,
-		HUD_DISPOSED
+		HUD_DISPOSED,
+		PUSH_COMPLETED
 	}
 	
 	private final Type type;
@@ -54,6 +55,12 @@ public class Event {
 	
 	public List<Object> getArguments() {
 		return args;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getArgument(int indx) {
+		List<Object> args = getArguments();
+		return (T)args.get(indx);
 	}
 
 	public Type getType() {

@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.game.Controller;
 import pokemon_online.game.Game;
-import pokemon_online.game.event.Event;
-import pokemon_online.game.event.Event.Type;
+import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.Event.Type;
 
 /**
  * @author Cecchi

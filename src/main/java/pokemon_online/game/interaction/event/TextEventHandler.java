@@ -1,11 +1,11 @@
 /**
  * 
  */
-package pokemon_online.game.event;
+package pokemon_online.game.interaction.event;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
-import pokemon_online.game.event.Event.Type;
+import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.physics.PhysicsComponent;
@@ -34,6 +34,7 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 					return true;
 				}
 			case HUD_DISPOSED: // Unlock the object who is talking
+				assert(receiver.getState() != State.ACTIVE);
 				receiver.setState(State.ACTIVE);
 				world.removeMessageListener(Type.HUD_DISPOSED, receiver);
 				return true;

@@ -20,6 +20,6 @@ public abstract class PkmnPhyState {
 	
 	public abstract void enterState(GameWorld world);
 	
-	public abstract PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir);
+	public abstract PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, CardinalDirection ctrlerDir);
 	
 }

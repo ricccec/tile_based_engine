@@ -12,9 +12,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.game.event.EventHandler;
-import pokemon_online.game.event.TextEventHandler;
 import pokemon_online.game.interaction.InteractionComponent;
+import pokemon_online.game.interaction.event.EventHandler;
+import pokemon_online.game.interaction.event.TextEventHandler;
 
 /**
  * @author Cecchi

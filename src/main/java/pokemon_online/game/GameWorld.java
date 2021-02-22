@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
-import pokemon_online.game.event.Event;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;

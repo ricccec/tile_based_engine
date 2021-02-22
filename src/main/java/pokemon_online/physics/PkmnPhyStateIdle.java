@@ -23,11 +23,11 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		// TODO Auto-generated method stub
 		phyComp.setSpeedX(0);
 		phyComp.setSpeedY(0);
-		phyComp.moveOneCell(world, 0);
+		//phyComp.moveOneCell(world, 0);
 	}
 
 	@Override
-	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, Direction ctrlerDir) {
+	public PkmnPhyState updateState(GameObject obj, GameWorld world, long dtMillisec, CardinalDirection ctrlerDir) {
 		if (ctrlerDir == null) {
 			return null;
 		}

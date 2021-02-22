@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.event;
+package pokemon_online.game.interaction.event;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
