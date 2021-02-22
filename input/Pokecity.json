@@ -460,9 +460,75 @@
 			"name": "Anim_test",
 			"id": 67,
 			"type": 0
+		},
+		{
+			"img": {
+						"tilesheet": "d8ao6i1-bc681db9-1941-4d72-b480-7241782c4f93.gif",
+						"x": 16,
+						"y": 0,
+						"width": 16,
+						"height": 16,
+						"scale": 2.0
+					},
+			"name": "Jump_W",
+			"id": 68,
+			"type": 0
+		},
+		{
+			"img": {
+						"tilesheet": "d8ao6i1-bc681db9-1941-4d72-b480-7241782c4f93.gif",
+						"x": 112,
+						"y": 0,
+						"width": 16,
+						"height": 16,
+						"scale": 2.0
+					},
+			"name": "Jump_E",
+			"id": 69,
+			"type": 0
+		},
+		{
+			"img": {
+						"tilesheet": "d8ao6i1-bc681db9-1941-4d72-b480-7241782c4f93.gif",
+						"x": 16,
+						"y": 48,
+						"width": 16,
+						"height": 16,
+						"scale": 2.0
+					},
+			"name": "Jump_SW",
+			"id": 70,
+			"type": 0
+		},
+		{
+			"img": {
+						"tilesheet": "d8ao6i1-bc681db9-1941-4d72-b480-7241782c4f93.gif",
+						"x": 32,
+						"y": 48,
+						"width": 16,
+						"height": 16,
+						"scale": 2.0
+					},
+			"name": "Jump_S",
+			"id": 71,
+			"type": 0
+		},
+		{
+			"img": {
+						"tilesheet": "d8ao6i1-bc681db9-1941-4d72-b480-7241782c4f93.gif",
+						"x": 112,
+						"y": 48,
+						"width": 16,
+						"height": 16,
+						"scale": 2.0
+					},
+			"name": "Jump_SE",
+			"id": 72,
+			"type": 0
 		}
 	],
 	"texts": [{"col":10, "row": 8, "text": "Prova"}],
+	"zones": [{"col":7, "row": 9, "type":"jump_lt"}, {"col":8, "row": 10, "type":"jump_dn"}, {"col":17, "row": 10, "type":"jump_rt"}]
 	"rowsCount": 26,
 	"name": "Pokecity",
 	"rows": [
@@ -3175,7 +3241,7 @@
 				{
 					"col": 7,
 					"walkable": true,
-					"tile": 37,
+					"tile": 68,
 					"row": 9
 				},
 				{
@@ -3457,13 +3523,13 @@
 				{
 					"col": 7,
 					"walkable": true,
-					"tile": 37,
+					"tile": 70,
 					"row": 10
 				},
 				{
 					"col": 8,
 					"walkable": true,
-					"tile": 37,
+					"tile": 71,
 					"row": 10
 				},
 				{
@@ -3517,7 +3583,7 @@
 				{
 					"col": 17,
 					"walkable": true,
-					"tile": 48,
+					"tile": 69,
 					"row": 10
 				},
 				{
@@ -3792,7 +3858,7 @@
 				{
 					"col": 17,
 					"walkable": true,
-					"tile": 48,
+					"tile": 72,
 					"row": 11
 				},
 				{
