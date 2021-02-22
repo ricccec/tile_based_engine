@@ -187,7 +187,7 @@ public class GameObject {
 	 * @param msg
 	 */
 	public void notifyEvent(GameWorld world, Event msg) {
-		LOGGER.debug("Object " + this + " has received a message " + getX() + " " + getY());
+		LOGGER.debug("Object " + this + " has received a message");
 		if (interComp != null) {
 			interComp.notifyEvent(world, msg); // Event preprocessing
 		}

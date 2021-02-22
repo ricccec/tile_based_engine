@@ -74,7 +74,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		if (isCrossingCells()) {
 			// A movement from the previous tick is still ongoing
 			assert(movingDirection != null);
-			assert((getSpeedX() > 0) || (getSpeedY() > 0));
+			assert((getSpeedX() != 0) || (getSpeedY() != 0));
 			assert(obj.getState() != State.ACTIVE); // This object can't interact while moving
 			
 			// Complete the movement

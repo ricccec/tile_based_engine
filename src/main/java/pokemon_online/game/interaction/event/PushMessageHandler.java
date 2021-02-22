@@ -53,12 +53,12 @@ public class PushMessageHandler extends EventHandler {
 		CardinalDirection moveCardDir = CardinalDirection.degree2direction(moveDir);
 		pushPhyComp.move(moveCardDir);
 		
-		System.out.println(moveDir + " " + moveCardDir);
+//		System.out.println(moveDir + " " + moveCardDir);
 	}
 	
 	private void stopSliding(GameObject pushedObj) {
 		
-		System.out.println(pushedObj.getState());
+//		System.out.println(pushedObj.getState());
 		assert(pushedObj.getPhysicsComponent() instanceof GridBoundPhysicsComponent);
 		
 		pushedObj.popPhysicsComponent();
