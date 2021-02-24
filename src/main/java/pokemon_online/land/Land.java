@@ -101,7 +101,11 @@ public class Land {
 	}
     
 	public void addObject(GameObject obj, int initRow, int initCol) {
-		objsInitPosition.put(obj, new Cell(initRow, initCol));
+		addObject(obj, new Cell(initRow, initCol));
+	}
+	
+	public void addObject(GameObject obj, Cell initPosition) {
+		objsInitPosition.put(obj, initPosition);
 	}
 	
 	public Collection<GameObject> getObjects() {

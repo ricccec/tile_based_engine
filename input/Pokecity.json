@@ -528,7 +528,14 @@
 		}
 	],
 	"texts": [{"col":10, "row": 8, "text": "Prova"}],
-	"zones": [{"col":7, "row": 9, "type":"jump_w"}, {"col":7, "row": 10, "type":"jump_sw"}, {"col":8, "row": 10, "type":"jump_s"}, {"col":17, "row": 10, "type":"jump_e"}, {"col":17, "row": 11, "type":"jump_se"}]
+	"zones": [
+				{"type":"platform", "col":7, "row":9, "blocked":["up", "rt"]}
+				{"col":7, "row": 9, "type":"jump_w"},
+				{"col":7, "row": 10, "type":"jump_sw"},
+				{"col":8, "row": 10, "type":"jump_s"},
+				{"col":17, "row": 10, "type":"jump_e"},
+				{"col":17, "row": 11, "type":"jump_se"}
+			]
 	"rowsCount": 26,
 	"name": "Pokecity",
 	"rows": [
