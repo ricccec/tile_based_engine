@@ -38,7 +38,22 @@ public abstract class PhysicsComponent extends Component {
 	
 	public abstract void update(GameWorld world, long dtMillisec);
 	
-	public abstract Cell getBoundingBox();
+	public abstract Cell getBoundingBox(); // TODO Add support for objects that occupy more than one cell
+	
+	/**
+	 * @param otherPhy
+	 * @return <code>true</code> in case of collision
+	 */
+	public boolean checkCollision(PhysicsComponent otherPhy) {
+		Cell cornerCell = getBoundingBox();
+		Cell otherCornerCell = otherPhy.getBoundingBox();
+		if (cornerCell.equals(otherCornerCell)) {
+			GameObject otherObj = otherPhy.getGameObject();
+			return !getGameObject().equals(otherObj);
+		} else {
+			return false;
+		}
+	}
 	
 	/**
 	 * @return the moving direction, in degrees

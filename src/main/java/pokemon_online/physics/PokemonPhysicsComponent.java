@@ -88,7 +88,8 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		if (!collides) {
 			// Check object-with-object collision
 			for (GameObject otherObj : world.getProps(cornerRow, cornerCol)) {
-				if (!otherObj.equals(obj)) {
+				assert(otherObj.getPhysicsComponent() != null);
+				if (otherObj.getPhysicsComponent().checkCollision(this)) {//if (!otherObj.equals(obj)) {
 					collides = true;
 					break;
 				}

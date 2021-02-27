@@ -529,7 +529,9 @@
 	],
 	"texts": [{"col":10, "row": 8, "text": "Prova"}],
 	"zones": [
-				{"type":"platform", "col":7, "row":9, "blocked":["up", "rt"]}
+				{"type":"platform", "col":7, "row":9, "blocked":["up", "rt"]},
+				{"type":"platform", "col":8, "row":9, "blocked":["up"]},
+				{"type":"platform", "col":17, "row":10, "blocked":["lt", "up"]},
 				{"col":7, "row": 9, "type":"jump_w"},
 				{"col":7, "row": 10, "type":"jump_sw"},
 				{"col":8, "row": 10, "type":"jump_s"},

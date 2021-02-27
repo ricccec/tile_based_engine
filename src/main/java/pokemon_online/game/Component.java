@@ -21,6 +21,10 @@ public abstract class Component {
 		this.obj = obj;
 	}
 	
+	public GameObject getGameObject() {
+		return obj;
+	}
+	
 	public void handleEvent(Event event) {
 		LOGGER.debug(this + " has received event " + event);
 	}
