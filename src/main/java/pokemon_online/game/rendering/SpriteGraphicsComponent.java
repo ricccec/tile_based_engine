@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
@@ -11,13 +12,13 @@ import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
-import pokemon_online.physics.PokemonPhysicsComponent;
 
 public class SpriteGraphicsComponent extends GraphicsComponent {
 
 	public enum GraphicsState { // FIXME Move somewhere else
 		IDLE,
-		WALKING;
+		WALKING,
+		JUMPING;
 		
 		private static final Map<String, GraphicsState> STR_2_STATE;
 		static {
@@ -33,12 +34,13 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 	
 	private final Map<GraphicsState, StateAnimation> animations;
 	
-	private GraphicsState currState; // FIXME Use a real FSM
+	private Stack<GraphicsState> currState; // FIXME Use a real FSM
 	
 	public SpriteGraphicsComponent(GameObject obj) {
 		super(obj);
 		
-		currState = GraphicsState.IDLE;
+		currState = new Stack<>();
+		currState.push(GraphicsState.IDLE);
 		
 		animations = new HashMap<>();
 	}
@@ -48,9 +50,26 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 		animations.put(stateName, state);
 	}
 	
+	public void setState(GraphicsState state) {
+		currState.clear();
+		currState.push(state);
+	}
+	
+	public GraphicsState getState() {
+		return currState.peek();
+	}
+	
+	public void pushState(GraphicsState state) {
+		currState.push(state);
+	}
+	
+	public void popState() {
+		currState.pop();
+	}
+	
 	public void render(Graphics2D grap, Viewport viewport) {
 		
-		StateAnimation graphState = animations.get(currState);
+		StateAnimation graphState = animations.get(getState());
 		if (graphState == null) {
 			// TODO warn
 			return;
@@ -84,30 +103,44 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 	}
 
 	public void updateAnimation(long dt) {
-		switch (currState) {
-			// Change state?
+		
+		// Update animation
+		if (animations.containsKey(getState())) {
+			// TODO Use a default animation in else?
+			animations.get(getState()).updateAnimation(dt);
+		}
+		
+		// Check animation completed
+		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
+		if (animations.get(getState()).getCurrentSprinte(objDir) == null) {
+			popState();
+			resetStateAnimation();
+		}
+		
+		// Change state?
+		switch (getState()) {
 			case IDLE:
 				if ((obj.getPhysicsComponent() != null) && (obj.getPhysicsComponent().isMoving())) {
-					currState = GraphicsState.WALKING;
+					setState(GraphicsState.WALKING);
 					resetStateAnimation();
 				}
 				break;
 			case WALKING:
 				if ((obj.getPhysicsComponent() == null) || (!obj.getPhysicsComponent().isMoving())) {
-					currState = GraphicsState.IDLE;
+					setState(GraphicsState.IDLE);
 					resetStateAnimation();
 				}
 				break;
+			default:
+				break;
 		}
-		if (animations.containsKey(currState)) {
-			// TODO Use a default animation in else?
-			animations.get(currState).updateAnimation(dt);
-		}
+		
+
 	}
 	
 	private void resetStateAnimation() {
-		if (animations.containsKey(currState)) {
-			animations.get(currState).reset();
+		if (animations.containsKey(getState())) {
+			animations.get(getState()).reset();
 		}
 	}
 

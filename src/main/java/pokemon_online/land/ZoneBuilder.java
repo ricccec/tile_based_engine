@@ -10,7 +10,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.interaction.InteractionComponent;
+import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.EventHandler;
 import pokemon_online.physics.CardinalDirection;
 import pokemon_online.physics.PlatformPhysicsComponent;
 
@@ -112,6 +116,15 @@ public class ZoneBuilder {
 	private GameObject buildJumpZone(JSONObject zoneJson) {
 		
 		GameObject result = new GameObject();
+		InteractionComponent intrComp = new InteractionComponent(result);
+		intrComp.addEventHandler(new EventHandler() {
+			@Override
+			public boolean handleEvent(GameWorld world, GameObject receiver, Event msg) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		
 		PlatformPhysicsComponent phyComp = new PlatformPhysicsComponent(result);
 		result.pushPhysicsComponent(phyComp);
 		

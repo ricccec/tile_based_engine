@@ -37,7 +37,9 @@ public class Event {
 		ACTION_B_PERFORMED,
 		HUD_DISPLAY_TEXT,
 		HUD_DISPOSED,
-		PUSH_COMPLETED
+		PUSH_COMPLETED,
+		
+		ZONE_COLLISION
 	}
 	
 	private final Type type;

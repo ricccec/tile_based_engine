@@ -40,9 +40,19 @@ public class Animation {
 	}
 	
 	public String getSprite(int frame) {
-		if (sprites.isEmpty())
+		if (sprites.isEmpty()) {
 			return null;
-		return sprites.get(frame % sprites.size());
+		}
+		
+		if (frame < sprites.size()) {
+			return sprites.get(frame);
+		} else if (loop) {
+			return sprites.get(frame % sprites.size());
+		} else if (hold) {
+			return sprites.get(sprites.size() - 1);
+		} else {
+			return null;
+		}
 	}
 
 }
