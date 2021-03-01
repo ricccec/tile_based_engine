@@ -17,6 +17,7 @@ public class HudEventHandler extends EventHandler {
 	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
 		switch(evt.getType()) {
 			case HUD_DISPOSED:
+//				System.out.println("Disposed " + receiver);
 				receiver.setState(State.ACTIVE);
 				return true;
 			default:

@@ -30,10 +30,14 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 			case ACTION_PERFORMED:
 				GameObject sender = (GameObject)evt.getArguments().get(0);
 				if (receiver.getState() == State.ACTIVE) {
+//					System.out.println("HUD request");
 					sendHudTextDisplayReqs(world, sender, receiver);
 					return true;
+				} else {
+					return false;
 				}
 			case HUD_DISPOSED: // Unlock the object who is talking
+//				System.out.println("Disposed " + receiver);
 				assert(receiver.getState() != State.ACTIVE);
 				receiver.setState(State.ACTIVE);
 				world.removeMessageListener(Type.HUD_DISPOSED, receiver);

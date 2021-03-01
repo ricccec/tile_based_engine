@@ -61,13 +61,13 @@ public class InteractionComponent extends Component {
 		}
 		
 		// Handle the case of a receiver with a Physical Component
-		PhysicsComponent phyComp = obj.getPhysicsComponent();
-		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) { // FIXME This breaks polymorphism.
-			if (((PokemonPhysicsComponent)phyComp).isCrossingCells()) {
-				// Ignore message and un-freeze the sender
-				return;
-			}
-		}
+//		PhysicsComponent phyComp = obj.getPhysicsComponent();
+//		if ((phyComp != null) && (phyComp instanceof PokemonPhysicsComponent)) { // FIXME This breaks polymorphism.
+//			if (((PokemonPhysicsComponent)phyComp).isCrossingCells()) {
+//				// Ignore message and un-freeze the sender
+//				return;
+//			}
+//		}
 		
 		Controller ctrlr = obj.getController();
 		

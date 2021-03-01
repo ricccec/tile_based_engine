@@ -22,7 +22,8 @@ public class ZoneBuilder {
 
 	enum ZoneType {
 		
-		PLATFORM("platform");
+		PLATFORM("platform"),
+		JUMP("jump");
 		
 		private static final Map<String, ZoneType> KEY_2_ZONE;
 		static {
@@ -49,7 +50,9 @@ public class ZoneBuilder {
 		ZONE_ROW("row"),
 		ZONE_COLUMN("col"),
 		
-		ZONE_PLATFORM_BLOCKED_DIR("blocked");
+		ZONE_PLATFORM_BLOCKED_DIR("blocked"),
+		
+		ZONE_JUMP_DIR("direction");
 		
 		public final String key;
 		
@@ -79,12 +82,34 @@ public class ZoneBuilder {
 		switch(type) {
 			case PLATFORM:
 				return buildPlatformZone(zoneJson);
+			
 			default:
 				return null;
 		}
 	}
+	
+	public Cell getInitialPosition(GameObject zoneObject) {
+		return initPositions.get(zoneObject);
+	}
 
 	private GameObject buildPlatformZone(JSONObject zoneJson) {
+		
+		GameObject result = new GameObject();
+		PlatformPhysicsComponent phyComp = new PlatformPhysicsComponent(result);
+		result.pushPhysicsComponent(phyComp);
+		
+		JSONArray blockedDirs = (JSONArray)zoneJson.get(ZoneJsonField.ZONE_PLATFORM_BLOCKED_DIR.key);
+		for (Object blockedDir : blockedDirs) {
+			phyComp.addBlockedDirection(CARDINAL_DIRS.get(blockedDir.toString()));
+		}
+		
+		Cell initPos = parseInitialPosizio(zoneJson);
+		initPositions.put(result, initPos);
+		
+		return result;
+	}
+	
+	private GameObject buildJumpZone(JSONObject zoneJson) {
 		
 		GameObject result = new GameObject();
 		PlatformPhysicsComponent phyComp = new PlatformPhysicsComponent(result);
@@ -107,8 +132,5 @@ public class ZoneBuilder {
 		return new Cell(row, col);
 	}
 
-	public Cell getInitialPosition(GameObject zoneObject) {
-		return initPositions.get(zoneObject);
-	}
 
 }
