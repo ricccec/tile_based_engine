@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
 import pokemon_online.physics.ZoneDebugObject;
@@ -33,7 +34,9 @@ public class GameObjectsContainer implements GameObjectListener {
 	
 	private final Map<GameObject, Cell> bBoxes;
 	
-	private final Map<Cell, Collection<GameObject>> cell2bBoxes;
+	private final Map<Cell, Collection<GameObject>> cell2Obstacle;
+	
+	private final Map<Cell, Collection<GameObject>> cell2Zones; // Zones have only an interaction component (no physics, no graphics)
 	
 	private final Map<GameObject, GameObject> zoneGraphics;
 	
@@ -46,7 +49,8 @@ public class GameObjectsContainer implements GameObjectListener {
 		cell2objs = new HashMap<>();
 		
 		bBoxes = new HashMap<>();
-		cell2bBoxes = new HashMap<>();
+		cell2Obstacle = new HashMap<>();
+		cell2Zones = new HashMap<>();
 		
 		zoneGraphics = new HashMap<>();
 	}
@@ -88,10 +92,18 @@ public class GameObjectsContainer implements GameObjectListener {
 		return objects;
 	}
 	
-	public Collection<GameObject> getProps(int row, int col) {
+	public Collection<GameObject> getZones(Cell cell) {
+		if (cell2Zones.containsKey(cell)) {
+			return cell2Zones.get(cell);
+		} else {
+			return new ArrayList<>();
+		}
+	}
+	
+	public Collection<GameObject> getObstacles(int row, int col) {
 		Cell cell = new Cell(row, col);
-		if (cell2bBoxes.containsKey(cell)) {
-			return cell2bBoxes.get(cell);
+		if (cell2Obstacle.containsKey(cell)) {
+			return cell2Obstacle.get(cell);
 		} else {
 			return new ArrayList<>();
 		}
@@ -111,7 +123,6 @@ public class GameObjectsContainer implements GameObjectListener {
 		}
 		
 		objects.add(obj);
-		obj.addListener(this);
 		
 		// Update data structures
 		int objRow = GameUtils.getRow(obj.getY());
@@ -121,17 +132,34 @@ public class GameObjectsContainer implements GameObjectListener {
 			cell2objs.put(objCell, new HashSet<>());
 		}
 		cell2objs.get(objCell).add(obj);
-		boundingBoxChanged(obj, objCell);
 		
-		// Add physics listener
-		PhysicsComponent pyComp = obj.getPhysicsComponent();
-		if (pyComp != null) {
+		
+		if (GameObjectUtils.isObstacle(obj)) {  // This is a Prop
+			// FIXME find a better name for Props
+			obj.addListener(this);
+			// Add to Props data structure
+			boundingBoxChanged(obj, objCell);
+		}
+		if (GameObjectUtils.isZone(obj)) { // This is a zone
+			if (!cell2Zones.containsKey(objCell)) {
+				cell2Zones.put(objCell, new HashSet<>());
+			}
+			cell2Zones.get(objCell).add(obj);
+		}
+		
+		// FIXME
+		if (ADD_ZONE_OBJECTS) {
+			GameObject bBoxGraphics = null;
+			if (GameObjectUtils.isZone(obj)) {
+				bBoxGraphics = new ZoneDebugObject(new Color(1f, 1f, 0f, .5f));
+			}
 			
-			// FIXME
-			if (ADD_ZONE_OBJECTS) {
-				GameObject bBoxGraphics = new ZoneDebugObject(Color.RED);
+			if (bBoxGraphics != null) {
+				bBoxGraphics.setX(obj.getX());
+				bBoxGraphics.setY(obj.getY());
+				addObject(bBoxGraphics);
 				zoneGraphics.put(obj, bBoxGraphics);
-				objects.add(bBoxGraphics);
+//				objects.add(bBoxGraphics);
 			}
 		}
 		
@@ -173,12 +201,16 @@ public class GameObjectsContainer implements GameObjectListener {
 				cell2objs.put(currCell, new HashSet<>());
 			}
 			cell2objs.get(currCell).add(obj);
+
 		}
 		
 	}
 
 	@Override
 	public void boundingBoxChanged(GameObject obj, Cell cell) {
+		
+		assert(GameObjectUtils.isObstacle(obj));
+		
 		Cell prevCell = bBoxes.get(obj);
 		if ((prevCell != null) && (prevCell.equals(cell))) {
 			// Nothing changed
@@ -187,16 +219,16 @@ public class GameObjectsContainer implements GameObjectListener {
 		
 		if (prevCell != null) {
 			// Remove obsolete data
-			assert(cell2bBoxes.containsKey(prevCell));
-			cell2bBoxes.get(prevCell).remove(obj);
+			assert(cell2Obstacle.containsKey(prevCell));
+			cell2Obstacle.get(prevCell).remove(obj);
 		}
 		
 		// Update data
 		bBoxes.put(obj, cell);
-		if (!cell2bBoxes.containsKey(cell)) {
-			cell2bBoxes.put(cell, new HashSet<>());
+		if (!cell2Obstacle.containsKey(cell)) {
+			cell2Obstacle.put(cell, new HashSet<>());
 		}
-		cell2bBoxes.get(cell).add(obj);
+		cell2Obstacle.get(cell).add(obj);
 		
 		if (zoneGraphics.containsKey(obj)) {
 			GameObject bBoxGraph = zoneGraphics.get(obj);

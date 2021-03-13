@@ -1,45 +1,33 @@
 /**
  * 
  */
-package pokemon_online.physics;
+package pokemon_online.land.zone.obstacle;
 
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
-import pokemon_online.game.GameObject;
-import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
-import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
+import pokemon_online.physics.CardinalDirection;
+import pokemon_online.physics.PhysicsComponent;
 
 /**
  * @author Cecchi
  *
  */
-public class PlatformPhysicsComponent extends PhysicsComponent {
+public class PlatformObstacle extends FixedObstacle {
 
 	private final Set<CardinalDirection> blockedDirs;
 	
-	public PlatformPhysicsComponent(GameObject obj) {
-		super(obj);
+	public PlatformObstacle(Cell position) {
+		super(position);
+		
 		blockedDirs = new HashSet<>();
 	}
-
+	
 	public void addBlockedDirection(CardinalDirection dir) {
 		blockedDirs.add(dir);
-	}
-	
-	@Override
-	public void update(GameWorld world, long dtMillisec) {
-	}
-
-	@Override
-	public Cell getBoundingBox() {
-		int x = getGameObject().getX();
-		int y = getGameObject().getY();
-		int col = GameUtils.getColumn(x);
-		int row = GameUtils.getRow(y);
-		return new Cell(row, col);
 	}
 
 	@Override
@@ -55,6 +43,11 @@ public class PlatformPhysicsComponent extends PhysicsComponent {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	protected Color getColor() {
+		return GameUtils.getColor(Color.ORANGE, .5f);
 	}
 
 }

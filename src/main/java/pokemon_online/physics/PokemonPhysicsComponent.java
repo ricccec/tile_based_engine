@@ -87,7 +87,7 @@ public class PokemonPhysicsComponent extends PhysicsComponent {
 		boolean collides = !world.isWalkable(cornerRow, cornerCol);
 		if (!collides) {
 			// Check object-with-object collision
-			for (GameObject otherObj : world.getProps(cornerRow, cornerCol)) {
+			for (GameObject otherObj : world.getObstacles(cornerRow, cornerCol)) {
 				assert(otherObj.getPhysicsComponent() != null);
 				if (otherObj.getPhysicsComponent().checkCollision(this)) {//if (!otherObj.equals(obj)) {
 					collides = true;

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
+import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
@@ -126,7 +127,12 @@ public class GameWorld {
 		for (GameObject obj : getAllObjects()) {
 			PhysicsComponent phyComp = obj.getPhysicsComponent();
 			if (phyComp != null) {
+				phyComp.beforeUpdate();
 				phyComp.update(this, dtMillisec);
+				phyComp.afterUpdate();
+				
+				// Check zones interaction
+				phyComp.checkZoneInteraction(this);
 			}
 		}
 		
@@ -240,6 +246,14 @@ public class GameWorld {
 			this.col = col;
 		}
 
+		public Cell withRow(int row) {
+			return new Cell(row, col);
+		}
+		
+		public Cell withColumn(int col) {
+			return new Cell(row, col);
+		}
+		
 		public int getRow() {
 			return row;
 		}
@@ -279,8 +293,13 @@ public class GameWorld {
 		}
 	}
 
-	public Collection<GameObject> getProps(int row, int col) {
-		return objContainer.getProps(row, col);
+	
+	public Collection<GameObject> getZones(Cell cell) {
+		return objContainer.getZones(cell);
+	}
+	
+	public Collection<GameObject> getObstacles(int row, int col) {
+		return objContainer.getObstacles(row, col);
 	}
 
 	public Collection<GameObject> getObjects(Cell cell) {

@@ -12,6 +12,6 @@ import pokemon_online.game.GameWorld;
  */
 public abstract class EventHandler {
 	
-	public abstract boolean handleEvent(GameWorld world, GameObject receiver, Event msg);
+	public abstract boolean handleEvent(GameWorld world, GameObject receiver, Event evt);
 	
 }

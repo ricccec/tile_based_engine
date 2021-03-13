@@ -26,6 +26,12 @@ public class Event {
 		return result;
 	}
 	
+	public static final Event newEventWithSender(GameObject sender, Type type) {
+		Event result = new Event(type);
+		result.addArgument(sender);
+		return result;
+	}
+	
 	public static final Event newHudDisplayText(String text) {
 		Event result = new Event(Type.HUD_DISPLAY_TEXT);
 		result.addArgument(text);
@@ -39,7 +45,8 @@ public class Event {
 		HUD_DISPOSED,
 		PUSH_COMPLETED,
 		
-		ZONE_COLLISION
+		ZONE_ENTERING,
+		ZONE_EXITING
 	}
 	
 	private final Type type;

@@ -3,6 +3,8 @@
  */
 package pokemon_online.land;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,13 +12,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
-import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.EventHandler;
+import pokemon_online.game.utils.GameUtils;
+import pokemon_online.land.zone.JumpZone;
+import pokemon_online.land.zone.TriggerZone;
+import pokemon_online.land.zone.obstacle.PlatformObstacle;
 import pokemon_online.physics.CardinalDirection;
-import pokemon_online.physics.PlatformPhysicsComponent;
 
 /**
  * @author Cecchi
@@ -80,63 +81,114 @@ public class ZoneBuilder {
 		initPositions = new HashMap<>();
 	}
 	
-	public GameObject buidZone(JSONObject zoneJson) {
+	public Collection<GameObject> buidZone(JSONObject zoneJson) {
+		Collection<GameObject>  results = new ArrayList<>();
 		ZoneType type = ZoneType.parseString(zoneJson.get(ZoneJsonField.ZONE_TYPE.key).toString());
-		if (type == null) return null; // FIXME Remove this
 		switch(type) {
 			case PLATFORM:
-				return buildPlatformZone(zoneJson);
-			
+				results.addAll(buildPlatformZone(zoneJson));
+				break;
+			case JUMP:
+				results.addAll(buildJumpZone(zoneJson));
+				break;
 			default:
-				return null;
+				break;
 		}
+		return results;
 	}
 	
 	public Cell getInitialPosition(GameObject zoneObject) {
 		return initPositions.get(zoneObject);
 	}
 
-	private GameObject buildPlatformZone(JSONObject zoneJson) {
+	private Collection<GameObject> buildPlatformZone(JSONObject zoneJson) {
 		
-		GameObject result = new GameObject();
-		PlatformPhysicsComponent phyComp = new PlatformPhysicsComponent(result);
-		result.pushPhysicsComponent(phyComp);
+		Collection<GameObject>  results = new ArrayList<>();
+		
+		Cell initPos = parseInitialPosizio(zoneJson);
+		
+		PlatformObstacle obj = new PlatformObstacle(initPos);
 		
 		JSONArray blockedDirs = (JSONArray)zoneJson.get(ZoneJsonField.ZONE_PLATFORM_BLOCKED_DIR.key);
 		for (Object blockedDir : blockedDirs) {
-			phyComp.addBlockedDirection(CARDINAL_DIRS.get(blockedDir.toString()));
+			obj.addBlockedDirection(CARDINAL_DIRS.get(blockedDir.toString()));
 		}
 		
-		Cell initPos = parseInitialPosizio(zoneJson);
-		initPositions.put(result, initPos);
 		
-		return result;
+		initPositions.put(obj, initPos);
+		results.add(obj);
+		
+		return results;
 	}
 	
-	private GameObject buildJumpZone(JSONObject zoneJson) {
+	private Collection<GameObject> buildJumpZone(JSONObject zoneJson) {
 		
-		GameObject result = new GameObject();
-		InteractionComponent intrComp = new InteractionComponent(result);
-		intrComp.addEventHandler(new EventHandler() {
-			@Override
-			public boolean handleEvent(GameWorld world, GameObject receiver, Event msg) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+		Collection<GameObject>  results = new ArrayList<>();
 		
-		PlatformPhysicsComponent phyComp = new PlatformPhysicsComponent(result);
-		result.pushPhysicsComponent(phyComp);
-		
-		JSONArray blockedDirs = (JSONArray)zoneJson.get(ZoneJsonField.ZONE_PLATFORM_BLOCKED_DIR.key);
-		for (Object blockedDir : blockedDirs) {
-			phyComp.addBlockedDirection(CARDINAL_DIRS.get(blockedDir.toString()));
+		// Get jump direction
+		String dirStr = zoneJson.get(ZoneJsonField.ZONE_JUMP_DIR.key).toString();
+		CardinalDirection dir = CARDINAL_DIRS.get(dirStr);
+		if (dir == CardinalDirection.DIR_UP) {
+			throw new IllegalArgumentException();
 		}
 		
+		// Create jump zone
+		JumpZone obj = new JumpZone(dir);
 		Cell initPos = parseInitialPosizio(zoneJson);
-		initPositions.put(result, initPos);
+		initPositions.put(obj, initPos);
+		results.add(obj);
 		
-		return result;
+		// Create obstacle to prevent "climbing"
+		PlatformObstacle block = null;
+		switch (dir) {
+			case DIR_DOWN:
+				block = new PlatformObstacle(initPos.withRow(initPos.getRow() - 1));
+				block.addBlockedDirection(CardinalDirection.DIR_UP);
+				break;
+			case DIR_LEFT:
+				block = new PlatformObstacle(initPos);
+				block.addBlockedDirection(CardinalDirection.DIR_UP);
+				block.addBlockedDirection(CardinalDirection.DIR_DOWN);
+				block.addBlockedDirection(CardinalDirection.DIR_RIGHT);
+				break;
+			case DIR_RIGHT:
+				block = new PlatformObstacle(initPos);
+				block.addBlockedDirection(CardinalDirection.DIR_UP);
+				block.addBlockedDirection(CardinalDirection.DIR_DOWN);
+				block.addBlockedDirection(CardinalDirection.DIR_LEFT);
+				break;
+			default:
+				break;
+		}
+		if (block != null) {
+			initPositions.put(block, GameUtils.getCell(block.getX(), block.getY()));
+			results.add(block);
+		}
+		
+		// Create triggered obstacles to prevent strange behaviors
+		if ((dir == CardinalDirection.DIR_LEFT) || (dir == CardinalDirection.DIR_RIGHT)) {
+			
+			Cell jumpingCell = initPos;
+			Cell landingCell = initPos.withColumn(initPos.getColumn() + ((dir == CardinalDirection.DIR_LEFT) ? -1 : 1));
+			
+			// Add triggered block zone for the landing cell
+			TriggerZone landingTrigger = new TriggerZone();
+			initPositions.put(landingTrigger, landingCell);
+			results.add(landingTrigger);
+			GameObject landingTarget = landingTrigger.buildTarget(jumpingCell);
+			initPositions.put(landingTarget, jumpingCell);
+			results.add(landingTarget);
+			
+			// Add triggered block zone for the jumping cell
+			TriggerZone jumpingTrigger = new TriggerZone();
+			initPositions.put(jumpingTrigger, jumpingCell);
+			results.add(jumpingTrigger);
+			GameObject jumpingTarget = jumpingTrigger.buildTarget(landingCell);
+			initPositions.put(jumpingTarget, landingCell);
+			results.add(jumpingTarget);
+		}
+		
+		return results;
 	}
 	
 	private Cell parseInitialPosizio(JSONObject zoneJson) {

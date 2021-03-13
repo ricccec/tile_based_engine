@@ -32,5 +32,40 @@ public class GameObjectUtils {
 		return CardinalDirection.degree2direction(movingDir);
 	}
 	
+	// TODO Make a table of theese
+	
+	public static boolean isEntity(GameObject obj) {
+		return ((obj.getGraphicsComponent() != null) &&
+				(obj.getInteractionComponent() != null) &&
+				(obj.getPhysicsComponent() != null) &&
+				(obj.getIAComponent() != null));
+	}
+	
+	public static boolean isAgent(GameObject obj) {
+		return (obj.getInteractionComponent() != null);
+	}
+	
+	public static boolean isZone(GameObject obj) {
+		return ((obj.getInteractionComponent() != null) &&
+				(obj.getPhysicsComponent() == null));
+	}
+	
+	public static boolean isObstacle(GameObject obj) {
+		return (obj.getPhysicsComponent() != null);
+	}
+	
+	public static boolean isProp(GameObject obj) {
+		return ((obj.getPhysicsComponent() != null) &&
+				(obj.getGraphicsComponent() != null) &&
+				(obj.getIAComponent() == null));
+	}
+	
+	public static boolean isDecoration(GameObject obj) {
+		return ((obj.getGraphicsComponent() != null) &&
+				(obj.getInteractionComponent() == null) &&
+				(obj.getPhysicsComponent() == null) &&
+				(obj.getIAComponent() == null));
+	}
+	
 	
 }

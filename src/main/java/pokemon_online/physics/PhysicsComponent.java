@@ -3,15 +3,20 @@
  */
 package pokemon_online.physics;
 
+import java.util.Stack;
+
 import org.apache.log4j.Logger;
 
 import pokemon_online.game.Component;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObjectListener;
-import pokemon_online.game.GameObjectsContainer;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
+import pokemon_online.utils.Tuple;
 
 /**
  * @author Cecchi
@@ -19,15 +24,21 @@ import pokemon_online.game.utils.GameUtils;
  */
 public abstract class PhysicsComponent extends Component {
 	
-
 	private static final Logger LOGGER = Logger.getLogger(PhysicsComponent.class);
 
 	protected int speedX; // In pxl/tick
 
 	protected int speedY; // In pxl/tick
 	
+	private final Stack<Tuple<Integer, Integer>> prevPosition;
+	
+	private final Stack<Cell> prevBBox;
+	
 	public PhysicsComponent(GameObject obj) {
 		super(obj);
+		
+		prevPosition = new Stack<>();
+		prevBBox = new Stack<>();
 	}
 	
 	protected void notifyBoundingBoxChanged(Cell cell) {
@@ -36,7 +47,45 @@ public abstract class PhysicsComponent extends Component {
 		}
 	}
 	
+	public void beforeUpdate() {
+		prevPosition.push(Tuple.newTuple(obj.getX(), obj.getY()));
+		prevBBox.push(getBoundingBox());
+	}
+	
 	public abstract void update(GameWorld world, long dtMillisec);
+	
+	public void afterUpdate() {
+		if (prevPosition.size() > 1) {
+			if ((obj.getX() == getPrevX()) && (obj.getY() == getPrevY())) {
+				// Position hasn't changed
+				prevPosition.pop();
+			}
+		}
+		
+		if (prevBBox.size() > 1) {
+			if (getBoundingBox() == getPrevBoundingBox()) {
+				prevBBox.pop();
+			}
+		}
+	}
+	
+	public void checkZoneInteraction(GameWorld world) {
+		Cell prevBBox = getPrevBoundingBox();
+		Cell currBBox = getBoundingBox();
+		if (!prevBBox.equals(currBBox)) {
+			// Notify cells just left
+			for (GameObject zone : world.getZones(prevBBox)) {
+				assert(GameObjectUtils.isZone(zone));
+				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_EXITING));
+			}
+			// Notify cells entering
+			for (GameObject zone : world.getZones(currBBox)) {
+				assert(GameObjectUtils.isZone(zone));
+				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_ENTERING));
+			}
+		}
+		
+	}
 	
 	public abstract Cell getBoundingBox(); // TODO Add support for objects that occupy more than one cell
 	
@@ -53,6 +102,18 @@ public abstract class PhysicsComponent extends Component {
 		} else {
 			return false;
 		}
+	}
+	
+	public int getPrevX() {
+		return prevPosition.peek().getKey();
+	}
+	
+	public int getPrevY() {
+		return prevPosition.peek().getValue();
+	}
+	
+	public Cell getPrevBoundingBox() {
+		return prevBBox.peek();
 	}
 	
 	/**

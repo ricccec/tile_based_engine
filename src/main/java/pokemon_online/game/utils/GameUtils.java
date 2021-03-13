@@ -3,6 +3,7 @@
  */
 package pokemon_online.game.utils;
 
+import java.awt.Color;
 import java.util.Random;
 
 import pokemon_online.Configuration;
@@ -55,6 +56,10 @@ public class GameUtils {
 		double angNorm = angRad/Math.PI;
 		double angDegr = ((angNorm < 0) ? 360 : 0) + 180*angNorm;
 		return angDegr;
+	}
+	
+	public static Color getColor(Color color, float alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int)(255*alpha));
 	}
 
 }

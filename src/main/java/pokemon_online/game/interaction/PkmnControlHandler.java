@@ -35,18 +35,21 @@ public class PkmnControlHandler extends ControlHandler {
 		if (objects.isEmpty()) {
 			return false;
 		}
-		GameObject target = objects.iterator().next();
-				
-		switch(cntrl) {
-		case ACTION_1:
-			target.notifyEvent(world, Event.newActionPerformed(controlled));
-			return true;
-		case ACTION_2:
-			target.notifyEvent(world, Event.newActionBPerformed(controlled));
-			return true;
-		default:
-			return false;
+		
+		for (GameObject target : objects) {
+			switch(cntrl) {
+				case ACTION_1:
+					target.notifyEvent(world, Event.newActionPerformed(controlled));
+					break;
+				case ACTION_2:
+					target.notifyEvent(world, Event.newActionBPerformed(controlled));
+					break;
+				default:
+					return false;
+			}
 		}
+		
+		return true;
 	}
 
 }

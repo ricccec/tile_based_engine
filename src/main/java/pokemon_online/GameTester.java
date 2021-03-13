@@ -37,9 +37,9 @@ public class GameTester extends JFrame {
 
 	private static final String START_LAND = "Pokecity";
 	
-	private static final int START_ROW = 10;
+	private static final int START_ROW = 9;
 	
-	private static final int START_COL = 9;
+	private static final int START_COL = 8;
 	
 	public static void main(String s[]) {  
 		

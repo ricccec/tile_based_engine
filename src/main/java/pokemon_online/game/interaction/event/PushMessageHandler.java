@@ -29,9 +29,6 @@ public class PushMessageHandler extends EventHandler {
 			GameObject sender = evt.getArgument(0);
 			startSliding(sender, receiver);
 			return true;
-		case PUSH_COMPLETED:
-			stopSliding(receiver);
-			return true;
 		default:
 			return false;
 		}
@@ -54,14 +51,6 @@ public class PushMessageHandler extends EventHandler {
 		pushPhyComp.move(moveCardDir);
 		
 //		System.out.println(moveDir + " " + moveCardDir);
-	}
-	
-	private void stopSliding(GameObject pushedObj) {
-		
-//		System.out.println(pushedObj.getState());
-		assert(pushedObj.getPhysicsComponent() instanceof GridBoundPhysicsComponent);
-		
-		pushedObj.popPhysicsComponent();
 	}
 
 }

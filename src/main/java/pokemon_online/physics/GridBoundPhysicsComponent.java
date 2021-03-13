@@ -29,16 +29,29 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 	 */
 	private CardinalDirection movingDirection;
 	
+	private int cellsCount;
+	
+	private boolean checkCollision;
+	
 	public GridBoundPhysicsComponent(GameObject obj) {
 		super(obj);
+		checkCollision = true;
+	}
+	
+	public void enableCollisionCheck(boolean b) {
+		checkCollision = b;
 	}
 	
 	public void move(CardinalDirection dir) {
+		move(dir, 1);
+	}
+	
+	public void move(CardinalDirection dir, int cells2Move) {
 		if (movingDirection == null) {
 			// TODO Queue commands?
 			movingDirection = dir;
-			setSpeedX(0);
-			setSpeedY(0);
+			this.cellsCount = cells2Move;
+			setObjectVelocity(movingDirection, Configuration.PLAYER_SPEED); // FIXME custom speed
 			obj.setState(State.FROZEN);
 		}
 	}
@@ -66,7 +79,6 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 
 	@Override
 	public void update(GameWorld world, long dtMillisec) {
-		
 		// FIXME dtMillisec is ignored
 		
 		// Complete any previous movement
@@ -74,13 +86,13 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		if (isCrossingCells()) {
 			// A movement from the previous tick is still ongoing
 			assert(movingDirection != null);
-			assert((getSpeedX() != 0) || (getSpeedY() != 0));
+			 assert((getSpeedX() != 0) || (getSpeedY() != 0));
 			assert(obj.getState() != State.ACTIVE); // This object can't interact while moving
 			
 			// Complete the movement
 			int prevPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
 			moveOneCell(world, residueDist);
-			resolveCollision(world);
+			if (checkCollision) resolveCollision(world);
 			int currPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
 			residueDist -= Math.abs(prevPos - currPos);
 		}
@@ -91,17 +103,15 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		
 		if (!isCrossingCells()) {
 			// Object is centered on a cell
-			if (getObjectSpeed() > 0) {
+			if (cellsCount == 0) {
 				// Movement completed, stop object
 				movingDirection = null;
-				setSpeedX(0);
-				setSpeedY(0);
 				obj.setState(State.ACTIVE);
+				obj.popPhysicsComponent();
+				System.out.println("POPPED");
 				obj.notifyEvent(world, new Event(Type.PUSH_COMPLETED));
-				return;
 			} else {
-				// Moving has just started
-				setObjectVelocity(movingDirection, Configuration.PLAYER_SPEED); // FIXME custom speed
+				cellsCount--;
 			}
 		}
 		
@@ -109,7 +119,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		while(residueDist > 0) {  // Each iteration move the Entity one cell and resolve the collisions
 			int prevPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
 			moveOneCell(world, residueDist);
-			resolveCollision(world);
+			if (checkCollision) resolveCollision(world);
 			int currPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
 			int dPxls = Math.abs(prevPos - currPos);
 			if (dPxls == 0) // Block
@@ -226,8 +236,10 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 		boolean collides = !world.isWalkable(cornerRow, cornerCol);
 		if (!collides) {
 			// Check object-with-object collision
-			for (GameObject otherObj : world.getProps(cornerRow, cornerCol)) {
-				if (!otherObj.equals(obj)) {
+			for (GameObject otherObj : world.getObstacles(cornerRow, cornerCol)) {
+				assert(otherObj.getPhysicsComponent() != null);
+				if (otherObj.getPhysicsComponent().checkCollision(this)) {//if (!otherObj.equals(obj)) {
+					
 					collides = true;
 					break;
 				}

@@ -1,5 +1,6 @@
 package pokemon_online.game.rendering;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
@@ -75,15 +76,18 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 			return;
 		}
 		
-		// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution)
-		PhysicsComponent phyComp = obj.getPhysicsComponent();
-		if ((phyComp != null) ) {
-			Cell bBox = phyComp.getBoundingBox();
-			
-			int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
-			int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
-			
-			grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
+		if (Configuration.DEBUG) {
+			// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution)
+			PhysicsComponent phyComp = obj.getPhysicsComponent();
+			if ((phyComp != null) ) {
+				Cell bBox = phyComp.getBoundingBox();
+				
+				int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
+				int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
+				
+				grap.setColor(Color.RED);
+				grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
+			}
 		}
 		
 		// Draw object sprite
@@ -104,18 +108,15 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 
 	public void updateAnimation(long dt) {
 		
-		// Update animation
-		if (animations.containsKey(getState())) {
-			// TODO Use a default animation in else?
-			animations.get(getState()).updateAnimation(dt);
-		}
-		
 		// Check animation completed
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
-		if (animations.get(getState()).getCurrentSprinte(objDir) == null) {
+		while ((!animations.containsKey(getState())) || (animations.get(getState()).getCurrentSprinte(objDir) == null))  {
 			popState();
 			resetStateAnimation();
 		}
+				
+		// Update animation
+		animations.get(getState()).updateAnimation(dt);
 		
 		// Change state?
 		switch (getState()) {

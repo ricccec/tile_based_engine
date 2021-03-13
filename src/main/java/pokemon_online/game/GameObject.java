@@ -39,8 +39,6 @@ public class GameObject {
 	
 	private final Deque<Event> pendingEvents;
 	
-	private final Stack<Event> pendingMsgs;
-	
 	private State state;
 	
 	private int x;
@@ -68,7 +66,6 @@ public class GameObject {
 		ctrl = new Controller();
 		
 		listeners = new ArrayList<>();
-		pendingMsgs = new Stack<>();
 		
 		pendingEvents = new ArrayDeque<>();
 		pendingEvents.add(EVT_QUEUE_END);
@@ -144,10 +141,12 @@ public class GameObject {
 	
 	public void pushPhysicsComponent(PhysicsComponent physComp) {
 		physComps.push(physComp);
+		LOGGER.debug(physComp + " pushed");
 	}
 	
 	public void popPhysicsComponent() {
-		physComps.pop();
+		PhysicsComponent phy = physComps.pop();
+		LOGGER.debug(phy + " popped");
 	}
 	
 	public void setX(int x) {
@@ -184,14 +183,14 @@ public class GameObject {
 	}
 	
 	/**
-	 * @param msg
+	 * @param evt
 	 */
-	public void notifyEvent(GameWorld world, Event msg) {
-		LOGGER.debug("Object " + this + " has received a message");
+	public void notifyEvent(GameWorld world, Event evt) {
+		LOGGER.debug("Object " + this + " has received an event " + evt.getType());
 		if (interComp != null) {
-			interComp.notifyEvent(world, msg); // Event preprocessing
+			interComp.notifyEvent(world, evt); // Event preprocessing
 		}
-		pendingMsgs.push(msg); // Put the message into the queue so it can be processed during the next frame
+		pendingEvents.addLast(evt); // Put the message into the queue so it can be processed during the next frame
 	}
 	
 	public Deque<Event> getPendingEventsQueue() {

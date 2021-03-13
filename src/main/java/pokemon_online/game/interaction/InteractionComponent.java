@@ -10,11 +10,12 @@ import pokemon_online.game.Controller;
 import pokemon_online.game.Controller.Control;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
+import pokemon_online.game.GameWorld;
+import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.interaction.event.EventHandler;
-import pokemon_online.physics.PhysicsComponent;
-import pokemon_online.physics.PokemonPhysicsComponent;
-import pokemon_online.game.GameWorld;
+import pokemon_online.game.utils.GameObjectUtils;
+import pokemon_online.game.utils.GameUtils;
 
 public class InteractionComponent extends Component {
 

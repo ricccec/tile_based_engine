@@ -21,9 +21,5 @@ public class Player extends GameObject {
 		interComp = PkmnControlHandler.getInteractionComponent(this);
 		interComp.addEventHandler(new HudEventHandler());
 	}
-
-	public PokemonPhysicsComponent getPhysicsComponent() {
-		return (PokemonPhysicsComponent)super.getPhysicsComponent();
-	}
 	
 }

@@ -117,9 +117,9 @@ public class LandBuilder {
 		// Read ZONES objects
 		JSONArray zonesJSON = (JSONArray)landJSON.get(JsonField.LAND_ZONES.key);
 		for (Object obj : zonesJSON) {
-			GameObject zone = zoneBuilder.buidZone((JSONObject)obj);
-			if (zone != null) // FIXME Remove this
+			for(GameObject zone : zoneBuilder.buidZone((JSONObject)obj)) {
 				land.addObject(zone, zoneBuilder.getInitialPosition(zone));
+			}
 		}
 		
 		// Read texts game objects

@@ -9,6 +9,7 @@ import static pokemon_online.game.Controller.Control.MOVE_RIGHT;
 import static pokemon_online.game.Controller.Control.MOVE_UP;
 
 import pokemon_online.game.Controller;
+import pokemon_online.game.Controller.Control;
 
 /**
  * In case you want a controller with at most one active directional control at
@@ -37,9 +38,45 @@ public class DirectionFilter {
 			return;
 		}
 		
+		// None active
 		if (ctrl.allDeactivated(MOVE_LEFT, MOVE_DWN, MOVE_RIGHT, MOVE_UP)) {
 			controllerDirection = null;
-		} else if (ctrl.isStatusChanged(MOVE_RIGHT)) {
+			return;
+		}
+		
+		// All but one active
+		switch(getHighestPriorityActiveCntrl(ctrl)) {
+		case DIR_DOWN:
+			if (ctrl.allDeactivated(Control.MOVE_LEFT, Control.MOVE_RIGHT, Control.MOVE_UP)) {
+				controllerDirection = CardinalDirection.DIR_DOWN;
+				return;
+			}
+			break;
+		case DIR_LEFT:
+			if (ctrl.allDeactivated(Control.MOVE_DWN, Control.MOVE_RIGHT, Control.MOVE_UP)) {
+				controllerDirection = CardinalDirection.DIR_LEFT;
+				return;
+			}
+			break;
+		case DIR_RIGHT:
+			if (ctrl.allDeactivated(Control.MOVE_DWN, Control.MOVE_LEFT, Control.MOVE_UP)) {
+				controllerDirection = CardinalDirection.DIR_RIGHT;
+				return;
+			}
+			break;
+		case DIR_UP:
+			if (ctrl.allDeactivated(Control.MOVE_DWN, Control.MOVE_RIGHT, Control.MOVE_LEFT)) {
+				controllerDirection = CardinalDirection.DIR_UP;
+				return;
+			}
+			break;
+		default:
+			break;
+		
+		}
+		
+		// Multiple activated, but one just changed
+		if (ctrl.isStatusChanged(MOVE_RIGHT)) {
 			if (ctrl.isActive(MOVE_RIGHT)) {
 				// RIGHT pressed
 				controllerDirection = CardinalDirection.DIR_RIGHT;
@@ -89,4 +126,5 @@ public class DirectionFilter {
 		}
 		return null;
 	}
+	
 }
