@@ -45,14 +45,14 @@ public class TriggerZone extends Zone {
 
 	@Override
 	protected void onEntering(GameWorld world, GameObject zone, GameObject entity) {
-		System.out.println("Entering");
+//		System.out.println("Entering");
 		isTriggered = true;
 	}
 
 	@Override
 	protected void onExiting(GameWorld world, GameObject receiver, GameObject sender) {
 		isTriggered = false;
-		System.out.println("Exiting");
+//		System.out.println("Exiting");
 	}
 
 	@Override

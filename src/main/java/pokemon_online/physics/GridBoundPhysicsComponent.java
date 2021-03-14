@@ -108,8 +108,8 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 				movingDirection = null;
 				obj.setState(State.ACTIVE);
 				obj.popPhysicsComponent();
-				System.out.println("POPPED");
 				obj.notifyEvent(world, new Event(Type.PUSH_COMPLETED));
+				return;
 			} else {
 				cellsCount--;
 			}
