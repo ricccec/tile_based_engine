@@ -94,14 +94,7 @@ public abstract class PhysicsComponent extends Component {
 	 * @return <code>true</code> in case of collision
 	 */
 	public boolean checkCollision(PhysicsComponent otherPhy) {
-		Cell cornerCell = getBoundingBox();
-		Cell otherCornerCell = otherPhy.getBoundingBox();
-		if (cornerCell.equals(otherCornerCell)) {
-			GameObject otherObj = otherPhy.getGameObject();
-			return !getGameObject().equals(otherObj);
-		} else {
-			return false;
-		}
+		return GameObjectUtils.testBBoxOverlap(getGameObject(), otherPhy.getGameObject());
 	}
 	
 	public int getPrevX() {

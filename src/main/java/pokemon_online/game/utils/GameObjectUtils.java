@@ -4,7 +4,9 @@
 package pokemon_online.game.utils;
 
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.physics.CardinalDirection;
+import pokemon_online.physics.PhysicsComponent;
 
 /**
  * @author Cecchi
@@ -67,5 +69,23 @@ public class GameObjectUtils {
 				(obj.getIAComponent() == null));
 	}
 	
+	
+	public static boolean testBBoxOverlap(GameObject obj, GameObject other) {
+		
+		PhysicsComponent objPhy = obj.getPhysicsComponent();
+		PhysicsComponent otherPhy = other.getPhysicsComponent();
+		if ((objPhy == null) || (otherPhy == null)) {
+			return false;
+		}
+			
+		Cell cornerCell = objPhy.getBoundingBox();
+		Cell otherCornerCell = otherPhy.getBoundingBox();
+		if (cornerCell.equals(otherCornerCell)) {
+			return !obj.equals(other);
+		} else {
+			return false;
+		}
+
+	}
 	
 }

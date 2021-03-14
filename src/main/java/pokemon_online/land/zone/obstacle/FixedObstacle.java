@@ -12,6 +12,7 @@ import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
+import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -61,14 +62,7 @@ public abstract class FixedObstacle extends GameObject {
 	}
 	
 	public boolean checkCollision(PhysicsComponent otherPhy) {
-		Cell cornerCell = getPhysicsComponent().getBoundingBox();
-		Cell otherCornerCell = otherPhy.getBoundingBox();
-		if (cornerCell.equals(otherCornerCell)) {
-			GameObject otherObj = otherPhy.getGameObject();
-			return !this.equals(otherObj);
-		} else {
-			return false;
-		}
+		return GameObjectUtils.testBBoxOverlap(this, otherPhy.getGameObject());
 	}
 	
 	protected abstract Color getColor();
