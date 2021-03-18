@@ -27,6 +27,8 @@ public class Game extends Thread {
 	
 	private final Stack<Event> msgQueue;
 	
+	private final Stack<GameState> stateStack;
+	
 	private final GameWorld world;
 	
 	private final Hud hud;
@@ -48,6 +50,7 @@ public class Game extends Thread {
 		stats = new GameStatistics();
 		
 		msgQueue = new Stack<>();
+		stateStack  = new Stack<>();
 		
 		keyboard = new Keyboard();
 		keyboard.attachController(player.getController());

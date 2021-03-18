@@ -22,13 +22,26 @@ import pokemon_online.game.interaction.event.Event.Type;
 public class Hud {
 	private static final Logger LOGGER = Logger.getLogger(Hud.class);
 	
-	private final Stack<HudText> elements;
+	private final Stack<HudState> elements;
 	
 	private final Game game;
 	
 	public Hud(Game game) {
 		this.game = game;
 		this.elements = new Stack<>();
+	}
+	
+	public void pushState(HudState state) {
+		state.setParent(elements.peek());
+		elements.push(state);
+	}
+	
+	public HudState peekState() {
+		return elements.peek();
+	}
+	
+	public HudState popState() {
+		return elements.pop();
 	}
 	
 	public void displayText(String text) {
