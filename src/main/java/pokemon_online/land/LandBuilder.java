@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.TextEventHandler;
+import pokemon_online.game.utils.GameUtils;
 
 /**
  * @author Cecchi
@@ -31,6 +32,7 @@ public class LandBuilder {
 		LAND_COLUMNS("columns"),
 		LAND_TEXTS("texts"), // FIXME Move into "zones"
 		LAND_ZONES("zones"),
+		LAND_OBJECTS("objects"),
 		
 		TILE_ID("id"),
 		TILE_NAME("name"),
@@ -85,10 +87,13 @@ public class LandBuilder {
 	
 	private final ZoneBuilder zoneBuilder;
 	
+	private final ObjectsBuilder objBuilder;
+	
 	public LandBuilder() {
 		tileIds = new HashMap<>();
 		
 		zoneBuilder = new ZoneBuilder();
+		objBuilder = new ObjectsBuilder();
 	}
 	
 	public Land buildLand(JSONObject landJSON) {
@@ -122,7 +127,15 @@ public class LandBuilder {
 			}
 		}
 		
+		// Read OBJECTS
+		JSONArray objsJSON = (JSONArray)landJSON.get(JsonField.LAND_OBJECTS.key);
+		for (Object objJSON : objsJSON) {
+			GameObject obj = objBuilder.buidObject((JSONObject)objJSON);
+			land.addObject(obj, GameUtils.getCell(obj.getX(), obj.getY()));
+		}
+		
 		// Read texts game objects
+		// FIXME Make these a Zone
 		JSONArray textsJSON = (JSONArray)landJSON.get(JsonField.LAND_TEXTS.key);
 		for (Object obj : textsJSON) {
 			// Get text object data
