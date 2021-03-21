@@ -58,7 +58,7 @@ public class Hud {
 		newStates.clear();
 		
 		if ((!disposed) && stack.isDisposed()) { // Hud just disposed
-			game.queueMessage(new Event(Type.HUD_DISPOSED));
+			game.queueMessage(new Event(Type.HUD_DISPOSED)); // FIXME Send messahe directly to the world?
 		}
 		
 	}

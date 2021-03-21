@@ -54,6 +54,10 @@ public class GameWorld {
 		
 		msgListeners = new HashMap<>();
 	}
+	
+	public Game getGame() {
+		return game;
+	}
 
 	public void jumpToLand(Land land) {
 		this.currLand = land;
@@ -64,10 +68,6 @@ public class GameWorld {
 			Cell objInitPos = land.getInitialPosition(obj);
 			spanObject(obj, objInitPos.getRow(), objInitPos.getColumn());
 		}
-	}
-
-	public void sendMessage(Event msg) { // FIXME Use "event" instead?
-		 game.queueMessage(msg);
 	}
 	
 	// FIXME sendMessage and sendMessageToObjects 

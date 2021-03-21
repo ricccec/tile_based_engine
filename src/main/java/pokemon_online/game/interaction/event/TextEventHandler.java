@@ -8,6 +8,7 @@ import pokemon_online.game.GameObject.State;
 import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.utils.GameObjectUtils;
+import pokemon_online.hud.HudText;
 import pokemon_online.physics.PhysicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 
@@ -70,7 +71,7 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
 		sender.setState(State.FROZEN);
 		receiver.setState(State.FROZEN); // Ignore any other events
-		world.sendMessage(Event.newHudDisplayText(text));
+		world.getGame().getHud().pushState(new HudText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
 		world.addMessageListener(Type.HUD_DISPOSED, receiver);

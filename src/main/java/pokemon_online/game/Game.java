@@ -165,11 +165,6 @@ public class Game extends Thread {
 					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
 					world.sendMessageToObjects(msg);
 					break;
-				case HUD_DISPLAY_TEXT: // FIXME Don't use the message system to interface the HUD
-					String msgText = msg.getArguments().iterator().next().toString();
-					System.out.println("MESSAGE: " + msgText);
-					hud.pushState(new HudText(msgText));
-					break;
 				default:
 				case ACTION_PERFORMED:
 					break;

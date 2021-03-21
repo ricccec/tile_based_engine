@@ -32,16 +32,9 @@ public class Event {
 		return result;
 	}
 	
-	public static final Event newHudDisplayText(String text) {
-		Event result = new Event(Type.HUD_DISPLAY_TEXT);
-		result.addArgument(text);
-		return result;
-	}
-	
 	public enum Type {
 		ACTION_PERFORMED,
 		ACTION_B_PERFORMED,
-		HUD_DISPLAY_TEXT,
 		HUD_DISPOSED,
 		PUSH_COMPLETED,
 		
