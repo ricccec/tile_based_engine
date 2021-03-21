@@ -13,6 +13,7 @@ public class Configuration {
 	
 	public static final String RESOURCES_DIR = "input";
 	
+	public static final float DEFAULT_TEXT_SPEED = 2; // In letters per second
 	
 	/**
 	 * Game world integration delta

@@ -15,15 +15,21 @@ public abstract class HudState {
 
 	private HudState parent;
 	
-	private boolean disposed;
+	private HudStateStack stateStack;
+	
+	protected boolean disposed;
 	
 	public void setParent(HudState parent) {
 		this.parent = parent;
 	}
 	
-	public abstract void renderHud(Graphics2D grap);
+	public void setStateStack(HudStateStack stack) {
+		stateStack = stack;
+	}
 	
-	public abstract void update(int width, int height, long dtMillisec, Controller controller);
+	public abstract void renderHud(int width, int height, Graphics2D grap);
+	
+	public abstract void update(long dtMillisec, Controller controller);
 	
 	public void dispose() {
 		disposed = true;
@@ -33,12 +39,12 @@ public abstract class HudState {
 		return disposed;
 	}
 	
-	public void onDispose(Hud hud) {
-		assert(hud.peekState() == this);
-		hud.popState();
-	}
-	
 	protected HudState getParent() {
 		return parent;
 	}
+	
+	protected HudStateStack getStateStack() {
+		return stateStack;
+	}
+	
 }

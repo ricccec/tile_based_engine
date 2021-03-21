@@ -10,6 +10,7 @@ import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;
+import pokemon_online.hud.HudText;
 import pokemon_online.land.Land;
 
 /**
@@ -115,8 +116,8 @@ public class Game extends Thread {
 			
 			player.getInteractionComponent().updateInteraction(world); // FIXME make all objects interact
 			
-			
-			hud.update(player.getController());
+			// Update HUD
+			hud.update(Configuration.MS_PER_UPDATE, player.getController());
 			
 			stats.afterUpdate();
 			
@@ -164,10 +165,10 @@ public class Game extends Thread {
 					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
 					world.sendMessageToObjects(msg);
 					break;
-				case HUD_DISPLAY_TEXT:
+				case HUD_DISPLAY_TEXT: // FIXME Don't use the message system to interface the HUD
 					String msgText = msg.getArguments().iterator().next().toString();
 					System.out.println("MESSAGE: " + msgText);
-					hud.displayText(msgText);
+					hud.pushState(new HudText(msgText));
 					break;
 				default:
 				case ACTION_PERFORMED:

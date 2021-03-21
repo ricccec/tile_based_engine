@@ -3,10 +3,9 @@
  */
 package pokemon_online.hud;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ListIterator;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -20,57 +19,47 @@ import pokemon_online.game.interaction.event.Event.Type;
  *
  */
 public class Hud {
+	
 	private static final Logger LOGGER = Logger.getLogger(Hud.class);
 	
-	private final Stack<HudState> elements;
+	private final HudStateStack stack;
+	
+	private final List<HudState> newStates;
 	
 	private final Game game;
 	
 	public Hud(Game game) {
 		this.game = game;
-		this.elements = new Stack<>();
+		
+		stack = new HudStateStack();
+		newStates = new ArrayList<>();
 	}
 	
 	public void pushState(HudState state) {
-		state.setParent(elements.peek());
-		elements.push(state);
+		newStates.add(state);
 	}
 	
-	public HudState peekState() {
-		return elements.peek();
-	}
-	
-	public HudState popState() {
-		return elements.pop();
-	}
-	
-	public void displayText(String text) {
-		elements.push(new HudText(text));
-	}
-	
-	public void renderHud(Graphics2D grap) {
-		ListIterator<HudText> itrts = elements.listIterator(elements.size());
-		while(itrts.hasPrevious()) {
-			HudText currElement = itrts.previous();
-//			LOGGER.debug("Rendering HUD element " + currElement);
-			grap.setColor(Color.BLUE);
-			grap.drawString(currElement.getText(), 32, 32); // FIXME Make the element draw itself
-		}
+	public void renderHud(int width, int height, Graphics2D grap) {
+		stack.renderHud(width, height, grap);
 	}
 
-	public void update(Controller controller) {
-		if (elements.isEmpty()) {
-			return;
-		}
+	public void update(long dtMillisec, Controller controller) {
+
+		boolean disposed = stack.isDisposed();
+		stack.update(dtMillisec, controller);
 		
-		HudText activeElement = elements.pop();
-		activeElement.handleInput(controller);
-		if (!activeElement.isDisposed()) {
-			elements.push(activeElement);
-		} else if (elements.isEmpty()) {
+		/* Needed 'cause one of the state might interact with a game object which in turn might push
+		 * a new state into the HUD. This way the state will be pushed but it won't be updated until
+		 * the next frame
+		 */
+		for (HudState newState : newStates) {
+			stack.pushState(newState);
+		}
+		newStates.clear();
+		
+		if ((!disposed) && stack.isDisposed()) { // Hud just disposed
 			game.queueMessage(new Event(Type.HUD_DISPOSED));
 		}
-		
 		
 	}
 }

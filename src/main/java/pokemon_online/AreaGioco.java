@@ -2,6 +2,7 @@ package pokemon_online;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 import javax.swing.JPanel;
@@ -46,7 +47,8 @@ public class AreaGioco extends JPanel implements Serializable {
 		game.drawGameStats(GraphicsUtils.translate(grap, 8,  16));
 		
 		// Draw HUD
-		game.getHud().renderHud(grap);
+		Rectangle bounds = getBounds();
+		game.getHud().renderHud(bounds.width, bounds.height, grap);
 	}
 
 }
