@@ -84,6 +84,7 @@ public class Land {
     		return Configuration.EMPTY_CELLS_WALKABLE;
     	return grid[row][col].walkable;
 	}
+	
     void addTile(Tile tile) {
     	tileset.add(tile);
     }

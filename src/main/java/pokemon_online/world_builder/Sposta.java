@@ -180,8 +180,9 @@ public class Sposta extends javax.swing.JDialog {
         for (int c = 0; c < landDopo.getColsCount(); c++){//Per ogni colonna
             if ((c < landPrima.getRowsCount() + this.xSpostamento)&&(c - this.xSpostamento >= 0)){
                 for (int r = 0; r < landDopo.getRowsCount(); r++){//Per ogni righa
-                    if ((r < landPrima.getRowsCount() + this.ySpostamento)&&(r - this.ySpostamento >= 0))
-                        landDopo.componenti[c][r] = landPrima.componenti[c - this.xSpostamento][r - this.ySpostamento];
+                	// TODO
+//                    if ((r < landPrima.getRowsCount() + this.ySpostamento)&&(r - this.ySpostamento >= 0))
+//                        landDopo.componenti[c][r] = landPrima.componenti[c - this.xSpostamento][r - this.ySpostamento];
                 }
             }
         }

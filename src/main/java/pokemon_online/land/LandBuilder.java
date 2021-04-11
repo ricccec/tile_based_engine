@@ -112,20 +112,24 @@ public class LandBuilder {
 		
 		// Read texts game objects
 		JSONArray textsJSON = (JSONArray)landJSON.get(JsonField.LAND_TEXTS.key);
-		for (Object obj : textsJSON) {
-			// Get text object data
-			JSONObject textJSON = (JSONObject)obj;
-			String textMsg = textJSON.get(JsonField.TEXT_MSG.key).toString();
-			int initRow = ((Long)textJSON.get(JsonField.TEXT_ROW.key)).intValue();
-			int initCol = ((Long)textJSON.get(JsonField.TEXT_COL.key)).intValue();
-			
-			GameObject text = new GameObject();
-			
-			InteractionComponent intrComp = new InteractionComponent(text);
-			intrComp.addEventHandler(new TextEventHandler(textMsg));
-			text.setInteractionComponent(intrComp);
-			
-			land.addObject(text, initRow, initCol);
+		if (textsJSON != null) {
+			for (Object obj : textsJSON) {
+				// Get text object data
+				JSONObject textJSON = (JSONObject)obj;
+				String textMsg = textJSON.get(JsonField.TEXT_MSG.key).toString();
+				int initRow = ((Long)textJSON.get(JsonField.TEXT_ROW.key)).intValue();
+				int initCol = ((Long)textJSON.get(JsonField.TEXT_COL.key)).intValue();
+				
+				GameObject text = new GameObject();
+				
+				InteractionComponent intrComp = new InteractionComponent(text);
+				intrComp.addEventHandler(new TextEventHandler(textMsg));
+				text.setInteractionComponent(intrComp);
+				
+				land.addObject(text, initRow, initCol);
+			}
+		} else {
+			LOGGER.warn("Land JSON misses required attribute " + JsonField.LAND_TEXTS.key);
 		}
 		
 		// Read grid

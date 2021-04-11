@@ -241,7 +241,7 @@ public class SetPorta extends javax.swing.JDialog {
     
     void inizializzaComponenti(){
         
-        this.setTitle(componente.nome + " - Set Land destinazione");
+        this.setTitle(componente.getTile().getName() + " - Set Land destinazione");
         
         elencoFile = new File("land/").list(); //Creo una lista dei file nella dir componenti
         
@@ -266,7 +266,8 @@ public class SetPorta extends javax.swing.JDialog {
         
         for (int i = 0; i < elencoFile.length ; i++){
             //Inizializzo la variabile immagine di ogni land
-            this.land[i].inizializzaImmaginiComponenti();
+        	// FIXME
+//            this.land[i].inizializzaImmaginiComponenti();
             this.jComboBoxLand.addItem(this.land[i].getName());
         }
         

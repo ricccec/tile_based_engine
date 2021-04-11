@@ -15,7 +15,7 @@ public class Tile {
 
 	private final String name;
 	
-	private final List<TileImage> imgs;
+	private final List<TileImage> imgs; // Tile frames
 	
 	public Tile(String name) {
 		this.name = name;

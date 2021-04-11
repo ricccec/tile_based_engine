@@ -9,13 +9,17 @@ package pokemon_online.world_builder;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 import javax.swing.JPanel;
 
+import pokemon_online.ResourcesManager;
 import pokemon_online.land.Land;
+import pokemon_online.land.Tile;
+import pokemon_online.land.TileImage;
 
 
 /**
@@ -64,7 +68,7 @@ public class AreaLavoro extends JPanel implements Serializable{
         if (this.land != null){ 
             //Disegno il rettangolo bianco
             grap.setColor(Color.WHITE);
-            grap.fillRect(0 - this.xScroll, 0 - this.yScroll, land.getLarghezza() * 32, land.getAltezza() * 32);
+            grap.fillRect(0 - this.xScroll, 0 - this.yScroll, land.getColsCount() * 32, land.getRowsCount() * 32);
             //Disegno la griglia
             grap.setColor(Color.GRAY);
             for (int c = 0; c < land.getColsCount(); c++){
@@ -75,15 +79,20 @@ public class AreaLavoro extends JPanel implements Serializable{
             //Disegno i componenti
             for (int c = 0; c < land.getColsCount(); c++){//Per ogni colonna
                 for (int r = 0; r < land.getRowsCount(); r++){//Per ogni righa
-                    if (land.componenti[c][r] != null){
-                        grap.drawImage(land.componenti[c][r].immagine, c * 32 - this.xScroll, r * 32 - this.yScroll, this);
+                	Tile tile = land.getCellTile(r, c);
+                    if (tile != null){
+                    	TileImage tileImg = tile.getImage(0); // FIXME No fixed frame
+                    	Image img = ResourcesManager.getMgr().getTileImage(tileImg);
+                        grap.drawImage(img, c * 32 - this.xScroll, r * 32 - this.yScroll, this);
                     }
                 }
             }
             
             //Disegno il componente in uso alle coordinate del mouse
             if (this.componenteInUso != null){
-                grap.drawImage(componenteInUso.immagine, xMouse - 16, yMouse - 16, this);
+            	TileImage tileImg = componenteInUso.getTile().getImage(0);
+            	Image img = ResourcesManager.getMgr().getTileImage(tileImg);
+                grap.drawImage(img, xMouse - 16, yMouse - 16, this);
             }
         }
     }
