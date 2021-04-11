@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,6 +23,8 @@ import pokemon_online.Configuration;
  */
 public class LandManager {
 	
+	private static final Logger LOGGER = Logger.getLogger(LandManager.class);
+			
 	private static LandManager mgr;
 	
 	public static LandManager getMgr() {
@@ -47,8 +50,7 @@ public class LandManager {
 		return lands.get(name);
 	}
 	
-	public void loadLand(String name) throws FileNotFoundException, IOException, ParseException {
-		File lndFile = new File(Configuration.RESOURCES_DIR, name + ".json");
+	public Land loadLand(File lndFile) throws FileNotFoundException, IOException, ParseException {
 
 		//JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -59,8 +61,20 @@ public class LandManager {
         }
         
         Land land = builder.buildLand(landJSON);
-        lands.put(name, land);
-
+        
+        String lndName = land.getName();
+        if (!lands.containsKey(lndName)) {
+        	lands.put(lndName, land);
+        } else {
+        	LOGGER.warn("Land " + lndName + " already loaded");
+        }
+        
+        return lands.get(lndName);
+	}
+	
+	public void loadLand(String name) throws FileNotFoundException, IOException, ParseException {
+		File lndFile = new File(Configuration.RESOURCES_DIR, name + ".json");
+		loadLand(lndFile);
 	}
 
 }

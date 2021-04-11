@@ -20,8 +20,11 @@ import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.json.simple.parser.ParseException;
+
 import pokemon_online.Configuration;
 import pokemon_online.land.Land;
+import pokemon_online.land.LandManager;
 
 /**
  *
@@ -562,7 +565,7 @@ public class LandBuilder extends javax.swing.JFrame {
         
         int risposta = apri.showOpenDialog(this);
         if(risposta==JFileChooser.APPROVE_OPTION) {
-            this.carica(apri.getSelectedFile().getPath());
+        	land = carica(apri.getSelectedFile());
             this.land.inizializzaImmaginiComponenti();
             this.inizializzaBuilder();
         }
@@ -1101,18 +1104,13 @@ public class LandBuilder extends javax.swing.JFrame {
         }
     }
     
-    void carica(String nomeFile){
-            try{
-                FileInputStream fileIn = new FileInputStream(nomeFile); //Creo un flusso di output verso l'oggetto nomecomponente.txr nella cartella componenti'
-                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-                this.saved = nomeFile;
-                this.land = (Land) objectIn.readObject(); //inizializzo componenteCaricato con l'oggetto caricato dal flusso'
-                objectIn.close(); //Chiudo il flusso
-            }catch(IOException e){
-                javax.swing.JOptionPane.showMessageDialog(null, "Errore nel caricare il componente: " + e.toString());
-            }catch(ClassNotFoundException e){
-                javax.swing.JOptionPane.showMessageDialog(null, "Errore nel caricare il componente: " + e.toString());
-            }
+    private Land carica(File file){
+    	try {
+			return LandManager.getMgr().loadLand(file);
+		} catch (IOException | ParseException e) {
+			JOptionPane.showMessageDialog(this, e.toString() , "Land loading error", JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
     }
     
     void inizializzaBuilder(){
