@@ -9,11 +9,11 @@ import java.io.File;
  * @author Cecchi
  *
  */
-public class TileImage {
+public class CroppedImage {
 	
 	private static final float DEFAULT_SCALE_FACTOR = 1f;
 	
-	private final File tileSet;
+	private final File image;
 	
 	private final int x;
 	
@@ -25,12 +25,12 @@ public class TileImage {
 	
 	private final float scaleFactor;
 	
-	public TileImage(File tileSet, int x, int y, int width, int height) {
-		this(tileSet, x, y, width, height, DEFAULT_SCALE_FACTOR);
+	public CroppedImage(File image, int x, int y, int width, int height) {
+		this(image, x, y, width, height, DEFAULT_SCALE_FACTOR);
 	}
 	
-	public TileImage(File tileSet, int x, int y, int width, int height, float scaleFactor) {
-		this.tileSet = tileSet;
+	public CroppedImage(File image, int x, int y, int width, int height, float scaleFactor) {
+		this.image = image;
 		this.height = height;
 		this.width = width;
 		this.x = x;
@@ -39,7 +39,7 @@ public class TileImage {
 	}
 
 	public File getTileSet() {
-		return tileSet;
+		return image;
 	}
 
 	public int getX() {
@@ -68,7 +68,7 @@ public class TileImage {
 		int result = 1;
 		result = prime * result + height;
 		result = prime * result + Float.floatToIntBits(scaleFactor);
-		result = prime * result + ((tileSet == null) ? 0 : tileSet.hashCode());
+		result = prime * result + ((image == null) ? 0 : image.hashCode());
 		result = prime * result + width;
 		result = prime * result + x;
 		result = prime * result + y;
@@ -83,15 +83,15 @@ public class TileImage {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TileImage other = (TileImage) obj;
+		CroppedImage other = (CroppedImage) obj;
 		if (height != other.height)
 			return false;
 		if (Float.floatToIntBits(scaleFactor) != Float.floatToIntBits(other.scaleFactor))
 			return false;
-		if (tileSet == null) {
-			if (other.tileSet != null)
+		if (image == null) {
+			if (other.image != null)
 				return false;
-		} else if (!tileSet.equals(other.tileSet))
+		} else if (!image.equals(other.image))
 			return false;
 		if (width != other.width)
 			return false;
@@ -104,7 +104,7 @@ public class TileImage {
 
 	@Override
 	public String toString() {
-		return tileSet + "{" + x + ", " + y + ", " + width + "x" + height + "}x" + scaleFactor;
+		return image + "{" + x + ", " + y + ", " + width + "x" + height + "}x" + scaleFactor;
 	}
 	
 }

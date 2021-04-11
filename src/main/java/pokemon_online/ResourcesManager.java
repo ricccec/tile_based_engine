@@ -27,7 +27,7 @@ import org.json.simple.parser.ParseException;
 
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.utils.GraphicsUtils;
-import pokemon_online.land.TileImage;
+import pokemon_online.land.CroppedImage;
 
 /**
  * @author Cecchi
@@ -48,7 +48,7 @@ public class ResourcesManager {
 	
 	private final Map<String, Map<Float, Image>> images;
 	
-	private final Map<TileImage, Image> tileImgs;
+	private final Map<CroppedImage, Image> croppedImgs;
 	
 	private final Map<String, SpriteData> graphics;
 	
@@ -57,7 +57,7 @@ public class ResourcesManager {
 	private ResourcesManager() {
 		images = new HashMap<>();
 		graphics = new HashMap<>();
-		tileImgs = new HashMap<>();
+		croppedImgs = new HashMap<>();
 		
 		// Get all directories in resource folder
 		directories = new ArrayList<>();
@@ -80,23 +80,23 @@ public class ResourcesManager {
 		return graphics.get(graphDataName);
 	}
 	
-	public Image getTileImage(TileImage tileImg) {
-		if (!tileImgs.containsKey(tileImg)) { // Image is not loaded
+	public Image getCroppedImage(CroppedImage cropImg) {
+		if (!croppedImgs.containsKey(cropImg)) { // Image is not loaded
 			// Load tileSet at the given scale factor
-			float scaleFactor = tileImg.getScaleFactor();
-			Image tileSet = getImage(tileImg.getTileSet().toString(), scaleFactor);
+			float scaleFactor = cropImg.getScaleFactor();
+			Image tileSet = getImage(cropImg.getTileSet().toString(), scaleFactor);
 			
 			// Crop the tileSet
-			int xScaled = Math.round(tileImg.getX()*scaleFactor); // TODO rounding?
-			int yScaled = Math.round(tileImg.getY()*scaleFactor);
-			int wScaled = Math.round(tileImg.getWidth()*scaleFactor);
-			int hScaled = Math.round(tileImg.getHeight()*scaleFactor);
+			int xScaled = Math.round(cropImg.getX()*scaleFactor); // TODO rounding?
+			int yScaled = Math.round(cropImg.getY()*scaleFactor);
+			int wScaled = Math.round(cropImg.getWidth()*scaleFactor);
+			int hScaled = Math.round(cropImg.getHeight()*scaleFactor);
 			Image croppedImg = GraphicsUtils.cropImage(tileSet, xScaled, yScaled, wScaled, hScaled);
-			tileImgs.put(tileImg, croppedImg);
+			croppedImgs.put(cropImg, croppedImg);
 			
-			LOGGER.debug("Tile image " + tileImg + " loaded");
+			LOGGER.debug("Tile image " + cropImg + " loaded");
 		}
-		return tileImgs.get(tileImg);
+		return croppedImgs.get(cropImg);
 	}
 	
 	public Image getImage(String imgName) {
@@ -148,8 +148,7 @@ public class ResourcesManager {
 		String fileName = graphDataName + ".json";
 		File file = findFile(fileName);
 		if (file == null) {
-			System.out.println("Error"); // FIXME use a logger
-			return null;
+			throw new FileNotFoundException("Resource " + fileName + " not found");
 		}
 		
 		JSONParser jsonParser = new JSONParser();

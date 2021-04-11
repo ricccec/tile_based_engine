@@ -206,7 +206,7 @@ public class LandBuilder {
 			return;
 		}
 		if (imageData instanceof JSONObject) {
-			TileImage tileImage = parseTileSet((JSONObject)imageData);
+			CroppedImage tileImage = parseTileSet((JSONObject)imageData);
 			tile.addImage(tileImage);
 			return;
 		}
@@ -222,7 +222,7 @@ public class LandBuilder {
 				if (frameImgData instanceof String) {
 					tile.addImage(new File(frameImgData.toString()));
 				} else if (frameImgData instanceof JSONObject) {
-					TileImage frameTileSet = parseTileSet((JSONObject)frameImgData);
+					CroppedImage frameTileSet = parseTileSet((JSONObject)frameImgData);
 					tile.addImage(frameTileSet);
 				} else {
 					throw new IllegalStateException("Frame " + frameCount + " of tile " + tile + " contains invalid data");
@@ -232,7 +232,7 @@ public class LandBuilder {
 		
 	}
 
-	private TileImage parseTileSet(JSONObject imageData) {
+	private CroppedImage parseTileSet(JSONObject imageData) {
 		String tileSet = imageData.get(JsonField.TILE_IMG_TILESET.key).toString();
 		int x = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_X.key)).intValue();
 		int y = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_Y.key)).intValue();
@@ -240,7 +240,7 @@ public class LandBuilder {
 		int height = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_HEIGHT.key)).intValue();
 		float scale = ((Double)imageData.get(JsonField.TILE_IMG_TILESET_SCALE.key)).floatValue();
 		
-		return new TileImage(new File(tileSet), x, y, width, height, scale);
+		return new CroppedImage(new File(tileSet), x, y, width, height, scale);
 	}
 
 	private Door buildDoor(JSONObject doorJSON) {

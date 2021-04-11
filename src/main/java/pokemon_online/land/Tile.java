@@ -15,7 +15,7 @@ public class Tile {
 
 	private final String name;
 	
-	private final List<TileImage> imgs;
+	private final List<CroppedImage> imgs;
 	
 	public Tile(String name) {
 		this.name = name;
@@ -27,7 +27,7 @@ public class Tile {
 		return name;
 	}
 	
-	public TileImage getImage(int frameCount) {
+	public CroppedImage getImage(int frameCount) {
 //		if (imgs.size() > 1) {
 //			System.out.println(frameCount);
 //		}
@@ -35,11 +35,11 @@ public class Tile {
 	}
 
 	public void addImage(File imageFile) {
-		TileImage image = new TileImage(imageFile, 0, 0, 32, 32); // FIXME Use image dimensions instead of hard-coded values
+		CroppedImage image = new CroppedImage(imageFile, 0, 0, 32, 32); // FIXME Use image dimensions instead of hard-coded values
 		addImage(image);
 	}
 
-	public void addImage(TileImage tileImage) {
+	public void addImage(CroppedImage tileImage) {
 		imgs.add(tileImage);
 	}
 	

@@ -211,7 +211,7 @@ public class GameWorld {
 
 				Tile tile = currLand.getCellTile(r, c);
 				if (tile != null) {
-					Image tileImg = ResourcesManager.getMgr().getTileImage(tile.getImage(currTileFrame));
+					Image tileImg = ResourcesManager.getMgr().getCroppedImage(tile.getImage(currTileFrame));
 					grap.drawImage(tileImg, screenX, screeny, null);
 				}
 			}

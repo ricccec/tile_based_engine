@@ -3,8 +3,11 @@
  */
 package pokemon_online.game.rendering;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import pokemon_online.land.CroppedImage;
 
 /**
  * @author Cecchi
@@ -14,7 +17,7 @@ public class Animation {
 	
 	private static final int DEFAULT_FPS = 8;
 	
-	private final List<String> sprites; // FIXME Use spritesheets
+	private final List<CroppedImage> sprites; // FIXME Use spritesheets
 	
 	private final int fps;
 	
@@ -35,7 +38,7 @@ public class Animation {
 	}
 	
 	public Animation addSprite(String sprite) {
-		sprites.add(sprite);
+		sprites.add(new CroppedImage(new File(sprite), 0, 0, 32, 32)); // FIXME
 		return this;
 	}
 	
