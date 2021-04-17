@@ -6,22 +6,25 @@ package pokemon_online.world_builder;
  */
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.jdesktop.layout.GroupLayout;
 import org.json.simple.parser.ParseException;
 
 import pokemon_online.Configuration;
+import pokemon_online.ResourcesManager;
+import pokemon_online.game.GameWorld.Cell;
+import pokemon_online.game.utils.GameUtils;
 import pokemon_online.land.Land;
 import pokemon_online.land.LandManager;
-import pokemon_online.land.Tile;
 
 /**
  *
@@ -33,13 +36,7 @@ public class LandBuilder extends javax.swing.JFrame {
 	// FIXME Move to its own project
 	// FIXME Rename
 
-	/** Creates new form LandBuilder2 */
-	public LandBuilder() {
-		initComponents();
-		// TODO this.inizializzaElencoComponenti();
-		this.centraFrame(this);
-		this.setVisible(true);
-	}
+
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -71,6 +68,7 @@ public class LandBuilder extends javax.swing.JFrame {
 		jMenuFile = new javax.swing.JMenu();
 		jMenuItemNuovo = new javax.swing.JMenuItem();
 		jMenuItemApri = new javax.swing.JMenuItem();
+		jMenuItemApriTilesheet = new javax.swing.JMenuItem();
 		jSeparator2 = new javax.swing.JSeparator();
 		jMenuItemSalva = new javax.swing.JMenuItem();
 		jMenuItemSalvaNome = new javax.swing.JMenuItem();
@@ -115,19 +113,15 @@ public class LandBuilder extends javax.swing.JFrame {
 
 		jPanelStrumenti.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		pannelloStrumentiTerreni.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-		pannelloStrumentiTerreni.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				pannelloStrumentiTerreniMouseClicked(evt);
-			}
-		});
+		
 
 		org.jdesktop.layout.GroupLayout pannelloStrumentiTerreniLayout = new org.jdesktop.layout.GroupLayout(
 				pannelloStrumentiTerreni);
 		pannelloStrumentiTerreni.setLayout(pannelloStrumentiTerreniLayout);
 		pannelloStrumentiTerreniLayout.setHorizontalGroup(pannelloStrumentiTerreniLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(128, 128, Short.MAX_VALUE)); // Width
 		pannelloStrumentiTerreniLayout.setVerticalGroup(pannelloStrumentiTerreniLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 64, Short.MAX_VALUE));
+				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(64, 64, Short.MAX_VALUE)); // Height
 
 		jScrollBarTerreni.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -333,9 +327,11 @@ public class LandBuilder extends javax.swing.JFrame {
 										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
 										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
 						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		
 		jPanelStrumentiLayout.setVerticalGroup(jPanelStrumentiLayout
 				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
 				.add(jPanelStrumentiLayout.createSequentialGroup().addContainerGap()
+						// Terreni
 						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
 								.add(org.jdesktop.layout.GroupLayout.LEADING, jScrollBarTerreni,
 										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
@@ -350,12 +346,14 @@ public class LandBuilder extends javax.swing.JFrame {
 								.add(pannelloStrumentiBlocchi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
 										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						// Porte
 						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
 								.add(jScrollBarPorte, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiPorte,
 										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
 										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
 										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						// Cartelli
 						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
 								.add(jScrollBarCartelli, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiCartelli,
 										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
@@ -420,8 +418,15 @@ public class LandBuilder extends javax.swing.JFrame {
 				jMenuItemApriActionPerformed(evt);
 			}
 		});
-
 		jMenuFile.add(jMenuItemApri);
+		
+		jMenuItemApriTilesheet.setText("Apri tilesheet..");
+		jMenuItemApriTilesheet.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jMenuItemApriTilesheetActionPerformed(evt);
+			}
+		});
+		jMenuFile.add(jMenuItemApriTilesheet);
 
 		jMenuFile.add(jSeparator2);
 
@@ -569,10 +574,11 @@ public class LandBuilder extends javax.swing.JFrame {
 	}// GEN-LAST:event_pannelloStrumentiCPMouseClicked
 
 	private void jMenuItemSpostaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSpostaActionPerformed
-		Sposta sposta = new Sposta(new javax.swing.JFrame(), true, this.land, this);
-		this.land = sposta.landPrima;
-		this.areaLavoroPannello.setLand(this.land);
-		repaint();
+		// TODO
+//		Sposta sposta = new Sposta(new javax.swing.JFrame(), true, this.land, this);
+//		this.land = sposta.landPrima;
+//		this.areaLavoroPannello.setLand(this.land);
+//		repaint();
 	}// GEN-LAST:event_jMenuItemSpostaActionPerformed
 
 	private void jMenuItemSalvaNomeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSalvaNomeActionPerformed
@@ -597,12 +603,33 @@ public class LandBuilder extends javax.swing.JFrame {
 
 		int risposta = apri.showOpenDialog(this);
 		if (risposta == JFileChooser.APPROVE_OPTION) {
-			land = carica(apri.getSelectedFile());
+			Land land = carica(apri.getSelectedFile());
+			builder.setLand(new RawLand(land));
 			this.inizializzaBuilder();
 		}
 		repaint();
 	}// GEN-LAST:event_jMenuItemApriActionPerformed
 
+	private void jMenuItemApriTilesheetActionPerformed(java.awt.event.ActionEvent evt) {
+		JFileChooser apri = new JFileChooser(Configuration.RESOURCES_DIR);
+		apri.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		apri.setMultiSelectionEnabled(false);
+		apri.addChoosableFileFilter(new FileNameExtensionFilter("Image file", "jpeg", "jpg", "gif", "tiff", "tif", "png"));
+		apri.setAcceptAllFileFilterUsed(false);
+		
+		int risposta = apri.showOpenDialog(this);
+		if (risposta == JFileChooser.APPROVE_OPTION) {
+			File selected = apri.getSelectedFile();
+			File selectedDir = new File(selected.getParent());
+			ResourcesManager.getMgr().addResourceDir(selectedDir);
+			Image tileshImg = ResourcesManager.getMgr().getImage(selected.getName());
+			pannelloStrumentiTerreni.setTilesheet(tileshImg);
+			//pannelloStrumentiTerreni.setSize(tileshImg.getWidth(null), pannelloStrumentiTerreni.getHeight());
+			
+			
+		}
+	}
+	
 	private void jMenuItemSalvaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemSalvaActionPerformed
 		if (this.saved == null) {
 			JFileChooser salva = new JFileChooser("land/");
@@ -683,14 +710,14 @@ public class LandBuilder extends javax.swing.JFrame {
 	}// GEN-LAST:event_jScrollBarBlocchiAdjustmentValueChanged
 
 	private void pannelloStrumentiBlocchiMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_pannelloStrumentiBlocchiMouseClicked
-		if (blocchi[0] != null) {
-			this.pannelloStrumentiBlocchi.setXMouse(this.setClick(evt.getX()));
-			this.pannelloStrumentiBlocchi
-					.setYMouse(this.setClick(evt.getY() + this.pannelloStrumentiBlocchi.getYScroll()));
-
-			this.areaLavoroPannello.setComponenteInUso(this.pannelloStrumentiBlocchi.getComponenteSelezionato());
-		}
-		repaint();
+//		if (blocchi[0] != null) {
+//			this.pannelloStrumentiBlocchi.setXMouse(this.setClick(evt.getX()));
+//			this.pannelloStrumentiBlocchi
+//					.setYMouse(this.setClick(evt.getY() + this.pannelloStrumentiBlocchi.getYScroll()));
+//
+//			this.areaLavoroPannello.setComponenteInUso(this.pannelloStrumentiBlocchi.getComponenteSelezionato());
+//		}
+//		repaint();
 	}// GEN-LAST:event_pannelloStrumentiBlocchiMouseClicked
 
 	private void jScrollBarTerreniAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {// GEN-FIRST:event_jScrollBarTerreniAdjustmentValueChanged
@@ -698,47 +725,61 @@ public class LandBuilder extends javax.swing.JFrame {
 		repaint();
 	}// GEN-LAST:event_jScrollBarTerreniAdjustmentValueChanged
 
-	private void pannelloStrumentiTerreniMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_pannelloStrumentiTerreniMouseClicked
-		if (terreni[0] != null) {
-			this.pannelloStrumentiTerreni.setXMouse(this.setClick(evt.getX()));
-			this.pannelloStrumentiTerreni
-					.setYMouse(this.setClick(evt.getY() + this.pannelloStrumentiTerreni.getYScroll()));
-
-			this.areaLavoroPannello.setComponenteInUso(this.pannelloStrumentiTerreni.getComponenteSelezionato());
+	private void pannelloStrumentiTerreniMouseMoved(java.awt.event.MouseEvent evt) {
+		if (state == State.TILE_SELECTION) {
+			
 		}
-		repaint();
+	}
+	
+	private void pannelloStrumentiTerreniMouseEvent(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_pannelloStrumentiTerreniMouseClicked
+		
+		
+		
+//		if (terreni[0] != null) {
+//			this.pannelloStrumentiTerreni.setXMouse(this.setClick(evt.getX()));
+//			this.pannelloStrumentiTerreni
+//					.setYMouse(this.setClick(evt.getY() + this.pannelloStrumentiTerreni.getYScroll()));
+//
+//			this.areaLavoroPannello.setComponenteInUso(this.pannelloStrumentiTerreni.getComponenteSelezionato());
+//		}
+//		repaint();
 	}// GEN-LAST:event_pannelloStrumentiTerreniMouseClicked
 
 	private void jMenuItemAttribActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAttribActionPerformed
-		Attributi attributi = new Attributi(new javax.swing.JFrame(), true, this.land, this);
-		this.land = attributi.getLand();
-		this.areaLavoroPannello.setLand(land);
-		this.setTitle(land.getName());
-
-		this.settaBarreScorrimento();
-
-		repaint();
+		// TODO
+//		Attributi attributi = new Attributi(new javax.swing.JFrame(), true, this.land, this);
+//		this.land = attributi.getLand();
+//		this.areaLavoroPannello.setLand(land);
+//		this.setTitle(land.getName());
+//
+//		this.settaBarreScorrimento();
+//
+//		repaint();
 	}// GEN-LAST:event_jMenuItemAttribActionPerformed
 
 	private void jMenuItemCreaBordoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemCreaBordoActionPerformed
-		CreaBordo creaBordo = new CreaBordo(new javax.swing.JFrame(), true, this.land, this.blocchi, this);
-		this.land = creaBordo.getLand();
-		this.areaLavoroPannello.setLand(land);
-
-		this.settaBarreScorrimento();
-		repaint();
+		// TODO
+//		CreaBordo creaBordo = new CreaBordo(new javax.swing.JFrame(), true, this.land, this.blocchi, this);
+//		this.land = creaBordo.getLand();
+//		this.areaLavoroPannello.setLand(land);
+//
+//		this.settaBarreScorrimento();
+//		repaint();
 	}// GEN-LAST:event_jMenuItemCreaBordoActionPerformed
 
 	private void areaLavoroPannelloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_areaLavoroPannelloMouseClicked
-        this.colonnaClick = this.setClick(evt.getX() + this.areaLavoroPannello.getXScroll());
-        this.rigaClick = this.setClick(evt.getY() + this.areaLavoroPannello.getYScroll());
         //this.jLabel1.setText(String.valueOf(colonnaClick) + ", " + String.valueOf(rigaClick));
         
-        if (this.land != null){
-            if ((this.colonnaClick < this.land.getColsCount())&&(this.rigaClick < this.land.getRowsCount())){ //Se è stato fatto click in un punto interno alla land
+        int xClick = evt.getX() + this.areaLavoroPannello.getXScroll();
+        int yClick = evt.getY() + this.areaLavoroPannello.getYScroll();
+        Cell cellClick = GameUtils.getCell(xClick, yClick);
+        
+        if (builder.getLand() != null){
+            if (builder.getLand().containsCell(cellClick)){ //Se è stato fatto click in un punto interno alla land
                 if (evt.getButton() == 1){ //Se è stato fatto click col tasto sx
                     if (this.areaLavoroPannello.getComponenteInUso()!= null){
                     	// Insert current tile in clicked cell
+                    	builder.setTile(cellClick, areaLavoroPannello.getComponenteInUso());
 //                    	land.addTile(areaLavoroPannello.getComponenteInUso().getTile());
                        
                     	// TODO
@@ -755,19 +796,19 @@ public class LandBuilder extends javax.swing.JFrame {
 //                        }
                     } else {
                     	// Pop tile in clicked cell
-                    	Tile tile = land.getCellTile(colonnaClick, rigaClick);
-                        this.areaLavoroPannello.setComponenteInUso(new Componente(tile));
+                    	Componente tile = builder.removeTile(cellClick);
+                        this.areaLavoroPannello.setComponenteInUso(tile);
                         // TODO this.land.componenti[colonnaClick][rigaClick] = null;
                     }
-                    this.areaLavoroPannello.setLand(this.land);
+//                    this.areaLavoroPannello.setLand(this.land);
                 }
                 else if (evt.getButton() == 3) { //Se è stato fatto click col tasto dx
                 	// Pop tile in clicked cell
-                	Tile tile = land.getCellTile(colonnaClick, rigaClick);
+                	Componente tile = builder.getTile(cellClick);
                     if (tile != null){
                         this.areaLavoroPannello.setComponenteInUso(null);
-                        new AttributiComponente(new javax.swing.JFrame(), true, new Componente(tile), this);
-                        this.areaLavoroPannello.setLand(this.land);
+                        new AttributiComponente(new javax.swing.JFrame(), true, tile, this);
+//                        this.areaLavoroPannello.setLand(this.land);
                     }
                 }
             } else//Se è stato fatto click in un punto esterno alla land
@@ -795,7 +836,7 @@ public class LandBuilder extends javax.swing.JFrame {
 	}// GEN-LAST:event_jScrollBarOrizAdjustmentValueChanged
 
 	private void formComponentResized(java.awt.event.ComponentEvent evt) {// GEN-FIRST:event_formComponentResized
-		if (this.land != null) {
+		if (builder.getLand() != null) {
 			this.settaBarreScorrimento();
 		}
 		repaint();
@@ -807,7 +848,7 @@ public class LandBuilder extends javax.swing.JFrame {
 	}// GEN-LAST:event_jScrollBarVertAdjustmentValueChanged
 
 	private void jMenuItemAnteprimaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemAnteprimaActionPerformed
-		AnteprimaLand ant = new AnteprimaLand(new javax.swing.JFrame(), true, this.land, this);
+//		AnteprimaLand ant = new AnteprimaLand(new javax.swing.JFrame(), true, this.land, this);
 	}// GEN-LAST:event_jMenuItemAnteprimaActionPerformed
 
 	private void formKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_formKeyPressed
@@ -821,16 +862,17 @@ public class LandBuilder extends javax.swing.JFrame {
 	}// GEN-LAST:event_formKeyPressed
 
 	private void jMenuItemNuovoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItemNuovoActionPerformed
-		Nuovo nuovo = new Nuovo(new javax.swing.JFrame(), true, this.land, this);
-
-		this.land = nuovo.getLand();
-
-		if (nuovo.getRisposta() == true) {
-			this.inizializzaBuilder();
-
-			this.saved = null;
-
-		}
+//		Nuovo nuovo = new Nuovo(new javax.swing.JFrame(), true, this.land, this);
+//
+//		RawLand land = new RawLand(nuovo.getLand());
+//		builder.setLand(land);
+//
+//		if (nuovo.getRisposta() == true) {
+//			this.inizializzaBuilder();
+//
+//			this.saved = null;
+//
+//		}
 
 		repaint();
 	}// GEN-LAST:event_jMenuItemNuovoActionPerformed
@@ -854,6 +896,7 @@ public class LandBuilder extends javax.swing.JFrame {
 	private javax.swing.JMenu jMenuFile;
 	private javax.swing.JMenuItem jMenuItemAnteprima;
 	private javax.swing.JMenuItem jMenuItemApri;
+	private javax.swing.JMenuItem jMenuItemApriTilesheet;
 	private javax.swing.JMenuItem jMenuItemAttrib;
 	private javax.swing.JMenuItem jMenuItemCreaBordo;
 	private javax.swing.JMenuItem jMenuItemMostri;
@@ -883,7 +926,24 @@ public class LandBuilder extends javax.swing.JFrame {
 	private PannelloStrumenti pannelloStrumentiPorte;
 	private PannelloStrumenti pannelloStrumentiTerreni;
 	// End of variables declaration//GEN-END:variables
-	Land land = null;
+	
+	private enum State {
+		IDLE,
+		TILE_SELECTION,
+		WORLD_BUILDING
+	}
+	
+	public enum MouseEvent {
+		MOVED,
+		PRESSED,
+		RELEASED,
+		EXITED;
+	}
+	
+	private State state;
+	
+	private final WorldBuilder builder;
+	
 	int colonnaClick;
 	int rigaClick;
 
@@ -902,6 +962,19 @@ public class LandBuilder extends javax.swing.JFrame {
 	Componente[] blocchiRim;
 	Componente[] checkPoint;
 
+	/** Creates new form LandBuilder2 */
+	public LandBuilder() {
+		
+		state = State.IDLE;
+		builder = new WorldBuilder();
+		
+		initComponents();
+		
+		// TODO this.inizializzaElencoComponenti();
+		this.centraFrame(this);
+		this.setVisible(true);
+	}
+	
 	int setClick(int coordinata) {
 		// CICLO
 		int trovato = 0;
@@ -1111,18 +1184,18 @@ public class LandBuilder extends javax.swing.JFrame {
 
 	void settaBarreScorrimento() {
 		// Setto la barra a scorrimento orizzontale
-		if (this.land.getColsCount() * 32 > this.areaLavoroPannello.getWidth()) {
+		if (builder.getLand().getColsCount() * 32 > this.areaLavoroPannello.getWidth()) {
 			this.jScrollBarOriz.setEnabled(true);
-			this.jScrollBarOriz.setMaximum((this.land.getColsCount() * 32 - this.areaLavoroPannello.getWidth()) + 32);
+			this.jScrollBarOriz.setMaximum((builder.getLand().getColsCount() * 32 - this.areaLavoroPannello.getWidth()) + 32);
 		} else {
 			this.jScrollBarOriz.setEnabled(false);
 			this.areaLavoroPannello.setXScroll(0);
 		}
 
 		// Setto la barra a scorrimento verticale
-		if (this.land.getRowsCount() * 32 > this.areaLavoroPannello.getHeight()) {
+		if (builder.getLand().getRowsCount() * 32 > this.areaLavoroPannello.getHeight()) {
 			this.jScrollBarVert.setEnabled(true);
-			this.jScrollBarVert.setMaximum((this.land.getRowsCount() * 32 - this.areaLavoroPannello.getHeight()) + 32);
+			this.jScrollBarVert.setMaximum((builder.getLand().getRowsCount() * 32 - this.areaLavoroPannello.getHeight()) + 32);
 		} else {
 			this.jScrollBarVert.setEnabled(false);
 			this.areaLavoroPannello.setYScroll(0);
@@ -1130,17 +1203,17 @@ public class LandBuilder extends javax.swing.JFrame {
 	}
 
 	void salva(String nomeFile) {
-		try {
-			FileOutputStream fileOut = new FileOutputStream(nomeFile); // Creo un flusso di output verso l'oggetto
-																		// nomecomponente.txr nella cartella componenti'
-			this.saved = nomeFile;
-			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(this.land); // Scrivo il componente nel flusso
-			objectOut.close(); // Chiudo il flusso
-			// javax.swing.JOptionPane.showMessageDialog(null, "Land creato con successo");
-		} catch (IOException e) {
-			javax.swing.JOptionPane.showMessageDialog(null, "Errore nel creare la land: " + e.toString());
-		}
+//		try {
+//			FileOutputStream fileOut = new FileOutputStream(nomeFile); // Creo un flusso di output verso l'oggetto
+//																		// nomecomponente.txr nella cartella componenti'
+//			this.saved = nomeFile;
+//			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+//			objectOut.writeObject(this.land); // Scrivo il componente nel flusso
+//			objectOut.close(); // Chiudo il flusso
+//			// javax.swing.JOptionPane.showMessageDialog(null, "Land creato con successo");
+//		} catch (IOException e) {
+//			javax.swing.JOptionPane.showMessageDialog(null, "Errore nel creare la land: " + e.toString());
+//		}
 	}
 
 	private Land carica(File file) {
@@ -1153,8 +1226,8 @@ public class LandBuilder extends javax.swing.JFrame {
 	}
 
 	void inizializzaBuilder() {
-		this.setTitle(land.getName() + " - Land Builder");
-		this.areaLavoroPannello.setLand(this.land);
+		this.setTitle(builder.getLand().getName() + " - Land Builder");
+		this.areaLavoroPannello.setLand(builder.getLand());
 
 		this.jMenuItemAnteprima.setEnabled(true);
 		this.jMenuItemMostri.setEnabled(true);
@@ -1169,4 +1242,6 @@ public class LandBuilder extends javax.swing.JFrame {
 
 		this.settaBarreScorrimento();
 	}
+	
+
 }

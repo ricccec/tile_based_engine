@@ -4,15 +4,14 @@
 package pokemon_online;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -52,7 +51,7 @@ public class ResourcesManager {
 	
 	private final Map<String, SpriteData> graphics;
 	
-	private final Collection<File> directories; // FIXME This dumps all resources in the same "virtual" directory
+	private final Set<File> directories; // FIXME This dumps all resources in the same "virtual" directory (possible name conflicts)
 	
 	private ResourcesManager() {
 		images = new HashMap<>();
@@ -60,13 +59,20 @@ public class ResourcesManager {
 		tileImgs = new HashMap<>();
 		
 		// Get all directories in resource folder
-		directories = new ArrayList<>();
+		directories = new HashSet<>();
 		File baseDir = new File(Configuration.RESOURCES_DIR);
 		for (File dir : FileUtils.listFilesAndDirs(baseDir, new NotFileFilter(TrueFileFilter.INSTANCE), DirectoryFileFilter.DIRECTORY)) {
 			directories.add(dir);
 		}
 	}
 	
+	public void addResourceDir(File dir) {
+		if (dir.isDirectory()) {
+			directories.add(dir);
+		} else {
+			LOGGER.warn(dir + " is not a directory");
+		}
+	}
 	public SpriteData getGameObjectGraphics(String graphDataName) {
 		if (!graphics.containsKey(graphDataName)) {
 			SpriteData objGraph = null;
@@ -133,7 +139,7 @@ public class ResourcesManager {
 		return images.get(imgName).get(scaleFactor);
 	}
 	
-	public Image loadImage(String imgName) {
+	private Image loadImage(String imgName) {
 		for (File dir : directories) {
 			try {
 				Image img = ImageIO.read(new File(dir, imgName));

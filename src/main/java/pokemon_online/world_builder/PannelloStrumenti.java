@@ -5,19 +5,36 @@ package pokemon_online.world_builder;
  * Created on 11 aprile 2007, 19.04
  */
 
-import java.beans.*;
-import java.io.Serializable;
-import javax.swing.JPanel;
-
-import java.awt.Image;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+import pokemon_online.land.TileImage;
 
 /**
  * @author Ric
  */
 public class PannelloStrumenti extends JPanel implements Serializable {
+
+	private static final int MIN_WIDTH = 128;
+	
+	private static final int MIN_HEIGHT = 64;
+	
+	private static final int MAX_WIDTH = 516;
+	
+	private static final int MAX_HEIGHT = Integer.MAX_VALUE;
+	
+	private static final long serialVersionUID = 580832731138412029L;
 
 	public static final String PROP_SAMPLE_PROPERTY = "sampleProperty";
 
@@ -25,8 +42,12 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 
 	private PropertyChangeSupport propertySupport;
 
-	public PannelloStrumenti() {
-		propertySupport = new PropertyChangeSupport(this);
+	protected void mouseClicked(MouseEvent e) {
+		
+	}
+
+	protected void mouseDragged(MouseEvent e) {
+		
 	}
 
 	public String getSampleProperty() {
@@ -47,60 +68,93 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		propertySupport.removePropertyChangeListener(listener);
 	}
 
-	/**
-	 * Holds value of property componenti.
-	 */
-	private Componente[] componenti = null;
+	private Image tileSheet;
 
-	private int xMouse = 0;
-	private int yMouse = 0;
+	private int xMouse;
+	private int yMouse;
 
-	private int xScroll = 0;
-	private int yScroll = 0;
+	private int xScroll;
+	private int yScroll;
 
-	private Componente componenteSelezionato = null;
-
-	/**
-	 * Getter for property componenti.
-	 * 
-	 * @return Value of property componenti.
-	 */
-	public Componente[] getComponenti() {
-		return this.componenti;
+	private Componente componenteSelezionato;
+	
+	public PannelloStrumenti() {
+		propertySupport = new PropertyChangeSupport(this);
+		
+		//setSize(3*128, 64);
+		//setPreferredSize(new Dimension(3*128, 64));
+		resize(null, null);
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				PannelloStrumenti.this.mouseClicked(e);
+			}
+		});
+		
+		addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e){
+				PannelloStrumenti.this.mouseDragged(e);
+			}
+		});
 	}
-
-	/**
-	 * Setter for property componenti.
-	 * 
-	 * @param componenti New value of property componenti.
-	 */
-	public void setComponenti(Componente[] componenti) {
-		this.componenti = componenti;
+	
+	private void resize(Integer width, Integer height) {
+		int newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, ((width == null) ? getWidth() : width)));
+		int newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, ((height == null) ? getHeight() : height)));
+		
+		setPreferredSize(new Dimension(newWidth, newHeight));
+	}
+	
+	public void setTilesheet(Image img) {
+		tileSheet = img;
+		
+		// Resize
+		int newWidth = Math.min(MAX_WIDTH, img.getWidth(null));
+		resize(newWidth, null);
+		revalidate();
+		repaint();
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D grap = (Graphics2D) g;
 		super.paintComponent(g);
-		if (this.componenti != null) {
-			boolean fineArray = false;
-			int indexRiga = 0;
-			int indexColonna = 0;
-			int index = 0;
-			while ((index < this.componenti.length) && (fineArray == false)) {
-				// TODO
-//                grap.drawImage(this.componenti[index].immagine, indexColonna * 32, indexRiga * 32 - this.yScroll, this);
-				index++;
-				if (componenti[index] == null)
-					fineArray = true;
-				else {
-					indexColonna++;
-					if (indexColonna == 4) {
-						indexColonna = 0;
-						indexRiga++;
-					}
-				}
-			}
+		
+		if (tileSheet != null) {
+			grap.drawImage(tileSheet, 0, yScroll, this);
 		}
+		
+//		int currX = 0;
+//		int currY = 0;
+//		for (Componente comp : componenti) {
+//			if (comp.getType() != 0) {
+//				continue;
+//			}
+//			
+//			TileImage tileImg = comp.getTile().getImage(0);
+//			int compWidth = (int)Math.ceil(tileImg.getWidth()*tileImg.getScaleFactor());
+//		}
+//		
+//			boolean fineArray = false;
+//			int indexRiga = 0;
+//			int indexColonna = 0;
+//			int index = 0;
+//			while ((index < this.componenti.length) && (fineArray == false)) {
+//				// TODO
+////                grap.drawImage(this.componenti[index].immagine, indexColonna * 32, indexRiga * 32 - this.yScroll, this);
+//				index++;
+//				if (componenti[index] == null)
+//					fineArray = true;
+//				else {
+//					indexColonna++;
+//					if (indexColonna == 4) {
+//						indexColonna = 0;
+//						indexRiga++;
+//					}
+//				}
+//			}
+		
 		grap.setColor(Color.YELLOW);
 		grap.drawRect(this.xMouse * 32, this.yMouse * 32 - this.yScroll, 31, 31);
 		grap.drawRect(this.xMouse * 32 + 1, (this.yMouse * 32 + 1) - this.yScroll, 29, 29);
@@ -149,11 +203,12 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 	 * @return Value of property componenteSelezionato.
 	 */
 	public Componente getComponenteSelezionato() {
-		if ((this.xMouse + (this.yMouse * 4)) < this.componenti.length)
-			this.componenteSelezionato = componenti[this.xMouse + (this.yMouse * 4)];
-		else
-			this.componenteSelezionato = null;
-		return this.componenteSelezionato;
+//		if ((this.xMouse + (this.yMouse * 4)) < this.componenti.length)
+//			this.componenteSelezionato = componenti[this.xMouse + (this.yMouse * 4)];
+//		else
+//			this.componenteSelezionato = null;
+//		return this.componenteSelezionato;
+		return null;
 	}
 
 	/**

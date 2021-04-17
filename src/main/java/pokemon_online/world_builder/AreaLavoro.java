@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -60,45 +61,19 @@ public class AreaLavoro extends JPanel implements Serializable{
     
         
     public void paintComponent (Graphics g){
-        Graphics2D grap = (Graphics2D) g;
-        super.paintComponent(g);
-        //Disegno il rettangolo grigio di sfondo
-        grap.setColor(Color.GRAY);
-        grap.fillRect(0, 0 , 1800, 1800);
-        if (this.land != null){ 
-            //Disegno il rettangolo bianco
-            grap.setColor(Color.WHITE);
-            grap.fillRect(0 - this.xScroll, 0 - this.yScroll, land.getColsCount() * 32, land.getRowsCount() * 32);
-            //Disegno la griglia
-            grap.setColor(Color.GRAY);
-            for (int c = 0; c < land.getColsCount(); c++){
-                for (int r = 0; r < land.getRowsCount(); r++){
-                    grap.drawRect(c * 32 - this.xScroll, r * 32 - yScroll, 32, 32);
-                }
-            }
-            //Disegno i componenti
-            for (int c = 0; c < land.getColsCount(); c++){//Per ogni colonna
-                for (int r = 0; r < land.getRowsCount(); r++){//Per ogni righa
-                	Tile tile = land.getCellTile(r, c);
-                    if (tile != null){
-                    	TileImage tileImg = tile.getImage(0); // FIXME No fixed frame
-                    	Image img = ResourcesManager.getMgr().getTileImage(tileImg);
-                        grap.drawImage(img, c * 32 - this.xScroll, r * 32 - this.yScroll, this);
-                    }
-                }
-            }
-            
-            //Disegno il componente in uso alle coordinate del mouse
-            if (this.componenteInUso != null){
-            	TileImage tileImg = componenteInUso.getTile().getImage(0);
-            	Image img = ResourcesManager.getMgr().getTileImage(tileImg);
-                grap.drawImage(img, xMouse - 16, yMouse - 16, this);
-            }
+    	
+    	super.paintComponent(g);
+        
+        Rectangle bounds = new Rectangle(-xScroll, -yScroll, Math.max(0, getWidth() + xScroll), Math.max(0, getHeight() + yScroll));
+        
+        if (land != null) {
+        	land.paint((Graphics2D) g, bounds, 2);
         }
+        
     }
 
 
-    private Land land = null;
+    private RawLand land = null;
     private Componente componenteInUso = null;
     private int xMouse = 0;
     private int yMouse = 0;
@@ -107,18 +82,10 @@ public class AreaLavoro extends JPanel implements Serializable{
     private int xScroll = 0;
 
     /**
-     * Getter for property land.
-     * @return Value of property land.
-     */
-    public Land getLand() {
-        return this.land;
-    }
-
-    /**
      * Setter for property land.
      * @param land New value of property land.
      */
-    public void setLand(Land land) {
+    public void setLand(RawLand land) {
         this.land = land;
     }
 
