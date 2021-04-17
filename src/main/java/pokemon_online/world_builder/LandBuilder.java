@@ -111,17 +111,17 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		jPanelStrumenti.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-		pannelloStrumentiTerreni.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+//		jPanelStrumenti.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+//		pannelloStrumentiTerreni.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 		
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiTerreniLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiTerreni);
-		pannelloStrumentiTerreni.setLayout(pannelloStrumentiTerreniLayout);
-		pannelloStrumentiTerreniLayout.setHorizontalGroup(pannelloStrumentiTerreniLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(128, 128, Short.MAX_VALUE)); // Width
-		pannelloStrumentiTerreniLayout.setVerticalGroup(pannelloStrumentiTerreniLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(64, 64, Short.MAX_VALUE)); // Height
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiTerreniLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiTerreni);
+//		pannelloStrumentiTerreni.setLayout(pannelloStrumentiTerreniLayout);
+//		pannelloStrumentiTerreniLayout.setHorizontalGroup(pannelloStrumentiTerreniLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(128, 128, Short.MAX_VALUE)); // Width
+//		pannelloStrumentiTerreniLayout.setVerticalGroup(pannelloStrumentiTerreniLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(64, 64, Short.MAX_VALUE)); // Height
 
 		jScrollBarTerreni.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -142,13 +142,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiBlocchiLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiBlocchi);
-		pannelloStrumentiBlocchi.setLayout(pannelloStrumentiBlocchiLayout);
-		pannelloStrumentiBlocchiLayout.setHorizontalGroup(pannelloStrumentiBlocchiLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiBlocchiLayout.setVerticalGroup(pannelloStrumentiBlocchiLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 180, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiBlocchiLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiBlocchi);
+//		pannelloStrumentiBlocchi.setLayout(pannelloStrumentiBlocchiLayout);
+//		pannelloStrumentiBlocchiLayout.setHorizontalGroup(pannelloStrumentiBlocchiLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiBlocchiLayout.setVerticalGroup(pannelloStrumentiBlocchiLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 180, Short.MAX_VALUE));
 
 		pannelloStrumentiPorte.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 		pannelloStrumentiPorte.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -157,13 +157,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiPorteLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiPorte);
-		pannelloStrumentiPorte.setLayout(pannelloStrumentiPorteLayout);
-		pannelloStrumentiPorteLayout.setHorizontalGroup(pannelloStrumentiPorteLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiPorteLayout.setVerticalGroup(pannelloStrumentiPorteLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiPorteLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiPorte);
+//		pannelloStrumentiPorte.setLayout(pannelloStrumentiPorteLayout);
+//		pannelloStrumentiPorteLayout.setHorizontalGroup(pannelloStrumentiPorteLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiPorteLayout.setVerticalGroup(pannelloStrumentiPorteLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
 
 		jScrollBarPorte.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -178,13 +178,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiCartelliLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiCartelli);
-		pannelloStrumentiCartelli.setLayout(pannelloStrumentiCartelliLayout);
-		pannelloStrumentiCartelliLayout.setHorizontalGroup(pannelloStrumentiCartelliLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiCartelliLayout.setVerticalGroup(pannelloStrumentiCartelliLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiCartelliLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiCartelli);
+//		pannelloStrumentiCartelli.setLayout(pannelloStrumentiCartelliLayout);
+//		pannelloStrumentiCartelliLayout.setHorizontalGroup(pannelloStrumentiCartelliLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiCartelliLayout.setVerticalGroup(pannelloStrumentiCartelliLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
 
 		jScrollBarCartelli.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -199,13 +199,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiErbaLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiErba);
-		pannelloStrumentiErba.setLayout(pannelloStrumentiErbaLayout);
-		pannelloStrumentiErbaLayout.setHorizontalGroup(pannelloStrumentiErbaLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiErbaLayout.setVerticalGroup(pannelloStrumentiErbaLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiErbaLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiErba);
+//		pannelloStrumentiErba.setLayout(pannelloStrumentiErbaLayout);
+//		pannelloStrumentiErbaLayout.setHorizontalGroup(pannelloStrumentiErbaLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiErbaLayout.setVerticalGroup(pannelloStrumentiErbaLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
 
 		jScrollBarErba.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -220,13 +220,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiBlocchiRimLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiBlocchiRim);
-		pannelloStrumentiBlocchiRim.setLayout(pannelloStrumentiBlocchiRimLayout);
-		pannelloStrumentiBlocchiRimLayout.setHorizontalGroup(pannelloStrumentiBlocchiRimLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiBlocchiRimLayout.setVerticalGroup(pannelloStrumentiBlocchiRimLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiBlocchiRimLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiBlocchiRim);
+//		pannelloStrumentiBlocchiRim.setLayout(pannelloStrumentiBlocchiRimLayout);
+//		pannelloStrumentiBlocchiRimLayout.setHorizontalGroup(pannelloStrumentiBlocchiRimLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiBlocchiRimLayout.setVerticalGroup(pannelloStrumentiBlocchiRimLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
 
 		jScrollBarBlocchiRim.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -241,13 +241,13 @@ public class LandBuilder extends javax.swing.JFrame {
 			}
 		});
 
-		org.jdesktop.layout.GroupLayout pannelloStrumentiCPLayout = new org.jdesktop.layout.GroupLayout(
-				pannelloStrumentiCP);
-		pannelloStrumentiCP.setLayout(pannelloStrumentiCPLayout);
-		pannelloStrumentiCPLayout.setHorizontalGroup(pannelloStrumentiCPLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
-		pannelloStrumentiCPLayout.setVerticalGroup(pannelloStrumentiCPLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
+//		org.jdesktop.layout.GroupLayout pannelloStrumentiCPLayout = new org.jdesktop.layout.GroupLayout(
+//				pannelloStrumentiCP);
+//		pannelloStrumentiCP.setLayout(pannelloStrumentiCPLayout);
+//		pannelloStrumentiCPLayout.setHorizontalGroup(pannelloStrumentiCPLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 128, Short.MAX_VALUE));
+//		pannelloStrumentiCPLayout.setVerticalGroup(pannelloStrumentiCPLayout
+//				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 32, Short.MAX_VALUE));
 
 		jScrollBarCP.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
 			public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
@@ -257,126 +257,137 @@ public class LandBuilder extends javax.swing.JFrame {
 
 		org.jdesktop.layout.GroupLayout jPanelStrumentiLayout = new org.jdesktop.layout.GroupLayout(jPanelStrumenti);
 		jPanelStrumenti.setLayout(jPanelStrumentiLayout);
-		jPanelStrumentiLayout.setHorizontalGroup(jPanelStrumentiLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(jPanelStrumentiLayout.createSequentialGroup().addContainerGap().add(jPanelStrumentiLayout
-						.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-								org.jdesktop.layout.GroupLayout.TRAILING,
-								jPanelStrumentiLayout.createSequentialGroup()
-										.add(pannelloStrumentiTerreni, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jScrollBarTerreni,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-								.add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelStrumentiLayout
-										.createSequentialGroup()
-										.add(pannelloStrumentiBlocchi, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jScrollBarBlocchi,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jPanelStrumentiLayout.createSequentialGroup()
-										.add(pannelloStrumentiPorte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(jScrollBarPorte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-								.add(jPanelStrumentiLayout.createSequentialGroup()
-										.add(pannelloStrumentiCartelli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(jScrollBarCartelli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-								.add(jPanelStrumentiLayout.createSequentialGroup()
-										.add(pannelloStrumentiErba, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(jScrollBarErba, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-								.add(jPanelStrumentiLayout.createSequentialGroup()
-										.add(pannelloStrumentiBlocchiRim,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(jScrollBarBlocchiRim, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-												org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-												org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-						.add(jPanelStrumentiLayout.createSequentialGroup()
-								.add(pannelloStrumentiCP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jScrollBarCP,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		
-		jPanelStrumentiLayout.setVerticalGroup(jPanelStrumentiLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(jPanelStrumentiLayout.createSequentialGroup().addContainerGap()
+		jPanelStrumentiLayout.setHorizontalGroup(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+			.add(jPanelStrumentiLayout.createSequentialGroup()
+				.addContainerGap()
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+					.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
 						// Terreni
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-								.add(org.jdesktop.layout.GroupLayout.LEADING, jScrollBarTerreni,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.add(org.jdesktop.layout.GroupLayout.LEADING, pannelloStrumentiTerreni,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarBlocchi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.add(pannelloStrumentiBlocchi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						.add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiTerreni, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+							.add(jScrollBarTerreni,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+						.add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiBlocchi, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jScrollBarBlocchi,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+					.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
 						// Porte
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarPorte, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiPorte,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+						.add(jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiPorte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.add(jScrollBarPorte, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
 						// Cartelli
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarCartelli, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiCartelli,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarErba, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiErba,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarBlocchiRim, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiBlocchiRim,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-						.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-								.add(jScrollBarCP, 0, 0, Short.MAX_VALUE).add(pannelloStrumentiCP,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-										org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+						.add(jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiCartelli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.add(jScrollBarCartelli, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+						// Erba
+						.add(jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiErba, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.add(jScrollBarErba, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+						// Blocchi
+						.add(jPanelStrumentiLayout.createSequentialGroup()
+							.add(pannelloStrumentiBlocchiRim,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.add(jScrollBarBlocchiRim, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+								org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+								org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+					// Strumenti CP
+					.add(jPanelStrumentiLayout.createSequentialGroup()
+						.add(pannelloStrumentiCP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+							org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+							org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jScrollBarCP,
+							org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+							org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+							org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		
+		jPanelStrumentiLayout.setVerticalGroup(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+			.add(jPanelStrumentiLayout.createSequentialGroup()
+				.addContainerGap()
+				// Terreni
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+					.add(org.jdesktop.layout.GroupLayout.LEADING, jScrollBarTerreni,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.add(org.jdesktop.layout.GroupLayout.LEADING, pannelloStrumentiTerreni,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				// Blocchi
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+						.add(jScrollBarBlocchi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+							org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(pannelloStrumentiBlocchi, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+							org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				// Porte
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+					.add(jScrollBarPorte, 0, 0, Short.MAX_VALUE)
+					.add(pannelloStrumentiPorte,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				// Cartelli
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+					.add(jScrollBarCartelli, 0, 0, Short.MAX_VALUE)
+					.add(pannelloStrumentiCartelli,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+					.add(jScrollBarErba, 0, 0, Short.MAX_VALUE)
+					.add(pannelloStrumentiErba,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+					.add(jScrollBarBlocchiRim, 0, 0, Short.MAX_VALUE)
+					.add(pannelloStrumentiBlocchiRim,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+				.add(jPanelStrumentiLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+					.add(jScrollBarCP, 0, 0, Short.MAX_VALUE)
+					.add(pannelloStrumentiCP,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+						org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		areaLavoroPannello.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		areaLavoroPannello.addMouseListener(new java.awt.event.MouseAdapter() {
