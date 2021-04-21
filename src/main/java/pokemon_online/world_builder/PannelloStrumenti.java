@@ -12,23 +12,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.border.StrokeBorder;
-
-import pokemon_online.game.utils.GameUtils;
-import pokemon_online.game.utils.GraphicsUtils;
-import pokemon_online.land.TileImage;
 
 /**
  * @author Ric
@@ -49,21 +42,13 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 
 	private String sampleProperty;
 
-
-	protected void mouseClicked(MouseEvent e) {
-		
-	}
-
-	protected void mouseDragged(MouseEvent e) {
-		
-	}
-
-
 	private final JScrollBar jScrollH;
 	private final JScrollBar jScrollV;
 
 
 	private Image tileSheet;
+	
+	private final JPanel viewport;
 
 	private int xMouse;
 	private int yMouse;
@@ -73,6 +58,8 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 
 	private Componente componenteSelezionato;
 	
+	private Rectangle selection;
+	
 	public PannelloStrumenti() {
 		
 		//setSize(3*128, 64);
@@ -81,26 +68,27 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		
 		setLayout(new BorderLayout(8, 8));
 		
-		JPanel viewport = new JPanel() {
-
+		viewport = new JPanel() {
+			
 			private static final long serialVersionUID = 2926741864929049618L;
-
+			
 			public void paintComponent(Graphics g) {
-				Graphics2D grap = (Graphics2D) g;
-				super.paintComponent(g);
-				
-				if (tileSheet != null) {
-					grap.drawImage(tileSheet, 0, yScroll, this);
-				}
-				
-
-				grap.setColor(Color.RED);
-				grap.setStroke(new BasicStroke(2));
-				grap.drawRect(xMouse * 32 - jScrollH.getValue(), yMouse * 32 - yScroll, 31, 31);
-				//grap.drawRect(xMouse * 32 + 1, (yMouse * 32 + 1) - yScroll, 29, 29);
+				drawTilesheet(g);
 			}
 		};
 		viewport.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+		viewport.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				PannelloStrumenti.this.mousePressed(e);
+			}
+		});
+		viewport.addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e){
+				PannelloStrumenti.this.mouseDragged(e);
+			}
+		});
 		add(viewport, BorderLayout.CENTER);
 		
 		// Scrollbars
@@ -109,6 +97,7 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		jScrollH.addAdjustmentListener(new AdjustmentListener() {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
+				System.out.println(getTilesheetOrigin());
 				repaint();
 			}
 		});
@@ -116,21 +105,14 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		
 		jScrollV = new JScrollBar(javax.swing.JScrollBar.VERTICAL);
 		jScrollV.setEnabled(false);
+		jScrollV.addAdjustmentListener(new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				System.out.println(getTilesheetOrigin());
+				repaint();
+			}
+		});
 		add(jScrollV, BorderLayout.EAST);
-
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				PannelloStrumenti.this.mouseClicked(e);
-			}
-		});
-		
-		addMouseMotionListener(new MouseAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e){
-				PannelloStrumenti.this.mouseDragged(e);
-			}
-		});
 		
 		safeResize(null, null);
 	}
@@ -142,8 +124,8 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		setPreferredSize(new Dimension(newWidth, newHeight));
 		
 		if (tileSheet != null) {
-			jScrollH.setEnabled(tileSheet.getWidth(null) > getWidth());
-			jScrollV.setEnabled(tileSheet.getHeight(null) > getHeight());
+			jScrollH.setEnabled(tileSheet.getWidth(null) > viewport.getWidth());
+			jScrollV.setEnabled(tileSheet.getHeight(null) > viewport.getHeight());
 		} else {
 			jScrollH.setEnabled(false);
 			jScrollV.setEnabled(false);
@@ -298,4 +280,52 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		this.yScroll = yScroll;
 	}
 	
+	private void drawTilesheet(Graphics g) {
+		Graphics2D grap = (Graphics2D) g;
+		super.paintComponent(g);
+		
+		if (tileSheet != null) {
+			grap.drawImage(tileSheet, getTilesheetOrigin().x, getTilesheetOrigin().y, this);
+		}
+		
+
+		grap.setColor(Color.RED);
+		grap.setStroke(new BasicStroke(2));
+		grap.drawRect(xMouse * 32 - jScrollH.getValue(), yMouse * 32 - yScroll, 31, 31);
+		
+		if (selection != null) {
+			grap.drawRect(selection.x, selection.y, selection.width, selection.height);
+		}
+		//grap.drawRect(xMouse * 32 + 1, (yMouse * 32 + 1) - yScroll, 29, 29);
+	}
+	
+	protected void mousePressed(MouseEvent e) {
+		selection = new Rectangle(e.getPoint());
+		repaint();
+	}
+
+	protected void mouseDragged(MouseEvent e) {
+		int width = (int)(e.getX() - selection.getX());
+		int height = (int)(e.getY() - selection.getY());
+		selection.width = width;
+		selection.height = height;
+		repaint();
+	}
+
+	private Point getTilesheetOrigin() {
+		if (tileSheet == null) {
+			return new Point(0, 0);
+		}
+		
+		
+		int maxDeltaX = Math.max(0, tileSheet.getWidth(null) - viewport.getWidth());
+		int maxDeltaY = Math.max(0, tileSheet.getHeight(null) - viewport.getHeight());
+		System.out.println(tileSheet.getWidth(null) + " " + viewport.getWidth() + " " + maxDeltaX);
+		float deltaXPerc = ((float)jScrollH.getValue())/(jScrollH.getMaximum() - jScrollH.getVisibleAmount());
+		float deltaYPerc = ((float)jScrollV.getValue())/(jScrollV.getMaximum() - jScrollV.getVisibleAmount());
+		int originX = -(int)Math.ceil(maxDeltaX*deltaXPerc);
+		int originY =  -(int)Math.ceil(maxDeltaY*deltaYPerc);
+		System.out.println(deltaXPerc + " " + jScrollH.getValue() + "/" + jScrollH.getVisibleAmount() + " " + deltaYPerc);
+		return new Point(originX, originY);
+	}
 }
