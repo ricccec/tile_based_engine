@@ -634,7 +634,7 @@ public class LandBuilder extends javax.swing.JFrame {
 			File selectedDir = new File(selected.getParent());
 			ResourcesManager.getMgr().addResourceDir(selectedDir);
 			Image tileshImg = ResourcesManager.getMgr().getImage(selected.getName());
-			pannelloStrumentiTerreni.setTilesheet(tileshImg);
+			pannelloStrumentiTerreni.setTilesheet(selected, tileshImg);
 			//pannelloStrumentiTerreni.setSize(tileshImg.getWidth(null), pannelloStrumentiTerreni.getHeight());
 			
 			

@@ -18,10 +18,14 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.Serializable;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+
+import pokemon_online.land.Tile;
+import pokemon_online.land.TileImage;
 
 /**
  * @author Ric
@@ -45,8 +49,9 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 	private final JScrollBar jScrollH;
 	private final JScrollBar jScrollV;
 
-
 	private Image tileSheet;
+	
+	private File tileShFile;
 	
 	private final JPanel viewport;
 
@@ -132,13 +137,38 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 		}
 	}
 	
-	public void setTilesheet(Image img) {
+	public void setTilesheet(File imgFile, Image img) {
 		tileSheet = img;
+		tileShFile = imgFile;
 		
 		// Resize
 		safeResize(img.getWidth(null), img.getHeight(null));
 		revalidate();
 		repaint();
+	}
+	
+	public Componente[][] getSelection() {
+		if (selection == null) {
+			return new Componente[0][0];
+		}
+		
+		Rectangle bldSelect = bleedSelection();
+		int rowCount = (int)(bldSelect.getHeight()/16); // FIXME No fixed cell size
+		int colCount = (int)(bldSelect.getWidth()/16);
+		Componente[][] result = new Componente[rowCount][colCount];
+		
+		for (int r = 0; r < rowCount; r++) {
+			for (int c = 0; c < colCount; c++) {
+				int currX = bldSelect.x + 16*c;
+				int currY = bldSelect.x + 16*r;
+				TileImage img = new TileImage(tileShFile, currX, currY, 16, 16);
+				Tile tile = new Tile(tileSheet.toString()); // TODO Tile name
+				result[r][c] = new Componente(tile);
+			}
+		}
+		
+		return result;
+		
 	}
 
 //	public void paintComponent(Graphics g) {
@@ -288,27 +318,32 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 			grap.drawImage(tileSheet, getTilesheetOrigin().x, getTilesheetOrigin().y, this);
 		}
 		
-
-		grap.setColor(Color.RED);
-		grap.setStroke(new BasicStroke(2));
-		grap.drawRect(xMouse * 32 - jScrollH.getValue(), yMouse * 32 - yScroll, 31, 31);
-		
 		if (selection != null) {
-			grap.drawRect(selection.x, selection.y, selection.width, selection.height);
+			
+			Rectangle bldSel = bleedSelection();
+			
+			grap.setColor(Color.RED);
+			grap.setStroke(new BasicStroke(2));
+			grap.drawRect(bldSel.x + getTilesheetOrigin().x, bldSel.y + getTilesheetOrigin().y, bldSel.width, bldSel.height);
 		}
-		//grap.drawRect(xMouse * 32 + 1, (yMouse * 32 + 1) - yScroll, 29, 29);
 	}
 	
 	protected void mousePressed(MouseEvent e) {
-		selection = new Rectangle(e.getPoint());
+		int tileShX = e.getX() - getTilesheetOrigin().x;
+		int tileShY = e.getY() - getTilesheetOrigin().y;
+		selection = new Rectangle(tileShX, tileShY, 0, 0);
 		repaint();
 	}
 
 	protected void mouseDragged(MouseEvent e) {
-		int width = (int)(e.getX() - selection.getX());
-		int height = (int)(e.getY() - selection.getY());
+		int tileShX = e.getX() - getTilesheetOrigin().x;
+		int tileShY = e.getY() - getTilesheetOrigin().y;
+		
+		int width = (int)Math.abs(tileShX - selection.getX());
+		int height = (int)Math.abs(tileShY - selection.getY());
 		selection.width = width;
 		selection.height = height;
+		
 		repaint();
 	}
 
@@ -317,15 +352,31 @@ public class PannelloStrumenti extends JPanel implements Serializable {
 			return new Point(0, 0);
 		}
 		
-		
 		int maxDeltaX = Math.max(0, tileSheet.getWidth(null) - viewport.getWidth());
 		int maxDeltaY = Math.max(0, tileSheet.getHeight(null) - viewport.getHeight());
-		System.out.println(tileSheet.getWidth(null) + " " + viewport.getWidth() + " " + maxDeltaX);
 		float deltaXPerc = ((float)jScrollH.getValue())/(jScrollH.getMaximum() - jScrollH.getVisibleAmount());
 		float deltaYPerc = ((float)jScrollV.getValue())/(jScrollV.getMaximum() - jScrollV.getVisibleAmount());
 		int originX = -(int)Math.ceil(maxDeltaX*deltaXPerc);
 		int originY =  -(int)Math.ceil(maxDeltaY*deltaYPerc);
-		System.out.println(deltaXPerc + " " + jScrollH.getValue() + "/" + jScrollH.getVisibleAmount() + " " + deltaYPerc);
 		return new Point(originX, originY);
+	}
+	
+	private Rectangle bleedSelection() {
+		
+		if (selection == null) {
+			return null;
+		}
+		
+		// Bleed selection to cover a block of cells
+		int xMinRound = 16 * (int)Math.floor(selection.getMinX()/16); // FIXME No fixed cell size
+		int yMinRound = 16 * (int)Math.floor(selection.getMinY()/16);
+		
+		int xMaxRound = 16 * (int)Math.ceil(selection.getMaxX()/16);
+		int yMaxRound = 16 * (int)Math.ceil(selection.getMaxY()/16);
+		
+		int widthRound = Math.max(16, xMaxRound - xMinRound);
+		int heightRound =  Math.max(16, yMaxRound - yMinRound);
+		
+		return new Rectangle(xMinRound, yMinRound, widthRound, heightRound);
 	}
 }
