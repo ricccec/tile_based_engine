@@ -12,6 +12,7 @@ import pokemon_online.ResourcesManager;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.utils.GameUtils;
+import pokemon_online.land.CroppedImage;
 import pokemon_online.physics.PhysicsComponent;
 
 public class SpriteGraphicsComponent extends GraphicsComponent {
@@ -95,9 +96,9 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 		int scrY = viewport.getScreenY() + obj.getY();
 		
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
-		String imgName = graphState.getCurrentSprinte(objDir);
+		CroppedImage objSprite = graphState.getCurrentSprinte(objDir);
 		// TODO Sprite and bounding box might have different size: draw the image in such a way that its center is aligned with the bb's center
-		Image tileImg = ResourcesManager.getMgr().getImage(imgName, 2);
+		Image tileImg = ResourcesManager.getMgr().getCroppedImage(objSprite);
 		grap.drawImage(tileImg,scrX, scrY, null);
 		
 //		if ((phyComp != null) && (phyComp.isFrozen())) {

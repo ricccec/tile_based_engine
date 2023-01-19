@@ -10,6 +10,11 @@ import java.util.List;
 import pokemon_online.land.CroppedImage;
 
 /**
+ * Represents a sequence of frames. After the last frame, the sequence can 1)
+ * loop back to the first frame, 2) hold on the last frame or 3) end. Multiple
+ * <code>Animation</code> objects are usually grouped inside an instance of
+ * {@link StateAnimation}
+ * 
  * @author Cecchi
  *
  */
@@ -38,11 +43,11 @@ public class Animation {
 	}
 	
 	public Animation addSprite(String sprite) {
-		sprites.add(new CroppedImage(new File(sprite), 0, 0, 32, 32)); // FIXME
+		sprites.add(new CroppedImage(new File(sprite), 0, 0, 32, 32)); // FIXME Remove hard-coded scale factor
 		return this;
 	}
 	
-	public String getSprite(int frame) {
+	public CroppedImage getSprite(int frame) {
 		if (sprites.isEmpty()) {
 			return null;
 		}

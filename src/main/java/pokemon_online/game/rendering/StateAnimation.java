@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
+import pokemon_online.land.CroppedImage;
 
 
 // FIXME Change this class name
@@ -34,7 +35,7 @@ public class StateAnimation {
 		return directions.get(directionDegrees);
 	}
 	
-	public String getCurrentSprinte(int directionDegrees) {
+	public CroppedImage getCurrentSprinte(int directionDegrees) {
 		Animation dirAnimation = getAnimation(directionDegrees);
 		if (dirAnimation == null) {
 			return null;
