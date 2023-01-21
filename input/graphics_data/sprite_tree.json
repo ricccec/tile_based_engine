@@ -1,6 +1,6 @@
 {
 	"type":"object",
-	"name":"F Allenatrice",
+	"name":"Cuttable Plant",
 	"states":[
 		{
 			"name":"idle",
@@ -14,49 +14,18 @@
 							"frames":[
 								{
 									"number":0,
-									"sprite":"F Allenatrice_E_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":90,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
-								{
-									"number":0,
-									"sprite":"F Allenatrice_N_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":180,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
-								{
-									"number":0,
-									"sprite":"F Allenatrice_O_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":270,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
-								{
-									"number":0,
-									"sprite":"F Allenatrice_S_Stop.gif"
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":0,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								}
 							]
 						}
@@ -64,7 +33,7 @@
 				]
 		},
 		{
-			"name":"walking",
+			"name":"cut",
 			"directions": [
 					{
 						"angle":0,
@@ -75,65 +44,138 @@
 							"frames":[
 								{
 									"number":0,
-									"sprite":"F Allenatrice_E_Walk.gif"
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":0,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								},
-								{
-									"number":1,
-									"sprite":"F Allenatrice_E_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":90,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
 								{
 									"number":0,
-									"sprite":"F Allenatrice_N_Walk.gif"
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":16,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								},
-								{
-									"number":1,
-									"sprite":"F Allenatrice_N_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":180,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
 								{
 									"number":0,
-									"sprite":"F Allenatrice_O_Walk.gif"
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":32,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								},
-								{
-									"number":1,
-									"sprite":"F Allenatrice_O_Stop.gif"
-								}
-							]
-						}
-					},
-					{
-						"angle":270,
-						"animation": {
-							"loop":true,
-							"hold":false,
-							"fps":4,
-							"frames":[
 								{
 									"number":0,
-									"sprite":"F Allenatrice_S_Walk.gif"
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":48,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								},
 								{
-									"number":1,
-									"sprite":"F Allenatrice_S_Stop.gif"
+									"number":0,
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":64,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
+								},
+								{
+									"number":0,
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":80,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
+								},
+								{
+									"number":0,
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":96,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
+								},
+								{
+									"number":0,
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":112,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
+								},
+								{
+									"number":0,
+									"sprite":"tree_cut_A.png",
+									"scale":2.0,
+									"crop": {
+										"x":0,
+										"y":128,
+										"width":32,
+										"height":16
+									},
+									"anchor": {
+										"x": 8,
+										"y": 0
+									}
 								}
 							]
 						}

@@ -42,8 +42,8 @@ public class Animation {
 		return (int)(timeMs*fps/1000);
 	}
 	
-	public Animation addSprite(String sprite) {
-		sprites.add(new CroppedImage(new File(sprite), 0, 0, 32, 32)); // FIXME Remove hard-coded scale factor
+	public Animation addSprite(CroppedImage sprite) {
+		sprites.add(sprite); // FIXME Remove hard-coded scale factor
 		return this;
 	}
 	

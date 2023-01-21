@@ -233,6 +233,8 @@ public class LandBuilder {
 	}
 
 	private CroppedImage parseTileSet(JSONObject imageData) {
+		// FIXME {@link SpriteData#parseFrame} does the same thing. Turn these into a single method
+		
 		String tileSet = imageData.get(JsonField.TILE_IMG_TILESET.key).toString();
 		int x = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_X.key)).intValue();
 		int y = ((Long)imageData.get(JsonField.TILE_IMG_TILESET_Y.key)).intValue();

@@ -3,6 +3,9 @@
  */
 package pokemon_online.game.rendering;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +14,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
+import pokemon_online.land.CroppedImage;
 
 /**
  * @author Cecchi
@@ -37,7 +41,18 @@ public class SpriteData {
 		ANIMATION_FRAMES("frames"),
 		
 		FRAME_NUM("number"),
-		FRAME_SPRITE("sprite");
+		FRAME_SPRITE("sprite"),
+		FRAME_SCALE_FACTOR("scale"),
+		FRAME_CROP("crop"),
+		FRAME_ANCHOR("anchor"),
+		
+		CROP_X("x"),
+		CROP_Y("y"),
+		CROP_WIDTH("width"),
+		CROP_HEIGHT("height"),
+		
+		ANCHOR_X("x"),
+		ANCHOR_Y("y");
 		
 		public final String key;
 		
@@ -131,21 +146,61 @@ public class SpriteData {
 		Animation result = new Animation(fps, loop, hold);
 		
 		// Parse frames
-		Map<Integer, String> frames = new HashMap<>();
+		Map<Integer, CroppedImage> frames = new HashMap<>();
 		Iterable<JSONObject> frameJSONs = (Iterable<JSONObject>)jSONAnim.get(JsonField.ANIMATION_FRAMES.key);
 		for (JSONObject frameJSON : frameJSONs) {
 			int num = ((Long)frameJSON.get(JsonField.FRAME_NUM.key)).intValue();
-			String sprite = frameJSON.get(JsonField.FRAME_SPRITE.key).toString();
-			frames.put(num, sprite);
+			CroppedImage frameSprite = parseFrame(frameJSON);
+			
+			frames.put(num, frameSprite);
 		}
 		
 		// Add frames to animation
 		for (int i = 0; i < frames.size(); i++) {
-			String sprite = frames.get(i);
+			CroppedImage sprite = frames.get(i);
 			result.addSprite(sprite);
 		}
 		
 		return result;
+	}
+	
+	private CroppedImage parseFrame(JSONObject frameJSON) {
+		// FIXME {@link LandBuilder#parseTileSet} does the same thing. Turn these into a single method
+		
+		String spriteFile = frameJSON.get(JsonField.FRAME_SPRITE.key).toString();
+		
+		// Optional field SCALE FACTOR
+		float scaleFactor = CroppedImage.DEFAULT_SCALE_FACTOR;
+		if (frameJSON.containsKey(JsonField.FRAME_SCALE_FACTOR.key)) {
+			scaleFactor = ((Double)frameJSON.get(JsonField.FRAME_SCALE_FACTOR.key)).floatValue();
+		}
+		
+		// Optional field CROP
+		Rectangle crop = CroppedImage.DEFAULT_CROP;
+		if (frameJSON.containsKey(JsonField.FRAME_CROP.key)) {
+			JSONObject cropJSON =  (JSONObject)frameJSON.get(JsonField.FRAME_CROP.key);
+			
+			int x = ((Long)cropJSON.get(JsonField.CROP_X.key)).intValue();
+			int y = ((Long)cropJSON.get(JsonField.CROP_Y.key)).intValue();
+			int width = ((Long)cropJSON.get(JsonField.CROP_WIDTH.key)).intValue();
+			int height = ((Long)cropJSON.get(JsonField.CROP_HEIGHT.key)).intValue();
+			
+			crop = new Rectangle(x, y, width, height);
+		}
+		
+		// Optional field ANCHOR
+		Point anchor = CroppedImage.DEFAULT_ANCHOR;
+		if (frameJSON.containsKey(JsonField.FRAME_ANCHOR.key)) {
+			JSONObject anchorJSON =  (JSONObject)frameJSON.get(JsonField.FRAME_ANCHOR.key);
+			
+			int x = ((Long)anchorJSON.get(JsonField.ANCHOR_X.key)).intValue();
+			int y = ((Long)anchorJSON.get(JsonField.ANCHOR_Y.key)).intValue();
+			
+			anchor = new Point(x, y);
+		}
+		
+		
+		return new CroppedImage(new File(spriteFile), crop, anchor, scaleFactor);
 	}
 
 	public String getGraphicsDataName() {
