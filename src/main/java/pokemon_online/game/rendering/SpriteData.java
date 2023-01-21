@@ -11,16 +11,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
 import pokemon_online.land.CroppedImage;
+import pokemon_online.land.ObjectsBuilder;
 
 /**
  * @author Cecchi
  *
  */
 public class SpriteData {
+	
+	private static final Logger LOGGER = Logger.getLogger(SpriteData.class);
 	
 	public static final String JSON_TYPE = "object graphics";
 	
@@ -74,8 +78,9 @@ public class SpriteData {
 		stateAnimations = new HashMap<>();
 	}
 	
-	public void setGraphics(SpriteGraphicsComponent gComp) {
+	public void initSpriteGrapComponent(SpriteGraphicsComponent gComp) {
 		
+		LOGGER.debug("Initializing object " + gComp.getGameObject() + " graphics with data from " + name);
 		for (StateAnimation graphState : parseJSONData()) {
 			gComp.addGraphicsState(graphState);
 		}

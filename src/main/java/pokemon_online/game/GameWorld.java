@@ -224,9 +224,16 @@ public class GameWorld {
 		// Draw game objects
 		Viewport viewport = new Viewport(rowMin, rowMax, colMin, colMax, landOriginX, landOriginY);
 		for (GameObject obj : objContainer.getSortedObjectsInRange(rowMin - 1, colMin - 1, rowMax, colMax)) {
+			
+			// Render current object
 			GraphicsComponent gComp = obj.getGraphicsComponent();
 			if (gComp != null) {
 				gComp.render(grap, viewport);
+			}
+			
+			// Render additional debug information
+			if (Configuration.DEBUG) {
+				obj.renderDebugInfo(grap, viewport);
 			}
 		}
 	}

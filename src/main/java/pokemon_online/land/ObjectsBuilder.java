@@ -95,7 +95,7 @@ public class ObjectsBuilder {
 		obj.setGraphicsComponent(grapComp);
 		
 		SpriteData sprite = ResourcesManager.getMgr().loadGraphicsData(graphDataName);
-		sprite.setGraphics(grapComp);
+		sprite.initSpriteGrapComponent(grapComp);
 	}
 
 }

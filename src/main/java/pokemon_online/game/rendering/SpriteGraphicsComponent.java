@@ -77,20 +77,6 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 			return;
 		}
 		
-		if (Configuration.DEBUG) {
-			// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution)
-			PhysicsComponent phyComp = obj.getPhysicsComponent();
-			if ((phyComp != null) ) {
-				Cell bBox = phyComp.getBoundingBox();
-				
-				int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
-				int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
-				
-				grap.setColor(Color.RED);
-				grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
-			}
-		}
-		
 		// Draw object sprite
 		int scrX = viewport.getScreenX() + obj.getX();
 		int scrY = viewport.getScreenY() + obj.getY();
@@ -104,6 +90,7 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 //		if ((phyComp != null) && (phyComp.isFrozen())) {
 //			System.out.println(obj + " " + obj.getFacingDirection());
 //		}
+		
 		
 	}
 

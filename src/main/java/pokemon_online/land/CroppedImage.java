@@ -31,10 +31,6 @@ public class CroppedImage { // FIXME Rename to Sprite?
 	
 	private final float scaleFactor;
 	
-//	public CroppedImage(File image, int x, int y, int width, int height) {
-//		this(image, x, y, width, height, DEFAULT_SCALE_FACTOR);
-//	}
-	
 	public CroppedImage(File image, Rectangle crop, Point anchor, float scaleFactor) {
 		this.image = image;
 		this.height = crop.height;
@@ -118,7 +114,7 @@ public class CroppedImage { // FIXME Rename to Sprite?
 
 	@Override
 	public String toString() {
-		return image + "{" + x + ", " + y + ", " + width + "x" + height + "}x" + scaleFactor;
+		return image + "#crop:{" + x + ", " + y + ", " + width + "x" + height + "}x" + scaleFactor;
 	}
 	
 }

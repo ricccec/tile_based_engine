@@ -1,5 +1,8 @@
 package pokemon_online.game;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,11 +11,15 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
+import pokemon_online.Configuration;
+import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.interaction.event.EventHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
+import pokemon_online.game.rendering.Viewport;
+import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.PhysicsComponent;
 
 /**
@@ -34,11 +41,15 @@ public class GameObject {
 	
 	public static final Event EVT_QUEUE_END = new Event(null);
 	
+	private static int nextObjectId = 0; // FIXME
+	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
 	
 	private final Deque<Event> pendingEvents;
 	
+	private final int id;
+
 	private State state;
 	
 	private int x;
@@ -61,6 +72,9 @@ public class GameObject {
 	protected double direction;
 	
 	public GameObject() {
+		
+		id = nextObjectId++;
+		
 		state = State.ACTIVE;
 		
 		ctrl = new Controller();
@@ -73,6 +87,10 @@ public class GameObject {
 		physComps = new Stack<>();
 	}
 
+	public int getId() {
+		return id;
+	}
+	
 	/**
 	 * @return the object's X coordinate in the world's space
 	 */
@@ -182,6 +200,30 @@ public class GameObject {
 		}
 	}
 	
+	public void renderDebugInfo(Graphics2D grap, Viewport viewport) {
+		assert(Configuration.DEBUG);
+		
+		// Draw bounding box (FIXME this code couples the grapic and phys. components, remove it or use a cleaner solution (e.g. each
+		// component renders its own debug information?)
+		PhysicsComponent phyComp = getPhysicsComponent();
+		if ((phyComp != null) ) {
+			Cell bBox = phyComp.getBoundingBox();
+			
+			int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
+			int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
+			
+			grap.setColor(new Color(1f, 0f, 0f, 0.5f));
+			grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
+		}
+					
+		// Draw object ID
+		grap.setColor(Color.BLUE);
+		int scrX = viewport.getScreenX() + getX();
+		int scrY = viewport.getScreenY() + getY();
+		grap.drawString(Integer.toString(getId()), scrX, scrY);
+		
+	}
+	
 	/**
 	 * @param evt
 	 */
@@ -207,6 +249,11 @@ public class GameObject {
 	
 	public Iterable<GameObjectListener> getListeners() {
 		return listeners;
+	}
+	
+	@Override
+	public String toString() {
+		return id + "[" + state + "]";
 	}
 
 }

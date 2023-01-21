@@ -17,12 +17,9 @@ import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
-import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.event.EventHandler;
 import pokemon_online.game.interaction.event.PushMessageHandler;
 import pokemon_online.game.interaction.event.TextEventHandler;
-import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.land.Land;
@@ -49,13 +46,14 @@ public class GameTester extends JFrame {
 		
 		tester.jumpToLand(START_LAND, START_ROW, START_COL);
 
+		// Spawn NPC
 		for (int i = 0; i < 100; i++) {
 			GameObject obj = new GameObject();
 			IAComponent iaComponent = new AdvancedRandomIAComponent(obj);
 			obj.setIAComponent(iaComponent);
 			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(obj);
 			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
-			gData.setGraphics(gComp);
+			gData.initSpriteGrapComponent(gComp);
 			obj.setGraphicsComponent(gComp);
 			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
 			obj.setPhysicsComponent(phComp);
@@ -67,6 +65,17 @@ public class GameTester extends JFrame {
 			
 			tester.spawnObject(obj, i, i);
 		}
+		
+		// Spawn CUTTABLE TREE
+		GameObject objTree = new GameObject();
+		
+		objTree.setGraphicsComponent(new SpriteGraphicsComponent(objTree));
+		
+		SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("Cuttable Plant");
+		gData.initSpriteGrapComponent((SpriteGraphicsComponent)objTree.getGraphicsComponent());
+		
+		tester.spawnObject(objTree, 10, 9);
+		
 		
 		
 		
@@ -127,7 +136,7 @@ public class GameTester extends JFrame {
 		SpriteGraphicsComponent gComp = (SpriteGraphicsComponent)game.getPlayer().getGraphicsComponent();
 		if (gComp != null) {
 			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics(spriteName);
-			gData.setGraphics(gComp);
+			gData.initSpriteGrapComponent(gComp);
 		}
 	}
 	

@@ -22,7 +22,7 @@ public class Animation {
 	
 	private static final int DEFAULT_FPS = 8;
 	
-	private final List<CroppedImage> sprites; // FIXME Use spritesheets
+	private final List<CroppedImage> sprites;
 	
 	private final int fps;
 	

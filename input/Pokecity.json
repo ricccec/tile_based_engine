@@ -529,7 +529,7 @@
 	],
 	"texts": [{"col":10, "row": 8, "text": "Prova"}],
 	"objects": [
-				{"type":"tree", "col":6, "row":11, "sprite":"sprite_tree"}
+				{"type":"tree", "col":6, "row":11, "sprite":"Cuttable Plant"}
 			],
 	"zones": [
 				{"type":"platform", "col":7, "row":9, "blocked":["up", "rt"]},
@@ -5346,7 +5346,7 @@
 				{
 					"col": 21,
 					"door": {
-						"targetLand": "Villaggio Pokè",
+						"targetLand": "Villaggio Pokï¿½",
 						"targetRow": 18,
 						"targetCol": 8
 					},
