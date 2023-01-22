@@ -8,10 +8,12 @@ import java.awt.Rectangle;
 import java.io.File;
 
 /**
+ * Represents both a tileset and a sprite
+ * 
  * @author Cecchi
  *
  */
-public class CroppedImage { // FIXME Rename to Sprite?
+public class CroppedImage { // FIXME Rename to Sprite and move to a different package?
 	
 	public  static final float DEFAULT_SCALE_FACTOR = 1f;
 	
@@ -31,6 +33,8 @@ public class CroppedImage { // FIXME Rename to Sprite?
 	
 	private final float scaleFactor;
 	
+	private final Point anchor;
+	
 	public CroppedImage(File image, Rectangle crop, Point anchor, float scaleFactor) {
 		this.image = image;
 		this.height = crop.height;
@@ -38,6 +42,7 @@ public class CroppedImage { // FIXME Rename to Sprite?
 		this.x = crop.x;
 		this.y = crop.y;
 		this.scaleFactor = scaleFactor;
+		this.anchor = anchor;
 	}
 	
 	public CroppedImage(File image, int x, int y, int width, int height, float scaleFactor) {
@@ -48,7 +53,7 @@ public class CroppedImage { // FIXME Rename to Sprite?
 		this(image, new Rectangle(x, y, width, height), DEFAULT_ANCHOR, DEFAULT_SCALE_FACTOR);
 	}
 
-	public File getTileSet() {
+	public File getImageFile() {
 		return image;
 	}
 
@@ -70,6 +75,10 @@ public class CroppedImage { // FIXME Rename to Sprite?
 
 	public float getScaleFactor() {
 		return scaleFactor;
+	}
+	
+	public Point getAnchor() {
+		return anchor;
 	}
 	
 	@Override

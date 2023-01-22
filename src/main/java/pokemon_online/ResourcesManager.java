@@ -84,7 +84,7 @@ public class ResourcesManager {
 		if (!croppedImgs.containsKey(cropImg)) { // Image is not loaded
 			// Load tileSet at the given scale factor
 			float scaleFactor = cropImg.getScaleFactor();
-			Image tileSet = getImage(cropImg.getTileSet().toString(), scaleFactor);
+			Image tileSet = getImage(cropImg.getImageFile().toString(), scaleFactor);
 			
 			// Crop the tileSet
 			int xScaled = Math.round(cropImg.getX()*scaleFactor); // TODO rounding?

@@ -77,14 +77,18 @@ public class SpriteGraphicsComponent extends GraphicsComponent {
 			return;
 		}
 		
-		// Draw object sprite
-		int scrX = viewport.getScreenX() + obj.getX();
-		int scrY = viewport.getScreenY() + obj.getY();
-		
+		// Get object's sprite
 		int objDir = (int)(90*Math.round((obj.getFacingDirection()/90)));
 		CroppedImage objSprite = graphState.getCurrentSprinte(objDir);
 		// TODO Sprite and bounding box might have different size: draw the image in such a way that its center is aligned with the bb's center
 		Image tileImg = ResourcesManager.getMgr().getCroppedImage(objSprite);
+		
+		// Draw object sprite
+		int spriteOffsetX = Math.round(objSprite.getScaleFactor()*objSprite.getAnchor().x); // TODO Round?
+		int spriteOffsetY = Math.round(objSprite.getScaleFactor()*objSprite.getAnchor().y);
+		int scrX = viewport.getScreenX() + obj.getX() - spriteOffsetX;
+		int scrY = viewport.getScreenY() + obj.getY() - spriteOffsetY;
+				
 		grap.drawImage(tileImg,scrX, scrY, null);
 		
 //		if ((phyComp != null) && (phyComp.isFrozen())) {

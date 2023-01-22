@@ -148,8 +148,8 @@ public class Game extends Thread {
 		int plyrCol = GameUtils.getColumn(plyrX);
 		int plyrY = getPlayer().getY();
 		int plyrRow = GameUtils.getColumn(plyrY);
-		grap.drawString("Player X: " + String.valueOf(plyrX) + "(" + String.valueOf(plyrCol) + ")", 0, 0);
-		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(" + String.valueOf(plyrRow) + ")", 0, 16);
+		grap.drawString("Player X: " + String.valueOf(plyrX) + "(c: " + String.valueOf(plyrCol) + ")", 0, 0);
+		grap.drawString("Player Y: " + String.valueOf(plyrY) + "(r: " + String.valueOf(plyrRow) + ")", 0, 16);
 		grap.drawString("Player X speed: " + String.valueOf(getPlayer().getPhysicsComponent().getSpeedX()), 0, 32);
 		grap.drawString("Player Y speed: " + String.valueOf(getPlayer().getPhysicsComponent().getSpeedY()), 0, 48);
 		grap.drawString("Player direction: " + String.valueOf(getPlayer().getPhysicsComponent().getMovingDirection()), 0, 64);

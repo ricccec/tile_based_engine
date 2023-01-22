@@ -74,7 +74,7 @@ public class GameTester extends JFrame {
 		SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("Cuttable Plant");
 		gData.initSpriteGrapComponent((SpriteGraphicsComponent)objTree.getGraphicsComponent());
 		
-		tester.spawnObject(objTree, 10, 9);
+		tester.spawnObject(objTree, 9, 10);
 		
 		
 		

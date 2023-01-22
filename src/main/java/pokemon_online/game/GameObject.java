@@ -253,7 +253,7 @@ public class GameObject {
 	
 	@Override
 	public String toString() {
-		return id + "[" + state + "]";
+		return "obj" + id + "[" + state + "]";
 	}
 
 }

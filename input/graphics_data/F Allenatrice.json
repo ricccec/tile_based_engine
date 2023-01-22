@@ -16,6 +16,10 @@
 									"number":0,
 									"sprite":"F Allenatrice_E_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -31,6 +35,10 @@
 									"number":0,
 									"sprite":"F Allenatrice_N_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -46,6 +54,10 @@
 									"number":0,
 									"sprite":"F Allenatrice_O_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -61,6 +73,10 @@
 									"number":0,
 									"sprite":"F Allenatrice_S_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -81,11 +97,19 @@
 									"number":0,
 									"sprite":"F Allenatrice_E_Walk.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								},
 								{
 									"number":1,
 									"sprite":"F Allenatrice_E_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -101,11 +125,19 @@
 									"number":0,
 									"sprite":"F Allenatrice_N_Walk.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								},
 								{
 									"number":1,
 									"sprite":"F Allenatrice_N_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -121,11 +153,19 @@
 									"number":0,
 									"sprite":"F Allenatrice_O_Walk.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								},
 								{
 									"number":1,
 									"sprite":"F Allenatrice_O_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
@@ -141,11 +181,19 @@
 									"number":0,
 									"sprite":"F Allenatrice_S_Walk.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								},
 								{
 									"number":1,
 									"sprite":"F Allenatrice_S_Stop.gif"
 									"scale":2.0,
+									"anchor": {
+										"x": 0,
+										"y": 4
+									}
 								}
 							]
 						}
