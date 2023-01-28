@@ -18,7 +18,7 @@ public class HudEventHandler extends EventHandler {
 		switch(evt.getType()) {
 			case HUD_DISPOSED:
 //				System.out.println("Disposed " + receiver);
-				receiver.setState(State.ACTIVE);
+				receiver.setState(State.OBJ_STATE_IDLE);
 				return true;
 			default:
 				return false;

@@ -16,7 +16,7 @@ import pokemon_online.physics.PokemonPhysicsComponent;
  * @author Cecchi
  *
  */
-public class TextEventHandler extends EventHandler { // FIXME Better "TextEventHandler"?
+public class TextEventHandler extends EventHandler {
 	
 	private final String text;
 	
@@ -30,7 +30,7 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 		switch(evt.getType()) {
 			case ACTION_PERFORMED:
 				GameObject sender = (GameObject)evt.getArguments().get(0);
-				if (receiver.getState() == State.ACTIVE) {
+				if (receiver.getState() == State.OBJ_STATE_IDLE) {
 //					System.out.println("HUD request");
 					sendHudTextDisplayReqs(world, sender, receiver);
 					return true;
@@ -39,9 +39,9 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 				}
 			case HUD_DISPOSED: // Unlock the object who is talking
 //				System.out.println("Disposed " + receiver);
-				assert(receiver.getState() != State.ACTIVE);
-				receiver.setState(State.ACTIVE);
-				world.removeMessageListener(Type.HUD_DISPOSED, receiver);
+				assert(receiver.getState() != State.OBJ_STATE_IDLE);
+				receiver.setState(State.OBJ_STATE_IDLE);
+				world.getGame().getEventManager().removeEventListener(Type.HUD_DISPOSED, receiver);
 				return true;
 			default:
 				return false;
@@ -69,13 +69,13 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 //		}
 		
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
-		sender.setState(State.FROZEN);
-		receiver.setState(State.FROZEN); // Ignore any other events
+		sender.setState(State.OBJ_STATE_MOVING);
+		receiver.setState(State.OBJ_STATE_MOVING); // Ignore any other events
 		world.getGame().getHud().pushState(new HudText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
-		world.addMessageListener(Type.HUD_DISPOSED, receiver);
-		world.addMessageListener(Type.HUD_DISPOSED, sender);
+		world.getGame().getEventManager().addEventListener(Type.HUD_DISPOSED, receiver);
+		world.getGame().getEventManager().addEventListener(Type.HUD_DISPOSED, sender);
 		
 	}
 

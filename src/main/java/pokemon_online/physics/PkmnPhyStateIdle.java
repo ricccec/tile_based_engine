@@ -31,7 +31,7 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		if (ctrlerDir == null) {
 			return null;
 		}
-		if (obj.getState() != State.ACTIVE) {
+		if (obj.getState() != State.OBJ_STATE_IDLE) {
 			return null;
 		}
 //		System.out.println("AAAAA " + obj.getState());

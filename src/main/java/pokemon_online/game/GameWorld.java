@@ -41,8 +41,6 @@ public class GameWorld {
 	private final Game game;
 	
 	private final GameObjectsContainer objContainer;
-	
-	private final Map<Event.Type, Set<GameObject>> msgListeners;
 
 	private Land currLand;
 	
@@ -52,7 +50,7 @@ public class GameWorld {
 		this.game = game;
 		objContainer = new GameObjectsContainer(this);
 		
-		msgListeners = new HashMap<>();
+		
 	}
 	
 	public Game getGame() {
@@ -70,15 +68,7 @@ public class GameWorld {
 		}
 	}
 	
-	// FIXME sendMessage and sendMessageToObjects 
-	public void sendMessageToObjects(Event msg) {
-		if (msgListeners.containsKey(msg.getType())) {
-			Collection<GameObject> listeners = new ArrayList<GameObject>(msgListeners.get(msg.getType())); // Create a copy 'cause during notifyEvent the listener could remove inself
-			for (GameObject listener : listeners) {
-				listener.notifyEvent(this, msg);
-			}
-		}
-	}
+
 	
 	public void spanObject(GameObject obj, int row, int col) {
 		obj.setPosition(32*col, 32*row); // FIXME Remove all hard-coded shit
@@ -317,17 +307,6 @@ public class GameWorld {
 		return objContainer.getObjects(row, col);
 	}
 
-	public void addMessageListener(Event.Type msgType, GameObject listener) {
-		if (!msgListeners.containsKey(msgType)) {
-			msgListeners.put(msgType, new HashSet<>());
-		}
-		msgListeners.get(msgType).add(listener);
-	}
-	
-	public void removeMessageListener(Event.Type msgType, GameObject listener) {
-		if (msgListeners.containsKey(msgType)) {
-			msgListeners.get(msgType).remove(listener);
-		}
-	}
+
 
 }

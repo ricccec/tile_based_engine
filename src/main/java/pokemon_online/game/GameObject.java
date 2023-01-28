@@ -33,8 +33,9 @@ import pokemon_online.physics.PhysicsComponent;
 public class GameObject {
 	
 	public enum State {
-		ACTIVE,
-		FROZEN;
+		OBJ_STATE_IDLE,
+		OBJ_STATE_MOVING,
+		OBJ_STATE_TALKING;
 	}
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
@@ -75,7 +76,7 @@ public class GameObject {
 		
 		id = nextObjectId++;
 		
-		state = State.ACTIVE;
+		state = State.OBJ_STATE_IDLE;
 		
 		ctrl = new Controller();
 		

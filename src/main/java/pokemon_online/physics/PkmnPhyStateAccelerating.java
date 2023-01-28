@@ -33,9 +33,9 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 			// Controller released, go back to idle
 			return new PkmnPhyStateIdle(phyComp);
 		}
-		if (obj.getState() != State.ACTIVE) {
+		if (obj.getState() != State.OBJ_STATE_IDLE) {
 			// Something has frozen the Entity, go back to idle
-			return new PkmnPhyStateIdle(phyComp);
+			return new PkmnPhyStateIdle(phyComp); // FIXME what's this?
 		}
 		
 		if (GameObjectUtils.getCardinalFacingDir(obj) != ctrlerDir) {

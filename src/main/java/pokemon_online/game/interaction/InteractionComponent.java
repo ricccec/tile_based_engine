@@ -57,7 +57,7 @@ public class InteractionComponent extends Component {
 		
 //		System.out.println(obj.getX() + " " + obj.getY() + " " + obj.getState());
 		if (//obj.getPhysicsComponent().isCrossingCells() || FIXME see below
-			(obj.getState() != State.ACTIVE)) {
+			(obj.getState() != State.OBJ_STATE_IDLE)) { // FIXME This means objects doesn't respond to controls except while on IDLE
 			return;
 		}
 		

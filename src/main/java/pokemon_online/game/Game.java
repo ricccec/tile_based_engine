@@ -26,13 +26,13 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
-	private final Stack<Event> msgQueue;
-	
 	private final Stack<GameState> stateStack;
 	
 	private final GameWorld world;
 	
 	private final Hud hud;
+	
+	private final EventManager evtMgr;
 
 	private final GameStatistics stats;
 	
@@ -48,9 +48,9 @@ public class Game extends Thread {
 		player = new Player();
 		world = new GameWorld(this);
 		hud = new Hud(this);
+		evtMgr = new EventManager(this);
 		stats = new GameStatistics();
 		
-		msgQueue = new Stack<>();
 		stateStack  = new Stack<>();
 		
 		keyboard = new Keyboard();
@@ -80,6 +80,10 @@ public class Game extends Thread {
 		return hud;
 	}
 	
+	public EventManager getEventManager() {
+		return evtMgr;
+	}
+	
 	@Override
 	public void run() {
 		
@@ -102,7 +106,7 @@ public class Game extends Thread {
 			
 			stats.beforeUpdate();
 			
-			dispatchMessages(); // Dispatch prev. frame messages
+			evtMgr.update(); // Dispatch prev. frame messages
 			
 			world.beforeUpdate();
 			
@@ -126,9 +130,6 @@ public class Game extends Thread {
 
 	}
 	
-	public void queueMessage(Event msg) {
-		msgQueue.push(msg);
-	}
 
 	public long getLag() {
 		return lag;
@@ -157,20 +158,6 @@ public class Game extends Thread {
 		stats.print(GraphicsUtils.translate(grap, 0,  80));
 	}
 
-	private void dispatchMessages() {
-		while(!msgQueue.isEmpty()) {
-			Event msg = msgQueue.pop();
-			switch (msg.getType()) { // FIXME Move this logic inside the components
-				case HUD_DISPOSED:
-					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
-					world.sendMessageToObjects(msg);
-					break;
-				default:
-				case ACTION_PERFORMED:
-					break;
-				
-			}
-		}
-	}
+	
 
 }

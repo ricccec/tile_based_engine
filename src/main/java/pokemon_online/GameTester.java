@@ -6,6 +6,7 @@ package pokemon_online;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -46,15 +47,18 @@ public class GameTester extends JFrame {
 		
 		tester.jumpToLand(START_LAND, START_ROW, START_COL);
 
-		// Spawn NPC
-		for (int i = 0; i < 100; i++) {
+		// Spawn NPCs at random positions
+		for (int i = 0; i < 128; i++) {
 			GameObject obj = new GameObject();
+			
 			IAComponent iaComponent = new AdvancedRandomIAComponent(obj);
 			obj.setIAComponent(iaComponent);
+			
 			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(obj);
 			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
 			gData.initSpriteGrapComponent(gComp);
 			obj.setGraphicsComponent(gComp);
+			
 			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
 			obj.setPhysicsComponent(phComp);
 			
@@ -63,7 +67,11 @@ public class GameTester extends JFrame {
 			obj.getInteractionComponent().addEventHandler(new TextEventHandler("Dialogo"));
 			obj.getInteractionComponent().addEventHandler(new PushMessageHandler());
 			
-			tester.spawnObject(obj, i, i);
+			// Generate random position
+			Random rand = new Random();
+			int landRow = (int)(rand.nextFloat()*(tester.getCurrentLand().getRowsCount() - 1));
+			int landCol = (int)(rand.nextFloat()*(tester.getCurrentLand().getColsCount() - 1));
+			tester.spawnObject(obj, landRow, landCol);
 		}
 		
 		// Spawn CUTTABLE TREE
@@ -86,11 +94,11 @@ public class GameTester extends JFrame {
 	
 	private static final long serialVersionUID = 4022568139447850178L;
 
-	Land[] elencoLand;
-
 	Timer timer;
 	
 	Game game;
+	
+	private Land currLand;
 
 	private AreaGioco areaGioco;
 	
@@ -113,12 +121,16 @@ public class GameTester extends JFrame {
 	
 	public void jumpToLand(String landName, int playerRow, int playerCol) {
 		// Load land
-		Land land = loadLand(landName);
-		if (land == null) {
+		currLand = loadLand(landName);
+		if (currLand == null) {
 			throw new IllegalArgumentException("Cannot load land " + landName);
 		} else {
-			game.jumpToLand(land, playerCol, playerRow);
+			game.jumpToLand(currLand, playerCol, playerRow);
 		}
+	}
+	
+	public Land getCurrentLand() {
+		return currLand;
 	}
 	
 	public void startGameLoop() {

@@ -1,0 +1,83 @@
+/**
+ * 
+ */
+package pokemon_online.game;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
+import pokemon_online.game.interaction.event.Event;
+
+/**
+ * @author Riccardo
+ *
+ */
+/**
+ * @author Riccardo
+ *
+ */
+public class EventManager {
+	
+	private final Stack<Event> evtQueue;
+	
+	private final Map<Event.Type, Set<GameObject>> evtListeners;
+	
+	private final Game game;
+	
+	public EventManager(Game game) {
+		this.game = game;
+		
+		evtListeners = new HashMap<>();
+		evtQueue = new Stack<>();
+	}
+	
+	public void addEventListener(Event.Type evtType, GameObject listener) {
+		if (!evtListeners.containsKey(evtType)) {
+			evtListeners.put(evtType, new HashSet<>());
+		}
+		evtListeners.get(evtType).add(listener);
+	}
+	
+	public void removeEventListener(Event.Type evtType, GameObject listener) {
+		if (evtListeners.containsKey(evtType)) {
+			evtListeners.get(evtType).remove(listener);
+		}
+	}
+	
+	/**
+	 * Puts an event in a queue to be fired later
+	 * @param evt
+	 */
+	public void queueEvent(Event evt) {
+		evtQueue.push(evt);
+	}
+	
+	public void triggerEvent(Event evt) {
+		if (evtListeners.containsKey(evt.getType())) {
+			Collection<GameObject> listeners = new ArrayList<GameObject>(evtListeners.get(evt.getType())); // FIXME Create a copy 'cause during notifyEvent the listener could remove inself
+			for (GameObject listener : listeners) {
+				listener.notifyEvent(game.getWorld(), evt);
+			}
+		}
+	}
+	
+	public void abortEvent(Event evt) {
+		// Removes an event from the queue
+		// TODO
+	}
+	
+	public void update() {
+		// Broadcasts the queued events to all the listeners
+		while(!evtQueue.isEmpty()) {
+			Event evt = evtQueue.pop();
+			triggerEvent(evt);
+		}
+	}
+
+
+}
