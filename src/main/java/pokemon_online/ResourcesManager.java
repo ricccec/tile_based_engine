@@ -133,16 +133,6 @@ public class ResourcesManager {
 		return images.get(imgName).get(scaleFactor);
 	}
 	
-	public Image loadImage(String imgName) {
-		for (File dir : directories) {
-			try {
-				Image img = ImageIO.read(new File(dir, imgName));
-				return img;
-			} catch (IOException e) {}
-		}
-		return null;
-	}
-	
 	public SpriteData loadGraphicsData(String graphDataName) throws FileNotFoundException, IOException, ParseException {
 		// FIXME This requires the json to have the same name of the object, which is not good
 		String fileName = graphDataName + ".json";
@@ -157,6 +147,16 @@ public class ResourcesManager {
         	return new SpriteData(graphJSON);
         }
 		
+	}
+	
+	private Image loadImage(String imgName) {
+		for (File dir : directories) {
+			try {
+				Image img = ImageIO.read(new File(dir, imgName));
+				return img;
+			} catch (IOException e) {}
+		}
+		return null;
 	}
 	
 	private File findFile(String filename) {

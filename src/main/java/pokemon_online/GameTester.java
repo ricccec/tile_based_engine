@@ -41,6 +41,9 @@ public class GameTester extends JFrame {
 	
 	public static void main(String s[]) {  
 		
+
+		Random rand = new Random(45);
+		
 		GameTester tester = new GameTester();		
 		
 		tester.setPlayerSprite("F Allenatrice");
@@ -68,7 +71,6 @@ public class GameTester extends JFrame {
 			obj.getInteractionComponent().addEventHandler(new PushMessageHandler());
 			
 			// Generate random position
-			Random rand = new Random();
 			int landRow = (int)(rand.nextFloat()*(tester.getCurrentLand().getRowsCount() - 1));
 			int landCol = (int)(rand.nextFloat()*(tester.getCurrentLand().getColsCount() - 1));
 			tester.spawnObject(obj, landRow, landCol);

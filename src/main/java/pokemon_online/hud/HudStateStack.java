@@ -15,6 +15,9 @@ import org.apache.log4j.Logger;
 import pokemon_online.game.Controller;
 
 /**
+ * A {@link HudState} that incapsulates multiple {@link HudState}. Only the
+ * top-most state is active and gets updated at every thick
+ * 
  * @author Cecchi
  *
  */
@@ -26,7 +29,6 @@ public class HudStateStack extends HudState {
 	
 	public HudStateStack() {
 		states = new ArrayDeque<>();
-		
 	}
 	
 	public void pushState(HudState state) {
@@ -59,8 +61,6 @@ public class HudStateStack extends HudState {
 
 	@Override
 	public void update(long dtMillisec, Controller controller) {
-
-		
 		
 		if (!states.isEmpty()) {
 			// Update active state (the one on top of HUD)

@@ -5,12 +5,10 @@ package pokemon_online.game.interaction.event;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
-import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.GameWorld;
+import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.hud.HudText;
-import pokemon_online.physics.PhysicsComponent;
-import pokemon_online.physics.PokemonPhysicsComponent;
 
 /**
  * @author Cecchi
