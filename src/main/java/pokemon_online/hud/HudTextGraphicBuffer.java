@@ -3,6 +3,8 @@
  */
 package pokemon_online.hud;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
@@ -52,13 +54,17 @@ public class HudTextGraphicBuffer {
 		
 		content = new StringBuilder();
 		
-		font = new PkmnFont(HUD_FONT_SPRITE_FILE, 9, 9, 2);  // FIXME Remove hard-coded shit
+		font = new PkmnFont(HUD_FONT_SPRITE_FILE, 8, 8, 2);  // FIXME Remove hard-coded shit
 	}
 
 	public void setScrollEnabled(boolean b) {
 		
 	}
 	
+	/**
+	 * Enable/disable text wrapping when reaching the end of a line
+	 * @param b
+	 */
 	public void setWrapTextEnabled(boolean b ) {
 		wrapLineFlag = b;
 	}
@@ -87,6 +93,11 @@ public class HudTextGraphicBuffer {
 		return currRow;
 	}
 	
+	/**
+	 * Returns the position of the column cursor in the current row.
+	 * When line wrapping is enable, the column cursor goes from <code>0</code> to <code>{@link #getColCount()} - 1</code>
+	 * @return The position of the column cursor
+	 */
 	public int getColCursor() {
 		return currCol;
 	}
@@ -95,8 +106,16 @@ public class HudTextGraphicBuffer {
 		
 		content.append(c);
 		
-		if ((currRow >= rowCount) || (currCol >= colCount)) {
+		if ((currRow >= rowCount)) {
 			return; // TODO handle scrolling
+		}
+		
+		if ((currCol >= colCount)) {
+			if (wrapLineFlag) {
+				nextRow();
+			} else {
+				return;
+			}
 		}
 		
 		int x = currCol*colSpacing;
@@ -105,6 +124,18 @@ public class HudTextGraphicBuffer {
 		grapBuffer.getGraphics().drawImage(font.getGlyph(c), x, y, null);
 		
 		nextColumn();
+	}
+	
+	public void clear() {
+	
+		content.setLength(0);
+		
+		currCol = 0;
+		currRow = 0;
+		
+		Graphics g = grapBuffer.getGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, grapBuffer.getWidth(), grapBuffer.getHeight());
 	}
 	
 	@Override

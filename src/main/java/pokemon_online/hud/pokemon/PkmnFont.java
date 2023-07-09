@@ -45,12 +45,14 @@ public class PkmnFont implements GameFont {
 	@Override
 	public Image getGlyph(char c) {
 		
-		int charRow = (int) Math.ceil(((float)c)/spriteGridColsCount) - 1;
+		int charRow = (int) Math.ceil((c + 1f)/spriteGridColsCount) - 1;
 		int charCol = ((int)c) % spriteGridColsCount;
 		
-		System.out.println("Character " + c + "(" + (int)c + ") is at r:" + charRow + " c:" + charCol);
 		int charX = charCol*charWidth;
 		int charY = charRow*charHeight;
+		
+		// System.out.println("Character " + c + "(" + (int)c + ") is at r:" + charRow + " c:" + charCol + "(" + charX + ", " + charY + ")");
+		
 		CroppedImage charSprite = new CroppedImage(fontSpriteFile, charX, charY, charWidth, charHeight, scaleFactor);
 		
 		return ResourcesManager.getMgr().getCroppedImage(charSprite);

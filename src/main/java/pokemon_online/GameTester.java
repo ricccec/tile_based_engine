@@ -23,6 +23,7 @@ import pokemon_online.game.interaction.event.PushMessageHandler;
 import pokemon_online.game.interaction.event.TextEventHandler;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
+import pokemon_online.hud.HudText;
 import pokemon_online.land.Land;
 import pokemon_online.land.LandManager;
 import pokemon_online.physics.PokemonPhysicsComponent;
@@ -52,28 +53,29 @@ public class GameTester extends JFrame {
 
 		// Spawn NPCs at random positions
 		for (int i = 0; i < 128; i++) {
-			GameObject obj = new GameObject();
+			GameObject gameObjNPC = new GameObject();
 			
-			IAComponent iaComponent = new AdvancedRandomIAComponent(obj);
-			obj.setIAComponent(iaComponent);
+			IAComponent iaComponent = new AdvancedRandomIAComponent(gameObjNPC);
+			gameObjNPC.setIAComponent(iaComponent);
 			
-			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(obj);
+			SpriteGraphicsComponent gComp = new SpriteGraphicsComponent(gameObjNPC);
 			SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("F Allenatrice");
 			gData.initSpriteGrapComponent(gComp);
-			obj.setGraphicsComponent(gComp);
+			gameObjNPC.setGraphicsComponent(gComp);
 			
-			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(obj);
-			obj.setPhysicsComponent(phComp);
+			PokemonPhysicsComponent phComp = new PokemonPhysicsComponent(gameObjNPC);
+			gameObjNPC.setPhysicsComponent(phComp);
 			
 			// NPC dialogue
-			obj.setInteractionComponent(new InteractionComponent(obj));
-			obj.getInteractionComponent().addEventHandler(new TextEventHandler("Dialogo"));
-			obj.getInteractionComponent().addEventHandler(new PushMessageHandler());
+			String dialogue = "ddddThis is a long NPC dialogue";
+			gameObjNPC.setInteractionComponent(new InteractionComponent(gameObjNPC));
+			gameObjNPC.getInteractionComponent().addEventHandler(new TextEventHandler(dialogue));
+			gameObjNPC.getInteractionComponent().addEventHandler(new PushMessageHandler());
 			
 			// Generate random position
 			int landRow = (int)(rand.nextFloat()*(tester.getCurrentLand().getRowsCount() - 1));
 			int landCol = (int)(rand.nextFloat()*(tester.getCurrentLand().getColsCount() - 1));
-			tester.spawnObject(obj, landRow, landCol);
+			tester.spawnObject(gameObjNPC, landRow, landCol);
 		}
 		
 		// Spawn CUTTABLE TREE
@@ -92,6 +94,8 @@ public class GameTester extends JFrame {
 		tester.startGameLoop();
 		
 		tester.setVisible(true);
+		
+		tester.game.getHud().pushState(new HudText("ddddThis is a long NPC dialogue abcdefghilmnopqrstuvz"));
 	}
 	
 	private static final long serialVersionUID = 4022568139447850178L;
