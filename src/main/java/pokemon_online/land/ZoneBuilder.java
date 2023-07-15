@@ -142,7 +142,7 @@ public class ZoneBuilder {
 		PlatformObstacle block = null;
 		switch (dir) {
 			case DIR_DOWN:
-				block = new PlatformObstacle(initPos.withRow(initPos.getRow() - 1));
+				block = new PlatformObstacle(initPos.withRow(initPos.getRow() - 1));  // Add a platform obstacle one row above
 				block.addBlockedDirection(CardinalDirection.DIR_UP);
 				break;
 			case DIR_LEFT:

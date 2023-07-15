@@ -40,27 +40,22 @@ public abstract class Zone extends GameObject {
 			}
 		});
 		
-		setGraphicsComponent(new GraphicsComponent(this) {
-			
-			@Override
-			public void updateAnimation(long dt) {}
-			
-			@Override
-			public void render(Graphics2D grap, Viewport viewport) {// FIXME Move to an utility class
-				if (Configuration.DEBUG) {
-					int zoneScrX = viewport.getScreenX() + obj.getX();
-					int zoneScrY = viewport.getScreenY() + obj.getY();
-					
-					grap.setColor(getColor());
-					grap.fillRect(zoneScrX, zoneScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
-				}
-			}
-		});
+	}
+	
+	@Override
+	public void renderDebugInfo(Graphics2D grap, Viewport viewport) {
+		super.renderDebugInfo(grap, viewport);
+		
+		int zoneScrX = viewport.getScreenX() + getX();
+		int zoneScrY = viewport.getScreenY() + getY();
+		
+		grap.setColor(getDebugColor());
+		grap.fillRect(zoneScrX, zoneScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
 	}
 	
 	protected abstract void onExiting(GameWorld world, GameObject zone, GameObject entity);
 
 	protected abstract void onEntering(GameWorld world, GameObject zone, GameObject entity);
 	
-	protected abstract Color getColor();
+	protected abstract Color getDebugColor();
 }

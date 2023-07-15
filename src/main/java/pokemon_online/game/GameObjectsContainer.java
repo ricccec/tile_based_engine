@@ -147,21 +147,21 @@ public class GameObjectsContainer implements GameObjectListener {
 			cell2Zones.get(objCell).add(obj);
 		}
 		
-		// FIXME
-		if (ADD_ZONE_OBJECTS) {
-			GameObject bBoxGraphics = null;
-			if (GameObjectUtils.isZone(obj)) {
-				bBoxGraphics = new ZoneDebugObject(new Color(1f, 1f, 0f, .5f));
-			}
-			
-			if (bBoxGraphics != null) {
-				bBoxGraphics.setX(obj.getX());
-				bBoxGraphics.setY(obj.getY());
-				addObject(bBoxGraphics);
-				zoneGraphics.put(obj, bBoxGraphics);
-//				objects.add(bBoxGraphics);
-			}
-		}
+//		// FIXME
+//		if (ADD_ZONE_OBJECTS) {
+//			GameObject bBoxGraphics = null;
+//			if (GameObjectUtils.isZone(obj)) {
+//				bBoxGraphics = new ZoneDebugObject(new Color(1f, 1f, 0f, .5f));
+//			}
+//			
+//			if (bBoxGraphics != null) {
+//				bBoxGraphics.setX(obj.getX());
+//				bBoxGraphics.setY(obj.getY());
+//				addObject(bBoxGraphics);
+//				zoneGraphics.put(obj, bBoxGraphics);
+////				objects.add(bBoxGraphics);
+//			}
+//		}
 		
 	}
 

@@ -75,6 +75,12 @@ public class GameWorld {
 		objContainer.addObject(obj);
 		
 		LOGGER.debug("Object " + obj + " spawned at (" + row + ", " + col + ")");
+		
+		// Obj might have been spawned on a zone
+		PhysicsComponent phyComp = obj.getPhysicsComponent();
+		if (phyComp != null) {
+			phyComp.checkZoneInteraction(this);
+		}
 	}
 	
 	public Collection<GameObject> getAllObjects() {

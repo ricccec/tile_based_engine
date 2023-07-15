@@ -213,7 +213,7 @@ public class GameObject {
 			int bBoxScrX = viewport.getScreenX() + GameUtils.getX(bBox.getColumn());
 			int bBoxScrY = viewport.getScreenY() + GameUtils.getY(bBox.getRow());
 			
-			grap.setColor(new Color(1f, 0f, 0f, 0.5f));
+			grap.setColor(new Color(1f, 0f, 0f, 0.25f));
 			grap.fillRect(bBoxScrX, bBoxScrY, Configuration.CELL_SIZE_PXLS, Configuration.CELL_SIZE_PXLS);
 		}
 					

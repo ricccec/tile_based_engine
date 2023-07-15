@@ -95,7 +95,7 @@ public class GameTester extends JFrame {
 		
 		tester.setVisible(true);
 		
-		tester.game.getHud().pushState(new HudText("ddddThis is a long NPC dialogue abcdefghilmnopqrstuvz"));
+		//tester.game.getHud().pushState(new HudText("ddddThis is a long NPC dialogue abcdefghilmnopqrstuvz"));
 	}
 	
 	private static final long serialVersionUID = 4022568139447850178L;
@@ -161,6 +161,8 @@ public class GameTester extends JFrame {
 	public void spawnObject(GameObject obj, int row, int col) {
 		game.getWorld().spanObject(obj, row, col);
 		// TODO If the game is running, ensure the world state doesn't change within a tick. Use a protected section or an event system
+		
+		
 	}
 	
 	private Land loadLand(String name) {

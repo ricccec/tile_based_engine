@@ -47,7 +47,7 @@ public class PlatformObstacle extends FixedObstacle {
 	
 	@Override
 	protected Color getColor() {
-		return GameUtils.getColor(Color.ORANGE, .5f);
+		return GameUtils.getColor(Color.ORANGE, .25f);
 	}
 
 }

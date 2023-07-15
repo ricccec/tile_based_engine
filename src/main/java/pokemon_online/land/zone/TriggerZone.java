@@ -25,7 +25,7 @@ public class TriggerZone extends Zone {
 			@Override
 			protected Color getColor() {
 				if (isTriggered) {
-					return new Color(1f, 0, 0, .5f);
+					return new Color(1f, 0, 0, .25f);
 				} else {
 					return new Color(0, 0, 0, 0);
 				}
@@ -56,7 +56,7 @@ public class TriggerZone extends Zone {
 	}
 
 	@Override
-	protected Color getColor() {
-		return new Color(1f, 1f, 0f, .5f);
+	protected Color getDebugColor() {
+		return new Color(1f, 1f, 0f, .25f);
 	}
 }

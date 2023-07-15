@@ -72,7 +72,7 @@ public abstract class PhysicsComponent extends Component {
 	public void checkZoneInteraction(GameWorld world) {
 		Cell prevBBox = getPrevBoundingBox();
 		Cell currBBox = getBoundingBox();
-		if (!prevBBox.equals(currBBox)) {
+		if (!currBBox.equals(prevBBox)) {
 			// Notify cells just left
 			for (GameObject zone : world.getZones(prevBBox)) {
 				assert(GameObjectUtils.isZone(zone));
@@ -106,6 +106,9 @@ public abstract class PhysicsComponent extends Component {
 	}
 	
 	public Cell getPrevBoundingBox() {
+		if (prevBBox.isEmpty()) {
+			return null;
+		}
 		return prevBBox.peek();
 	}
 	
