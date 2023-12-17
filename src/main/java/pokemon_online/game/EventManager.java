@@ -57,6 +57,10 @@ public class EventManager {
 		evtQueue.push(evt);
 	}
 	
+	/**
+	 * Fire the event right now, without waiting for the loop to call {@link EventManager#update()}
+	 * @param evt
+	 */
 	public void triggerEvent(Event evt) {
 		if (evtListeners.containsKey(evt.getType())) {
 			Collection<GameObject> listeners = new ArrayList<GameObject>(evtListeners.get(evt.getType())); // FIXME Create a copy 'cause during notifyEvent the listener could remove inself
