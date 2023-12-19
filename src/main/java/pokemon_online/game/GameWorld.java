@@ -86,7 +86,19 @@ public class GameWorld {
 	public Collection<GameObject> getAllObjects() {
 		return objContainer.getAllObjects();
 	}
-	
+
+	/**
+	 * Called by the <b>game loop</b> at the very beginning of each tick. Before
+	 * this function executes, the event queue of each object contains:
+	 * <ol>
+	 * <li>The events generated at frame i-2</li>
+	 * <li>The constant {@link GameObject#EVT_QUEUE_END}</li>
+	 * <li>The events generated at frame i-1</li>
+	 * </ol>
+	 * This function removes the first bunch of events, so the only events taken
+	 * into account during the current frame will be those generated in the previous
+	 * tick
+	 */
 	public void beforeUpdate() {
 		for (GameObject obj : getAllObjects()) { // FIXME Only active objects
 			

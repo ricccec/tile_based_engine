@@ -230,10 +230,13 @@ public class GameObject {
 	 */
 	public void notifyEvent(GameWorld world, Event evt) {
 		LOGGER.debug("Object " + this + " has received an event " + evt.getType());
+		boolean handled = false;
 		if (interComp != null) {
-			interComp.notifyEvent(world, evt); // Event preprocessing
+			handled = interComp.notifyEvent(world, evt); // Event preprocessing
 		}
-		pendingEvents.addLast(evt); // Put the message into the queue so it can be processed during the next frame
+		if (!handled) {
+			pendingEvents.addLast(evt); // Put the message into the queue so it can be processed during the next frame
+		}
 	}
 	
 	public Deque<Event> getPendingEventsQueue() {

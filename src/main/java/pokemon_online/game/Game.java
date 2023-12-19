@@ -106,7 +106,7 @@ public class Game extends Thread {
 			
 			stats.beforeUpdate();
 			
-			evtMgr.update(); // Dispatch prev. frame messages
+			evtMgr.update(); // Dispatch prev. frame messages to their listeners
 			
 			world.beforeUpdate();
 			
@@ -114,7 +114,6 @@ public class Game extends Thread {
 			world.updateControllers();
 			
 			world.updateWorld(Configuration.MS_PER_UPDATE);
-			
 			
 			world.updateAnimation(Configuration.MS_PER_UPDATE);
 			

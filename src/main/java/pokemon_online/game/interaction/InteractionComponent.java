@@ -43,14 +43,20 @@ public class InteractionComponent extends Component {
 	 * {@link updateInteraction} of another Entity. The method is used to handle
 	 * events in the same frame where they are generated, instead of the next frame.
 	 * 
+	 * Return <code>true<code> if the event has been handled and doesn't need to be added to the object's queue of pending events
+	 * 
 	 * @param world
 	 * @param msg
 	 */
-	public void notifyEvent(GameWorld world, Event msg) {
+	public boolean notifyEvent(GameWorld world, Event msg) {
 		// Pass event to handlers (if any) to process it during the current frame
 		for (EventHandler handler : msgHandlers) {
-			handler.handleEvent(world, obj, msg);
+			boolean handled = handler.handleEvent(world, obj, msg);
+			if (handled) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public void updateInteraction(GameWorld world) {
