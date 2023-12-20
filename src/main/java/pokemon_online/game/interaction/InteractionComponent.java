@@ -59,6 +59,10 @@ public class InteractionComponent extends Component {
 		return false;
 	}
 
+	/**
+	 * Called at the end of each tick of the <b>GAME LOOP</b> to process the pending events
+	 * @param world
+	 */
 	public void updateInteraction(GameWorld world) {
 		
 //		System.out.println(obj.getX() + " " + obj.getY() + " " + obj.getState());

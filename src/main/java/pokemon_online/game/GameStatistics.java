@@ -14,7 +14,9 @@ public class GameStatistics {
 	
 	private static final float AVG_INERTIA = 1f;
 	
-	private long tickCount;
+	private long gameTimeMs;
+	
+	private int tickCount;
 	
 	private float avgMsPerUpdate;
 	
@@ -24,9 +26,10 @@ public class GameStatistics {
 		beforeUpdtTime = System.currentTimeMillis();
 	}
 	
-	public void afterUpdate() {
+	public void afterUpdate(long dtMillisec) {
 		
 		tickCount++;
+		gameTimeMs += dtMillisec;
 		
 		// Compute avg. update time
 		long elapsed = System.currentTimeMillis() - beforeUpdtTime;
@@ -42,5 +45,13 @@ public class GameStatistics {
 		grap.setColor(Color.BLUE);
 		grap.drawString("Ticks: " + tickCount, 0, 0);
 		grap.drawString("Avg. ms per update: " + avgMsPerUpdate, 0, 16);
+	}
+	
+	public long getGameTimeMs() {
+		return gameTimeMs;
+	}
+	
+	public long getCurrTickCount() {
+		return tickCount;
 	}
 }

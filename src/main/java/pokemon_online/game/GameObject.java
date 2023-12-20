@@ -44,7 +44,7 @@ public class GameObject {
 	
 	private static int nextObjectId = 0; // FIXME
 	
-	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
+	// FIXME Don't use the Observer pattern, make the object broadcast its events through the event subsystem
 	private final Collection<GameObjectListener> listeners;
 	
 	private final Deque<Event> pendingEvents;
@@ -229,7 +229,7 @@ public class GameObject {
 	 * @param evt
 	 */
 	public void notifyEvent(GameWorld world, Event evt) {
-		LOGGER.debug("Object " + this + " has received an event " + evt.getType());
+		LOGGER.debug("Object " + this + " has received an event " + evt.getType() + " @T" + Game.getInstance().getGameStats().getCurrTickCount());
 		boolean handled = false;
 		if (interComp != null) {
 			handled = interComp.notifyEvent(world, evt); // Event preprocessing

@@ -38,23 +38,16 @@ public class GameWorld {
 	
 	private static final boolean DRAW_B_BOX = true;
 	
-	private final Game game;
-	
 	private final GameObjectsContainer objContainer;
 
 	private Land currLand;
 	
 	private long worldTimeMs;
 
-	public GameWorld(Game game) {
-		this.game = game;
+	public GameWorld() {
 		objContainer = new GameObjectsContainer(this);
 		
 		
-	}
-	
-	public Game getGame() {
-		return game;
 	}
 
 	public void jumpToLand(Land land) {
@@ -76,7 +69,7 @@ public class GameWorld {
 		
 		LOGGER.debug("Object " + obj + " spawned at (" + row + ", " + col + ")");
 		
-		// Obj might have been spawned on a zone
+		// Obj might have been SPAWNED on a zone
 		PhysicsComponent phyComp = obj.getPhysicsComponent();
 		if (phyComp != null) {
 			phyComp.checkZoneInteraction(this);

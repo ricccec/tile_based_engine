@@ -3,6 +3,7 @@
  */
 package pokemon_online.game.interaction.event;
 
+import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
 import pokemon_online.game.GameWorld;
@@ -39,7 +40,7 @@ public class TextEventHandler extends EventHandler {
 //				System.out.println("Disposed " + receiver);
 				assert(receiver.getState() != State.OBJ_STATE_IDLE);
 				receiver.setState(State.OBJ_STATE_IDLE);
-				world.getGame().getEventManager().removeEventListener(Type.HUD_DISPOSED, receiver);
+				Game.getEventManager().removeEventListener(Type.HUD_DISPOSED, receiver);
 				return true;
 			default:
 				return false;
@@ -69,11 +70,11 @@ public class TextEventHandler extends EventHandler {
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
 		sender.setState(State.OBJ_STATE_MOVING);
 		receiver.setState(State.OBJ_STATE_MOVING); // Ignore any other events
-		world.getGame().getHud().pushState(new HudText(text));
+		Game.getHud().pushState(new HudText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
-		world.getGame().getEventManager().addEventListener(Type.HUD_DISPOSED, receiver);
-		world.getGame().getEventManager().addEventListener(Type.HUD_DISPOSED, sender);
+		Game.getEventManager().addEventListener(Type.HUD_DISPOSED, receiver);
+		Game.getEventManager().addEventListener(Type.HUD_DISPOSED, sender);
 		
 	}
 

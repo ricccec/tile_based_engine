@@ -8,6 +8,9 @@ import pokemon_online.game.interaction.event.Event;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
+
+import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
 
@@ -17,6 +20,8 @@ import pokemon_online.game.GameWorld;
  */
 public class PkmnControlHandler extends ControlHandler {
 
+	private static final Logger LOGGER = Logger.getLogger(PkmnControlHandler.class);
+			
 	private static final PkmnControlHandler INSTANCE = new PkmnControlHandler();
 	
 	public static InteractionComponent getInteractionComponent(GameObject obj) {
@@ -35,6 +40,8 @@ public class PkmnControlHandler extends ControlHandler {
 		if (objects.isEmpty()) {
 			return false;
 		}
+		
+		LOGGER.debug("Object " + this + " sending event @T" + Game.getInstance().getGameStats().getCurrTickCount());
 		
 		for (GameObject target : objects) {
 			switch(cntrl) {

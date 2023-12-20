@@ -73,12 +73,12 @@ public abstract class PhysicsComponent extends Component {
 		Cell prevBBox = getPrevBoundingBox();
 		Cell currBBox = getBoundingBox();
 		if (!currBBox.equals(prevBBox)) {
-			// Notify cells just left
+			// Notify all the cells that the object has exited
 			for (GameObject zone : world.getZones(prevBBox)) {
 				assert(GameObjectUtils.isZone(zone));
 				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_EXITING));
 			}
-			// Notify cells entering
+			// Notify all the cells that the object is entering
 			for (GameObject zone : world.getZones(currBBox)) {
 				assert(GameObjectUtils.isZone(zone));
 				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_ENTERING));

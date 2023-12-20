@@ -26,6 +26,28 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
+	public static final void initGame() {
+		gameInstance = new Game();
+	}
+	
+	public static final Game getInstance() {
+		return gameInstance;
+	}
+	
+	// *************************
+	// Subsystems access methods
+	// *************************
+	
+	public static final EventManager getEventManager() {
+		return gameInstance.evtMgr;
+	}
+	
+	public static final Hud getHud() {
+		return gameInstance.hud;
+	}
+	
+	private static Game gameInstance;
+	
 	private final Stack<GameState> stateStack;
 	
 	private final GameWorld world;
@@ -44,9 +66,9 @@ public class Game extends Thread {
 	
 	private final Keyboard keyboard;
 	
-	public Game() {
+	private Game() {
 		player = new Player();
-		world = new GameWorld(this);
+		world = new GameWorld();
 		hud = new Hud(this);
 		evtMgr = new EventManager(this);
 		stats = new GameStatistics();
@@ -75,15 +97,7 @@ public class Game extends Thread {
 	public GameWorld getWorld() {
 		return world;
 	}
-	
-	public Hud getHud() {
-		return hud;
-	}
-	
-	public EventManager getEventManager() {
-		return evtMgr;
-	}
-	
+
 	@Override
 	public void run() {
 		
@@ -98,7 +112,7 @@ public class Game extends Thread {
 	private void gameLoop(long ms) {
 		
 		// Check framerate
-		long elapsed = ms - lastTick;
+		long elapsed = ms - lastTick; // Millisecons elapsed from last tick
 		lastTick = ms;
 		lag += elapsed;
 
@@ -106,7 +120,7 @@ public class Game extends Thread {
 			
 			stats.beforeUpdate();
 			
-			evtMgr.update(); // Dispatch prev. frame messages to their listeners
+			evtMgr.update(); // Dispatch the events generated during the prev. frame to the game objects that listen to them
 			
 			world.beforeUpdate();
 			
@@ -122,7 +136,7 @@ public class Game extends Thread {
 			// Update HUD
 			hud.update(Configuration.MS_PER_UPDATE, player.getController());
 			
-			stats.afterUpdate();
+			stats.afterUpdate(Configuration.MS_PER_UPDATE);
 			
 			lag -= Configuration.MS_PER_UPDATE;
 		}
@@ -130,16 +144,12 @@ public class Game extends Thread {
 	}
 	
 
-	public long getLag() {
-		return lag;
-	}
-
-	public void setLag(long lag) {
-		this.lag = lag;
-	}
-
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public GameStatistics getGameStats() {
+		return stats;
 	}
 
 	public void drawGameStats(Graphics2D grap) {

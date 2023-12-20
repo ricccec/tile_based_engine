@@ -118,7 +118,10 @@ public class GameTester extends JFrame {
 
 	public GameTester() {
 
-		game = new Game();
+		// Init game subsistems
+		Game.initGame();
+		game = Game.getInstance();
+		
 		areaGioco = new AreaGioco(game);
 		
 		initComponents();

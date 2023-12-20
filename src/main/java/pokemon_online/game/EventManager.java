@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
+
 import pokemon_online.game.interaction.event.Event;
 
 /**
@@ -23,6 +25,8 @@ import pokemon_online.game.interaction.event.Event;
  */
 public class EventManager {
 	
+	private static final Logger LOGGER = Logger.getLogger(EventManager.class);
+			
 	private final Stack<Event> evtQueue;
 	
 	private final Map<Event.Type, Set<GameObject>> evtListeners;
@@ -54,6 +58,7 @@ public class EventManager {
 	 * @param evt
 	 */
 	public void queueEvent(Event evt) {
+		LOGGER.debug("Event received @T" + Game.getInstance().getGameStats().getCurrTickCount());
 		evtQueue.push(evt);
 	}
 	
