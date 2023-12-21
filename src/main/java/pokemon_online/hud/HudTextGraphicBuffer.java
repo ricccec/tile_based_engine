@@ -57,7 +57,7 @@ public class HudTextGraphicBuffer {
 		font = new PkmnFont(HUD_FONT_SPRITE_FILE, 8, 8, 2);  // FIXME Remove hard-coded shit
 	}
 
-	public void setScrollEnabled(boolean b) {
+	public void setVerticalScrollEnabled(boolean b) {
 		
 	}
 	
@@ -65,7 +65,7 @@ public class HudTextGraphicBuffer {
 	 * Enable/disable text wrapping when reaching the end of a line
 	 * @param b
 	 */
-	public void setWrapTextEnabled(boolean b ) {
+	public void setWrapTextEnabled(boolean b) {
 		wrapLineFlag = b;
 	}
 	
@@ -107,7 +107,7 @@ public class HudTextGraphicBuffer {
 		content.append(c);
 		
 		if ((currRow >= rowCount)) {
-			return; // TODO handle scrolling
+			return; // TODO handle vertical scrolling
 		}
 		
 		if ((currCol >= colCount)) {

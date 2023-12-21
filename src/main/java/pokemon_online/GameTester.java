@@ -39,7 +39,7 @@ public class GameTester extends JFrame {
 	
 	private static final int START_ROW = 9;
 	
-	private static final int START_COL = 8;
+	private static final int START_COL = 9;
 	
 	public static void main(String s[]) {  
 		

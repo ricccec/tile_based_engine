@@ -174,8 +174,8 @@ public class HudText extends HudState {
 		}
 		
 		// Set position of graphic buffer's cursor
-		boolean buffFull = findRoomForWord(currWord);
-		if (!buffFull) {
+		boolean buffFull = !findRoomForWord(currWord);
+		if (buffFull) {
 			status = HudTestState.BUFFER_FULL;
 			msSinceLastUpdateMs = 0;
 			LOGGER.debug("HUD's graph. buffer is full");
@@ -208,6 +208,10 @@ public class HudText extends HudState {
 		if ((currLettIndx == 0) && (grapBuffer.getColCursor() > 0)) {
 			LOGGER.debug("SPACE pusged into the text buffer");
 			grapBuffer.nextColumn(); // NB: Since WRAPPING is enabled, this my cause the cursor to jump to the next row
+			if (grapBuffer.getRowCursor() >= grapBuffer.getRowCount()) {
+				// Buffer might not have space for a new line	
+				return false;
+			}
 		}
 		
 		// Words that are LONGER than a line are just splitted across multiple lines
