@@ -20,6 +20,7 @@ import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.PushMessageHandler;
+import pokemon_online.game.interaction.event.ScriptedEventHandler;
 import pokemon_online.game.interaction.event.TextEventHandler;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
@@ -43,7 +44,7 @@ public class GameTester extends JFrame {
 	public static void main(String s[]) {  
 		
 
-		Random rand = new Random(45);
+		Random rand = new Random(44);
 		
 		GameTester tester = new GameTester();		
 		
@@ -88,6 +89,9 @@ public class GameTester extends JFrame {
 		
 		SpriteData gData = ResourcesManager.getMgr().getGameObjectGraphics("Cuttable Plant");
 		gData.initSpriteGrapComponent((SpriteGraphicsComponent)objTree.getGraphicsComponent());
+		
+		objTree.setInteractionComponent(new InteractionComponent(objTree));
+		objTree.getInteractionComponent().addEventHandler(new ScriptedEventHandler(objTree));
 		
 		tester.spawnObject(objTree, 9, 10);
 		

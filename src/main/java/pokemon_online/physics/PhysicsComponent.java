@@ -13,7 +13,7 @@ import pokemon_online.game.GameObjectListener;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.interaction.event.EventType;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.utils.Tuple;
@@ -76,12 +76,12 @@ public abstract class PhysicsComponent extends Component {
 			// Notify all the cells that the object has exited
 			for (GameObject zone : world.getZones(prevBBox)) {
 				assert(GameObjectUtils.isZone(zone));
-				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_EXITING));
+				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, EventType.ZONE_EXITING));
 			}
 			// Notify all the cells that the object is entering
 			for (GameObject zone : world.getZones(currBBox)) {
 				assert(GameObjectUtils.isZone(zone));
-				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, Type.ZONE_ENTERING));
+				zone.getInteractionComponent().notifyEvent(world, Event.newEventWithSender(obj, EventType.ZONE_ENTERING));
 			}
 		}
 		

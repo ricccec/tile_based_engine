@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import pokemon_online.game.Controller;
 import pokemon_online.game.Game;
 import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.interaction.event.EventType;
 
 /**
  * @author Cecchi
@@ -58,7 +58,7 @@ public class Hud {
 		newStates.clear();
 		
 		if ((!disposed) && stack.isDisposed()) { // Hud just disposed
-			Game.getEventManager().queueEvent(new Event(Type.HUD_DISPOSED)); // FIXME Send messahe directly to the world?
+			Game.getEventManager().queueEvent(new Event(EventType.HUD_DISPOSED)); // FIXME Send messahe directly to the world?
 		}
 		
 	}

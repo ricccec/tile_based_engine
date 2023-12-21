@@ -29,7 +29,7 @@ public class EventManager {
 			
 	private final Stack<Event> evtQueue;
 	
-	private final Map<Event.Type, Set<GameObject>> evtListeners;
+	private final Map<Byte, Set<GameObject>> evtListeners;
 	
 	private final Game game;
 	
@@ -40,14 +40,14 @@ public class EventManager {
 		evtQueue = new Stack<>();
 	}
 	
-	public void addEventListener(Event.Type evtType, GameObject listener) {
+	public void addEventListener(byte evtType, GameObject listener) {
 		if (!evtListeners.containsKey(evtType)) {
 			evtListeners.put(evtType, new HashSet<>());
 		}
 		evtListeners.get(evtType).add(listener);
 	}
 	
-	public void removeEventListener(Event.Type evtType, GameObject listener) {
+	public void removeEventListener(byte evtType, GameObject listener) {
 		if (evtListeners.containsKey(evtType)) {
 			evtListeners.get(evtType).remove(listener);
 		}

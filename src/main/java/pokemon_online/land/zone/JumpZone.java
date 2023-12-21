@@ -8,15 +8,10 @@ import java.awt.Graphics2D;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.EventHandler;
-import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
-import pokemon_online.game.rendering.Viewport;
 import pokemon_online.game.rendering.SpriteGraphicsComponent.GraphicsState;
-import pokemon_online.game.utils.GameUtils;
+import pokemon_online.game.rendering.Viewport;
 import pokemon_online.physics.CardinalDirection;
 import pokemon_online.physics.GridBoundPhysicsComponent;
 
@@ -71,8 +66,9 @@ public class JumpZone extends Zone {
 	@Override
 	protected void onEntering(GameWorld world, GameObject zone, GameObject entity) {
 		
-		assert(entity.getPhysicsComponent() != null);
-		assert(entity.getPhysicsComponent().isMoving());
+		// Commented because this method might ended up being called by GameWorld#spanObject
+		//assert(entity.getPhysicsComponent() != null);
+		//assert(entity.getPhysicsComponent().isMoving());
 		
 		double movingDirDegree = entity.getPhysicsComponent().getMovingDirection();
 		CardinalDirection movingDir = CardinalDirection.degree2direction(movingDirDegree);

@@ -7,7 +7,6 @@ import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.hud.HudText;
 
@@ -26,25 +25,25 @@ public class TextEventHandler extends EventHandler {
 	@Override
 	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
 		
-		switch(evt.getType()) {
-			case ACTION_PERFORMED:
-				GameObject sender = (GameObject)evt.getArguments().get(0);
-				if (receiver.getState() == GameObjectState.OBJ_STATE_IDLE) {
-//					System.out.println("HUD request");
-					sendHudTextDisplayReqs(world, sender, receiver);
-					return true;
-				} else {
-					return false;
-				}
-			case HUD_DISPOSED: // Unlock the object who is talking
-//				System.out.println("Disposed " + receiver);
-				assert(receiver.getState() != GameObjectState.OBJ_STATE_IDLE);
-				receiver.setState(GameObjectState.OBJ_STATE_IDLE);
-				Game.getEventManager().removeEventListener(Type.HUD_DISPOSED, receiver);
+		if (evt.getType() == EventType.ACTION_PERFORMED) {
+			GameObject sender = (GameObject)evt.getArguments().get(0);
+			if (receiver.getState() == GameObjectState.OBJ_STATE_IDLE) {
+				//					System.out.println("HUD request");
+				sendHudTextDisplayReqs(world, sender, receiver);
 				return true;
-			default:
+			} else {
 				return false;
-		
+			}
+		}
+		else if (evt.getType() == EventType.HUD_DISPOSED) {
+			// Unlock the object who is talking
+			//				System.out.println("Disposed " + receiver);
+			assert(receiver.getState() != GameObjectState.OBJ_STATE_IDLE);
+			receiver.setState(GameObjectState.OBJ_STATE_IDLE);
+			Game.getEventManager().removeEventListener(EventType.HUD_DISPOSED, receiver);
+			return true;
+		} else {
+				return false;
 		}
 		
 	}
@@ -73,8 +72,8 @@ public class TextEventHandler extends EventHandler {
 		Game.getHud().pushState(new HudText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
-		Game.getEventManager().addEventListener(Type.HUD_DISPOSED, receiver);
-		Game.getEventManager().addEventListener(Type.HUD_DISPOSED, sender);
+		Game.getEventManager().addEventListener(EventType.HUD_DISPOSED, receiver);
+		Game.getEventManager().addEventListener(EventType.HUD_DISPOSED, sender);
 		
 	}
 

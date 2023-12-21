@@ -12,9 +12,8 @@ import pokemon_online.game.GameWorld;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.interaction.event.EventHandler;
-import pokemon_online.game.rendering.GraphicsComponent;
+import pokemon_online.game.interaction.event.EventType;
 import pokemon_online.game.rendering.Viewport;
-import pokemon_online.game.utils.GameUtils;
 
 /**
  * @author Cecchi
@@ -27,15 +26,14 @@ public abstract class Zone extends GameObject {
 		getInteractionComponent().addEventHandler(new EventHandler() {
 			@Override
 			public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
-				switch(evt.getType()) {
-					case ZONE_EXITING:
-						onExiting(world, receiver, evt.getArgument(0));
-						return true;
-					case ZONE_ENTERING:
-						onEntering(world, receiver, evt.getArgument(0));
-						return true;
-					default:
-						return false;
+				if (evt.getType() == EventType.ZONE_EXITING) {
+					onExiting(world, receiver, evt.getArgument(0));
+					return true;
+				} else if (evt.getType() == EventType.ZONE_ENTERING) {
+					onEntering(world, receiver, evt.getArgument(0));
+					return true;
+				} else {
+					return false;
 				}
 			}
 		});

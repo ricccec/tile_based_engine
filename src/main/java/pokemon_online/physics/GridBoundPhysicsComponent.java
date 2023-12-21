@@ -9,7 +9,7 @@ import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.interaction.event.EventType;
 import pokemon_online.game.utils.GameUtils;
 
 /**
@@ -107,7 +107,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 				movingDirection = null;
 				obj.setState(GameObjectState.OBJ_STATE_IDLE);
 				obj.popPhysicsComponent();
-				obj.notifyEvent(world, new Event(Type.PUSH_COMPLETED));
+				obj.notifyEvent(world, new Event(EventType.PUSH_COMPLETED));
 				return;
 			} else {
 				cellsCount--;

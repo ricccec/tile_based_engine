@@ -15,6 +15,7 @@ import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.event.EventType;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.game.utils.GameUtils;
@@ -32,7 +33,7 @@ public class GameObject {
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
-	public static final Event EVT_QUEUE_END = new Event(null);
+	public static final Event EVT_QUEUE_END = new Event(EventType.EVENT_QUEUE_END);
 	
 	private static int nextObjectId = 0; // FIXME
 	

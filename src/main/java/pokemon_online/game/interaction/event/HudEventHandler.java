@@ -15,13 +15,13 @@ public class HudEventHandler extends EventHandler {
 
 	@Override
 	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
-		switch(evt.getType()) {
-			case HUD_DISPOSED:
-//				System.out.println("Disposed " + receiver);
-				receiver.setState(GameObjectState.OBJ_STATE_IDLE);
-				return true;
-			default:
-				return false;
+		
+		if (evt.getType() == EventType.HUD_DISPOSED) {
+//			System.out.println("Disposed " + receiver);
+			receiver.setState(GameObjectState.OBJ_STATE_IDLE);
+			return true;
+		} else {
+			return false;
 		}
 	}
 

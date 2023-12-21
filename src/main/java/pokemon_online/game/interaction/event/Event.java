@@ -15,40 +15,28 @@ import pokemon_online.game.GameObject;
 public class Event {
 
 	public static final Event newActionPerformed(GameObject sender) {
-		Event result = new Event(Type.ACTION_PERFORMED);
+		Event result = new Event(EventType.ACTION_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
 	public static final Event newActionBPerformed(GameObject sender) {
-		Event result = new Event(Type.ACTION_B_PERFORMED);
+		Event result = new Event(EventType.ACTION_B_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Event newEventWithSender(GameObject sender, Type type) {
+	public static final Event newEventWithSender(GameObject sender, byte type) {
 		Event result = new Event(type);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public enum Type {
-		ACTION_PERFORMED,
-		ACTION_B_PERFORMED,
-		HUD_DISPOSED,
-		PUSH_COMPLETED,
-		
-		ZONE_ENTERING,
-		ZONE_EXITING,
-		
-		CUSTOM_TYPE;
-	}
-	
-	private final Type type;
+	private final byte type;
 	
 	private final List<Object> args;
 	
-	public Event(Type type) {
+	public Event(byte type) {
 		this.type = type;
 		this.args = new ArrayList<>();
 	}
@@ -67,7 +55,7 @@ public class Event {
 		return (T)args.get(indx);
 	}
 
-	public Type getType() {
+	public byte getType() {
 		return type;
 	}
 }

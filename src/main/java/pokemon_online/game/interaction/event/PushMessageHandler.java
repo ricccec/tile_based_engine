@@ -24,13 +24,12 @@ public class PushMessageHandler extends EventHandler {
 			return false; // Objects can be pushed only when idle
 		}
 		
-		switch(evt.getType()) {
-			case ACTION_B_PERFORMED:
-				GameObject sender = evt.getArgument(0);
-				startSliding(sender, receiver);
-				return true;
-			default:
-				return false;
+		if (evt.getType() == EventType.ACTION_B_PERFORMED) {
+			GameObject sender = evt.getArgument(0);
+			startSliding(sender, receiver);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
