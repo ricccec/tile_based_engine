@@ -135,7 +135,7 @@ public class HudTextGraphicBuffer {
 		
 		Graphics g = grapBuffer.getGraphics();
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, grapBuffer.getWidth(), grapBuffer.getHeight());
+		g.fillRect(0, 0, grapBuffer.getWidth(), grapBuffer.getHeight()); // TODO handle vertical scrolling
 	}
 	
 	@Override
