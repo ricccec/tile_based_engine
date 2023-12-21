@@ -5,7 +5,7 @@ package pokemon_online.game.interaction.event;
 
 import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameObject.State;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.interaction.event.Event.Type;
 import pokemon_online.game.utils.GameObjectUtils;
@@ -29,7 +29,7 @@ public class TextEventHandler extends EventHandler {
 		switch(evt.getType()) {
 			case ACTION_PERFORMED:
 				GameObject sender = (GameObject)evt.getArguments().get(0);
-				if (receiver.getState() == State.OBJ_STATE_IDLE) {
+				if (receiver.getState() == GameObjectState.OBJ_STATE_IDLE) {
 //					System.out.println("HUD request");
 					sendHudTextDisplayReqs(world, sender, receiver);
 					return true;
@@ -38,8 +38,8 @@ public class TextEventHandler extends EventHandler {
 				}
 			case HUD_DISPOSED: // Unlock the object who is talking
 //				System.out.println("Disposed " + receiver);
-				assert(receiver.getState() != State.OBJ_STATE_IDLE);
-				receiver.setState(State.OBJ_STATE_IDLE);
+				assert(receiver.getState() != GameObjectState.OBJ_STATE_IDLE);
+				receiver.setState(GameObjectState.OBJ_STATE_IDLE);
 				Game.getEventManager().removeEventListener(Type.HUD_DISPOSED, receiver);
 				return true;
 			default:
@@ -68,8 +68,8 @@ public class TextEventHandler extends EventHandler {
 //		}
 		
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
-		sender.setState(State.OBJ_STATE_MOVING);
-		receiver.setState(State.OBJ_STATE_MOVING); // Ignore any other events
+		sender.setState(GameObjectState.OBJ_STATE_MOVING);
+		receiver.setState(GameObjectState.OBJ_STATE_MOVING); // Ignore any other events
 		Game.getHud().pushState(new HudText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed

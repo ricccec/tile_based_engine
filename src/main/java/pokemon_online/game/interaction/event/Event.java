@@ -39,7 +39,9 @@ public class Event {
 		PUSH_COMPLETED,
 		
 		ZONE_ENTERING,
-		ZONE_EXITING
+		ZONE_EXITING,
+		
+		CUSTOM_TYPE;
 	}
 	
 	private final Type type;

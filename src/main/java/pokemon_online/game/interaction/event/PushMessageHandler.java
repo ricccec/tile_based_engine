@@ -4,7 +4,7 @@
 package pokemon_online.game.interaction.event;
 
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameObject.State;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.physics.CardinalDirection;
@@ -20,7 +20,7 @@ public class PushMessageHandler extends EventHandler {
 	@Override
 	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
 		
-		if (receiver.getState() != State.OBJ_STATE_IDLE) {
+		if (receiver.getState() != GameObjectState.OBJ_STATE_IDLE) {
 			return false; // Objects can be pushed only when idle
 		}
 		

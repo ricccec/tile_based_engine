@@ -5,8 +5,8 @@ package pokemon_online.physics;
 
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.GameObject.State;
 import pokemon_online.game.utils.GameObjectUtils;
 
 /**
@@ -33,7 +33,7 @@ public class PkmnPhyStateAccelerating extends PkmnPhyState {
 			// Controller released, go back to idle
 			return new PkmnPhyStateIdle(phyComp);
 		}
-		if (obj.getState() != State.OBJ_STATE_IDLE) {
+		if (obj.getState() != GameObjectState.OBJ_STATE_IDLE) {
 			// Something has frozen the Entity, go back to idle
 			return new PkmnPhyStateIdle(phyComp); // FIXME what's this?
 		}

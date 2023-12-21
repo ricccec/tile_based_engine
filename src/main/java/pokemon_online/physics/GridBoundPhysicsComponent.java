@@ -5,12 +5,11 @@ package pokemon_online.physics;
 
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameObject.State;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.interaction.event.Event.Type;
-import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 
 /**
@@ -52,7 +51,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 			movingDirection = dir;
 			this.cellsCount = cells2Move;
 			setObjectVelocity(movingDirection, Configuration.PLAYER_SPEED); // FIXME custom speed
-			obj.setState(State.OBJ_STATE_MOVING);
+			obj.setState(GameObjectState.OBJ_STATE_MOVING);
 		}
 	}
 	
@@ -87,7 +86,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 			// A movement from the previous tick is still ongoing
 			assert(movingDirection != null);
 			assert((getSpeedX() != 0) || (getSpeedY() != 0));
-			assert(obj.getState() == State.OBJ_STATE_MOVING); // This object can't interact while moving
+			assert(obj.getState() == GameObjectState.OBJ_STATE_MOVING); // This object can't interact while moving
 			
 			// Complete the movement
 			int prevPos = (getObjectMovingDirection().isAlongX() ? obj.getX() : obj.getY());
@@ -106,7 +105,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 			if (cellsCount == 0) {
 				// Movement completed, stop object
 				movingDirection = null;
-				obj.setState(State.OBJ_STATE_IDLE);
+				obj.setState(GameObjectState.OBJ_STATE_IDLE);
 				obj.popPhysicsComponent();
 				obj.notifyEvent(world, new Event(Type.PUSH_COMPLETED));
 				return;

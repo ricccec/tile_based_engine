@@ -1,7 +1,6 @@
 package pokemon_online.game;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
 import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.EventHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.game.utils.GameUtils;
@@ -31,12 +29,6 @@ import pokemon_online.physics.PhysicsComponent;
  *
  */
 public class GameObject {
-	
-	public enum State {
-		OBJ_STATE_IDLE,
-		OBJ_STATE_MOVING,
-		OBJ_STATE_TALKING;
-	}
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
@@ -51,7 +43,7 @@ public class GameObject {
 	
 	private final int id;
 
-	private State state;
+	private byte state;
 	
 	private int x;
 	
@@ -76,7 +68,7 @@ public class GameObject {
 		
 		id = nextObjectId++;
 		
-		state = State.OBJ_STATE_IDLE;
+		state = GameObjectState.OBJ_STATE_IDLE;
 		
 		ctrl = new Controller();
 		
@@ -190,14 +182,14 @@ public class GameObject {
 		}
 	}
 
-	public State getState() {
+	public byte getState() {
 		return state;
 	}
 	
-	public void setState(State state) {
-		if (state != this.state) {
-//			LOGGER.debug(this + "state: " + this.state + "->" + state);
-			this.state = state;
+	public void setState(byte newState) {
+		if (newState != this.state) {
+			// TODO generate event
+			this.state = newState;
 		}
 	}
 	

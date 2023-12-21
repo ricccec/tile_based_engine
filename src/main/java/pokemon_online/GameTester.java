@@ -78,7 +78,10 @@ public class GameTester extends JFrame {
 			tester.spawnObject(gameObjNPC, landRow, landCol);
 		}
 		
+		// ********************
 		// Spawn CUTTABLE TREE
+		// ********************
+		
 		GameObject objTree = new GameObject();
 		
 		objTree.setGraphicsComponent(new SpriteGraphicsComponent(objTree));

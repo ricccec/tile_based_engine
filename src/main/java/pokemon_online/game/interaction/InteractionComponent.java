@@ -9,13 +9,10 @@ import pokemon_online.game.Component;
 import pokemon_online.game.Controller;
 import pokemon_online.game.Controller.Control;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.GameObject.State;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.GameWorld.Cell;
 import pokemon_online.game.interaction.event.Event;
 import pokemon_online.game.interaction.event.EventHandler;
-import pokemon_online.game.utils.GameObjectUtils;
-import pokemon_online.game.utils.GameUtils;
 
 public class InteractionComponent extends Component {
 
@@ -67,7 +64,7 @@ public class InteractionComponent extends Component {
 		
 //		System.out.println(obj.getX() + " " + obj.getY() + " " + obj.getState());
 		if (//obj.getPhysicsComponent().isCrossingCells() || FIXME see below
-			(obj.getState() != State.OBJ_STATE_IDLE)) { // FIXME This means objects doesn't respond to controls except while on IDLE
+			(obj.getState() != GameObjectState.OBJ_STATE_IDLE)) { // FIXME This means objects doesn't respond to controls except while on IDLE
 			return;
 		}
 		

@@ -4,8 +4,8 @@
 package pokemon_online.physics;
 
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.GameObject.State;
 import pokemon_online.game.utils.GameObjectUtils;
 
 /**
@@ -31,7 +31,7 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		if (ctrlerDir == null) {
 			return null;
 		}
-		if (obj.getState() != State.OBJ_STATE_IDLE) {
+		if (obj.getState() != GameObjectState.OBJ_STATE_IDLE) {
 			return null;
 		}
 //		System.out.println("AAAAA " + obj.getState());

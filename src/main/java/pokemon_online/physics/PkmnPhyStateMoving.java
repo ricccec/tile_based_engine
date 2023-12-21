@@ -5,8 +5,8 @@ package pokemon_online.physics;
 
 import pokemon_online.Configuration;
 import pokemon_online.game.GameObject;
+import pokemon_online.game.GameObjectState;
 import pokemon_online.game.GameWorld;
-import pokemon_online.game.GameObject.State;
 
 /**
  * @author Cecchi
@@ -34,7 +34,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		if (phyComp.isCrossingCells()) {
 			// A movement from the previous tick is still ongoing
 			assert(phyComp.getSpeed() > 0);
-			assert(obj.getState() != State.OBJ_STATE_IDLE); // This object can't interact while moving
+			assert(obj.getState() != GameObjectState.OBJ_STATE_IDLE); // This object can't interact while moving
 			
 			// Complete the movement
 			int prevPos = (phyComp.getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
@@ -42,7 +42,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			phyComp.resolveCollision(world);
 			int currPos = (phyComp.getCardinalMovingDir().isAlongX() ? obj.getX() : obj.getY());
 			residueDist -= Math.abs(prevPos - currPos);
-		} else if (obj.getState() != State.OBJ_STATE_IDLE) {
+		} else if (obj.getState() != GameObjectState.OBJ_STATE_IDLE) {
 			// Someone else freeze the object during the previous frame
 			return new PkmnPhyStateIdle(phyComp);
 		}
@@ -53,7 +53,7 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 			if ((ctrlerDir == null)) {
 				phyComp.setSpeedX(0);
 				phyComp.setSpeedY(0);
-				obj.setState(State.OBJ_STATE_IDLE);
+				obj.setState(GameObjectState.OBJ_STATE_IDLE);
 			} else {
 				phyComp.setVelocity(ctrlerDir, Configuration.PLAYER_SPEED);
 			}
@@ -76,9 +76,9 @@ public class PkmnPhyStateMoving extends PkmnPhyState {
 		}
 		
 		if (phyComp.isCrossingCells()) {
-			obj.setState(State.OBJ_STATE_MOVING);
+			obj.setState(GameObjectState.OBJ_STATE_MOVING);
 		} else {
-			obj.setState(State.OBJ_STATE_IDLE);
+			obj.setState(GameObjectState.OBJ_STATE_IDLE);
 		}
 		
 		return null;
