@@ -1,4 +1,4 @@
-# mmorpg_engine
+# Custom Tile-based Game Engine
 
 Built in Java, this **custom 2D tile‑based retro engine** is a self‑learning project to explore how 2D engines are made. To keep it engaging, it’s developed in tandem with a Gen‑2 Pokémon–inspired game, with a long‑term goal of supporting MMORPG features.
 
