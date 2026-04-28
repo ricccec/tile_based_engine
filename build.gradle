@@ -9,7 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
-  	id "eclipse"
+    id 'application'
 }
 
 repositories {
@@ -17,7 +17,7 @@ repositories {
     mavenCentral()
     
     maven {
-        url "https://mvnrepository.com/artifact/"
+        url = "https://mvnrepository.com/artifact/"
     }
 }
 
@@ -32,24 +32,28 @@ dependencies {
     //testImplementation 'junit:junit:4.12'
     
     // https://mvnrepository.com/artifact/junit/junit
-	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+	testImplementation 'junit:junit:4.13.2'
     
     
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     
 	
 	// https://mvnrepository.com/artifact/commons-lang/commons-lang
-	implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
+	implementation 'commons-lang:commons-lang:2.6'
 	
 	// https://mvnrepository.com/artifact/commons-io/commons-io
-	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+	implementation 'commons-io:commons-io:2.6'
 	
 	// https://mvnrepository.com/artifact/log4j/log4j
-	implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+	implementation 'log4j:log4j:1.2.17'
 
 
     implementation files('libs/swing-layout-1.0.2.jar')
 
 	
+}
+
+application {
+    mainClass = 'pokemon_online.GameTester'
 }

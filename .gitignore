@@ -4,6 +4,9 @@
 # Ignore Gradle build output directory
 build
 
+# Misc
+**/AGENTS*.md
+
 immagini
 bin
 Requisiti funzionali v1.0.docx
