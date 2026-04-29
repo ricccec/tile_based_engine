@@ -9,8 +9,13 @@ import pokemon_online.game.GameObject.State;
 import pokemon_online.game.utils.GameObjectUtils;
 
 /**
+ * Represents the idle physics state for a Pokemon character in the game.
+ * In this state, the character is stationary and waiting for player input.
+ * When a directional input is received, the character will either change
+ * its facing direction and begin accelerating, or start moving if already
+ * facing the input direction.
+ * 
  * @author Cecchi
- *
  */
 public class PkmnPhyStateIdle extends PkmnPhyState {
 
@@ -34,11 +39,12 @@ public class PkmnPhyStateIdle extends PkmnPhyState {
 		if (obj.getState() != State.ACTIVE) {
 			return null;
 		}
-//		System.out.println("AAAAA " + obj.getState());
+		// Same direction the object is facing -> jumpt to moving state
 		if (ctrlerDir == GameObjectUtils.getCardinalFacingDir(obj)) {
 			return new PkmnPhyStateMoving(phyComp);
 		}
 		
+		// Different direction -> jump to accelerating state
 		switch(ctrlerDir) {
 			case DIR_DOWN:
 				obj.setFacingDirection(270);
