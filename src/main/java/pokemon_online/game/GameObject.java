@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.event.Event;
-import pokemon_online.game.interaction.event.EventHandler;
+import pokemon_online.game.interaction.actions.Action;
+import pokemon_online.game.interaction.actions.ActionHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -32,14 +32,14 @@ public class GameObject {
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
-	public static final Event EVT_QUEUE_END = new Event(null);
+	public static final Action EVT_QUEUE_END = new Action(null);
 	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
 	
-	private final Deque<Event> pendingEvents;
+	private final Deque<Action> pendingEvents;
 	
-	private final Stack<Event> pendingMsgs;
+	private final Stack<Action> pendingMsgs;
 	
 	private State state;
 	
@@ -186,15 +186,15 @@ public class GameObject {
 	/**
 	 * @param msg
 	 */
-	public void notifyEvent(GameWorld world, Event msg) {
+	public void notifyEvent(GameWorld world, Action msg) {
 		LOGGER.debug("Object " + this + " has received a message");
 		if (interComp != null) {
-			interComp.notifyEvent(world, msg); // Event preprocessing
+			interComp.notifyAction(world, msg); // Event preprocessing
 		}
 		pendingMsgs.push(msg); // Put the message into the queue so it can be processed during the next frame
 	}
 	
-	public Deque<Event> getPendingEventsQueue() {
+	public Deque<Action> getPendingEventsQueue() {
 		return pendingEvents;
 	}
 

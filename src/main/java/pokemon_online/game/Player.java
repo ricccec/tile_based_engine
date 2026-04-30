@@ -1,7 +1,7 @@
 package pokemon_online.game;
 
 import pokemon_online.game.interaction.PkmnControlHandler;
-import pokemon_online.game.interaction.event.HudEventHandler;
+import pokemon_online.game.interaction.actions.HudActionHandler;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 /**
@@ -19,7 +19,7 @@ public class Player extends GameObject {
 		grapComp = new SpriteGraphicsComponent(this);
 		
 		interComp = PkmnControlHandler.getInteractionComponent(this);
-		interComp.addEventHandler(new HudEventHandler());
+		interComp.addActionHandler(new HudActionHandler());
 	}
 
 	public PokemonPhysicsComponent getPhysicsComponent() {

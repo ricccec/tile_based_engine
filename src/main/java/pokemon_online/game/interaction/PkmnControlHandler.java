@@ -4,7 +4,7 @@
 package pokemon_online.game.interaction;
 
 import pokemon_online.game.Controller.Control;
-import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.actions.Action;
 
 import java.util.Collection;
 
@@ -39,10 +39,10 @@ public class PkmnControlHandler extends ControlHandler {
 				
 		switch(cntrl) {
 		case ACTION_1:
-			target.notifyEvent(world, Event.newActionPerformed(controlled));
+			target.notifyEvent(world, Action.newActionPerformed(controlled));
 			return true;
 		case ACTION_2:
-			target.notifyEvent(world, Event.newActionBPerformed(controlled));
+			target.notifyEvent(world, Action.newActionBPerformed(controlled));
 			return true;
 		default:
 			return false;

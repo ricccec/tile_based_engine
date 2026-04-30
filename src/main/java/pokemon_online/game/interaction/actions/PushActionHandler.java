@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.event;
+package pokemon_online.game.interaction.actions;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
@@ -15,10 +15,10 @@ import pokemon_online.physics.PhysicsComponent;
  * @author Cecchi
  *
  */
-public class PushMessageHandler extends EventHandler {
+public class PushActionHandler extends ActionHandler {
 
 	@Override
-	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
+	public boolean handleAction(GameWorld world, GameObject receiver, Action evt) {
 		
 		if (receiver.getState() != State.ACTIVE) {
 			return false;

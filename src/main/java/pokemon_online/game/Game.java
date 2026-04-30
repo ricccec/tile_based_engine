@@ -6,7 +6,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
-import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.actions.Action;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;
@@ -25,7 +25,7 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
-	private final Stack<Event> msgQueue;
+	private final Stack<Action> msgQueue;
 	
 	private final GameWorld world;
 	
@@ -120,7 +120,7 @@ public class Game extends Thread {
 
 	}
 	
-	public void queueMessage(Event msg) {
+	public void queueMessage(Action msg) {
 		msgQueue.push(msg);
 	}
 
@@ -153,7 +153,7 @@ public class Game extends Thread {
 
 	private void dispatchMessages() {
 		while(!msgQueue.isEmpty()) {
-			Event msg = msgQueue.pop();
+			Action msg = msgQueue.pop();
 			switch (msg.getType()) { // FIXME Move this logic inside the components
 				case HUD_DISPOSED:
 					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world

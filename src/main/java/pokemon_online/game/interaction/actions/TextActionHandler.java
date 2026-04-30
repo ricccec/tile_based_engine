@@ -1,30 +1,28 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.event;
+package pokemon_online.game.interaction.actions;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
-import pokemon_online.game.interaction.event.Event.Type;
+import pokemon_online.game.interaction.actions.Action.Type;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.utils.GameObjectUtils;
-import pokemon_online.physics.PhysicsComponent;
-import pokemon_online.physics.PokemonPhysicsComponent;
 
 /**
  * @author Cecchi
  *
  */
-public class TextEventHandler extends EventHandler { // FIXME Better "TextEventHandler"?
+public class TextActionHandler extends ActionHandler { // FIXME Better "TextEventHandler"?
 	
 	private final String text;
 	
-	public TextEventHandler(String text) {
+	public TextActionHandler(String text) {
 		this.text = text;
 	}
 
 	@Override
-	public boolean handleEvent(GameWorld world, GameObject receiver, Event evt) {
+	public boolean handleAction(GameWorld world, GameObject receiver, Action evt) {
 		
 		switch(evt.getType()) {
 			case ACTION_PERFORMED:
@@ -66,7 +64,7 @@ public class TextEventHandler extends EventHandler { // FIXME Better "TextEventH
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
 		sender.setState(State.FROZEN);
 		receiver.setState(State.FROZEN); // Ignore any other events
-		world.sendMessage(Event.newHudDisplayText(text));
+		world.sendMessage(Action.newHudDisplayText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
 		world.addMessageListener(Type.HUD_DISPOSED, receiver);

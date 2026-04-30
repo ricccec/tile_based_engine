@@ -5,7 +5,7 @@ package pokemon_online.game;
 
 import org.apache.log4j.Logger;
 
-import pokemon_online.game.interaction.event.Event;
+import pokemon_online.game.interaction.actions.Action;
 
 /**
  * @author Cecchi
@@ -21,7 +21,7 @@ public abstract class Component {
 		this.obj = obj;
 	}
 	
-	public void handleEvent(Event event) {
+	public void handleEvent(Action event) {
 		LOGGER.debug(this + " has received event " + event);
 	}
 

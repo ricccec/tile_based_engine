@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.event;
+package pokemon_online.game.interaction.actions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +12,22 @@ import pokemon_online.game.GameObject;
  * @author Cecchi
  *
  */
-public class Event {
+public class Action {
 
-	public static final Event newActionPerformed(GameObject sender) {
-		Event result = new Event(Type.ACTION_PERFORMED);
+	public static final Action newActionPerformed(GameObject sender) {
+		Action result = new Action(Type.ACTION_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Event newActionBPerformed(GameObject sender) {
-		Event result = new Event(Type.ACTION_B_PERFORMED);
+	public static final Action newActionBPerformed(GameObject sender) {
+		Action result = new Action(Type.ACTION_B_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Event newHudDisplayText(String text) {
-		Event result = new Event(Type.HUD_DISPLAY_TEXT);
+	public static final Action newHudDisplayText(String text) {
+		Action result = new Action(Type.HUD_DISPLAY_TEXT);
 		result.addArgument(text);
 		return result;
 	}
@@ -44,7 +44,7 @@ public class Event {
 	
 	private final List<Object> args;
 	
-	public Event(Type type) {
+	public Action(Type type) {
 		this.type = type;
 		this.args = new ArrayList<>();
 	}

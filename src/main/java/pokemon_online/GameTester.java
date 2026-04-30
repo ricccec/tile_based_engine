@@ -19,9 +19,9 @@ import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.event.EventHandler;
-import pokemon_online.game.interaction.event.PushMessageHandler;
-import pokemon_online.game.interaction.event.TextEventHandler;
+import pokemon_online.game.interaction.actions.ActionHandler;
+import pokemon_online.game.interaction.actions.PushActionHandler;
+import pokemon_online.game.interaction.actions.TextActionHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
@@ -62,8 +62,8 @@ public class GameTester extends JFrame {
 			
 			// NPC dialogue
 			obj.setInteractionComponent(new InteractionComponent(obj));
-			obj.getInteractionComponent().addEventHandler(new TextEventHandler("Dialogo"));
-			obj.getInteractionComponent().addEventHandler(new PushMessageHandler());
+			obj.getInteractionComponent().addActionHandler(new TextActionHandler("Dialogo"));
+			obj.getInteractionComponent().addActionHandler(new PushActionHandler());
 			
 			tester.spawnObject(obj, i, i);
 		}
