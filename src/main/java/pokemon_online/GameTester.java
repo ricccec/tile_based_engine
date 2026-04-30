@@ -3,13 +3,11 @@
  */
 package pokemon_online;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 import org.json.simple.parser.ParseException;
 
@@ -70,20 +68,17 @@ public class GameTester extends JFrame {
 		
 		
 		
-		tester.startGameLoop();
-		
 		tester.setVisible(true);
+		tester.startGameLoop();
 	}
 	
 	private static final long serialVersionUID = 4022568139447850178L;
 
 	Land[] elencoLand;
 
-	Timer timer;
-	
 	Game game;
 
-	private AreaGioco areaGioco;
+	private GameCanvas areaGioco;
 	
 	private javax.swing.JMenu jMenu1;
 	
@@ -96,7 +91,7 @@ public class GameTester extends JFrame {
 	public GameTester() {
 
 		game = new Game();
-		areaGioco = new AreaGioco(game);
+		areaGioco = new GameCanvas(game);
 		
 		initComponents();
 		
@@ -113,14 +108,8 @@ public class GameTester extends JFrame {
 	}
 	
 	public void startGameLoop() {
-		
-		startScreenRefresh();
 		game.start();
-
-		// FIXME
-//		while(true) {
-//			// Handle Game events
-//		}
+		areaGioco.startRenderLoop();
 	}
 	
 	public void setPlayerSprite(String spriteName) {
@@ -145,18 +134,6 @@ public class GameTester extends JFrame {
 		return null;
 	}
 
-	private void startScreenRefresh() {
-		timer = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				repaint();
-			}
-		});
-		timer.setRepeats(true);
-		timer.setDelay((int)(1000/Configuration.FRAMERATE));
-		timer.start();
-	}
-
 	// <editor-fold defaultstate="collapsed" desc=" Generated Code
 	// ">//GEN-BEGIN:initComponents
 	private void initComponents() {
@@ -178,14 +155,6 @@ public class GameTester extends JFrame {
 			}
 		});
 
-		areaGioco.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-		org.jdesktop.layout.GroupLayout areaGiocoLayout = new org.jdesktop.layout.GroupLayout(areaGioco);
-		areaGioco.setLayout(areaGiocoLayout);
-		areaGiocoLayout.setHorizontalGroup(areaGiocoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(0, 348, Short.MAX_VALUE));
-		areaGiocoLayout.setVerticalGroup(areaGiocoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(0, 220, Short.MAX_VALUE));
-
 		jMenu1.setText("Land");
 		jMenuItemCambiaLand.setText("Cambia Land");
 		jMenu1.add(jMenuItemCambiaLand);
@@ -197,14 +166,8 @@ public class GameTester extends JFrame {
 
 		setJMenuBar(jMenuBar1);
 
-		org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-				org.jdesktop.layout.GroupLayout.TRAILING, areaGioco, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-				org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(areaGioco,
-				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-				org.jdesktop.layout.GroupLayout.PREFERRED_SIZE));
+		areaGioco.setPreferredSize(new java.awt.Dimension(348, 220));
+		getContentPane().add(areaGioco, BorderLayout.CENTER);
 		pack();
 	}
 
