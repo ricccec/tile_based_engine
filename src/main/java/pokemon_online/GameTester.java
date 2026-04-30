@@ -4,6 +4,8 @@
 package pokemon_online;
 
 import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -15,12 +17,9 @@ import pokemon_online.game.Game;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.ia.AdvancedRandomIAComponent;
 import pokemon_online.game.ia.IAComponent;
-import pokemon_online.game.ia.RandomIAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.actions.ActionHandler;
 import pokemon_online.game.interaction.actions.PushActionHandler;
 import pokemon_online.game.interaction.actions.TextActionHandler;
-import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.SpriteData;
 import pokemon_online.game.rendering.SpriteGraphicsComponent;
 import pokemon_online.land.Land;
@@ -145,14 +144,12 @@ public class GameTester extends JFrame {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Game test");
 		setResizable(false);
-		addKeyListener(new java.awt.event.KeyAdapter() {
-			public void keyPressed(java.awt.event.KeyEvent evt) {
-				formKeyPressed(evt);
-			}
 
-			public void keyReleased(java.awt.event.KeyEvent evt) {
-				formKeyReleased(evt);
-			}
+		// Add keyboard event dispatcher
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+			if (e.getID() == KeyEvent.KEY_PRESSED)  formKeyPressed(e);
+			if (e.getID() == KeyEvent.KEY_RELEASED) formKeyReleased(e);
+			return false;
 		});
 
 		jMenu1.setText("Land");
