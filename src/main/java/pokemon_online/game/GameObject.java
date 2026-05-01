@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 import pokemon_online.game.ia.IAComponent;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.actions.Action;
-import pokemon_online.game.interaction.actions.ActionHandler;
+import pokemon_online.game.interaction.interactions.Interaction;
+import pokemon_online.game.interaction.interactions.InteractionHandler;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.physics.PhysicsComponent;
 
@@ -32,14 +32,14 @@ public class GameObject {
 
 	private static final Logger LOGGER = Logger.getLogger(GameObject.class);
 	
-	public static final Action EVT_QUEUE_END = new Action(null);
+	public static final Interaction EVT_QUEUE_END = new Interaction(null);
 	
 	// FIXME Don't use the Observer pattern, make the GameWorld (or GameObjectsContainer) listen to its own objects
 	private final Collection<GameObjectListener> listeners;
 	
-	private final Deque<Action> pendingEvents;
+	private final Deque<Interaction> pendingEvents;
 	
-	private final Stack<Action> pendingMsgs;
+	private final Stack<Interaction> pendingMsgs;
 	
 	private State state;
 	
@@ -55,7 +55,7 @@ public class GameObject {
 	
 	protected IAComponent iaComp;
 	
-	protected final Controller ctrl;
+	protected final GameActionsState ctrl;
 	
 	/**
 	 * The direction the object is facing. Doesn't have to match the moving direction;
@@ -65,7 +65,7 @@ public class GameObject {
 	public GameObject() {
 		state = State.ACTIVE;
 		
-		ctrl = new Controller();
+		ctrl = new GameActionsState();
 		
 		listeners = new ArrayList<>();
 		pendingMsgs = new Stack<>();
@@ -101,7 +101,7 @@ public class GameObject {
 		direction = dirDegree;
 	}
 	
-	public Controller getController() {
+	public GameActionsState getController() {
 		return ctrl;
 	}
 
@@ -186,15 +186,15 @@ public class GameObject {
 	/**
 	 * @param msg
 	 */
-	public void notifyEvent(GameWorld world, Action msg) {
+	public void notifyEvent(GameWorld world, Interaction msg) {
 		LOGGER.debug("Object " + this + " has received a message");
 		if (interComp != null) {
-			interComp.notifyAction(world, msg); // Event preprocessing
+			interComp.notifyInteraction(world, msg); // Event preprocessing
 		}
 		pendingMsgs.push(msg); // Put the message into the queue so it can be processed during the next frame
 	}
 	
-	public Deque<Action> getPendingEventsQueue() {
+	public Deque<Interaction> getPendingEventsQueue() {
 		return pendingEvents;
 	}
 

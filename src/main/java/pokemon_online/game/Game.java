@@ -6,7 +6,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import pokemon_online.Configuration;
-import pokemon_online.game.interaction.actions.Action;
+import pokemon_online.game.interaction.interactions.Interaction;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.game.utils.GraphicsUtils;
 import pokemon_online.hud.Hud;
@@ -25,7 +25,7 @@ public class Game extends Thread {
  
 	private static final Logger LOGGER = Logger.getLogger(Game.class);
 	
-	private final Stack<Action> msgQueue;
+	private final Stack<Interaction> msgQueue;
 	
 	private final GameWorld world;
 	
@@ -50,7 +50,7 @@ public class Game extends Thread {
 		msgQueue = new Stack<>();
 		
 		keyboard = new Keyboard();
-		keyboard.attachController(player.getController());
+		keyboard.attachInputState(player.getController());
 	}
 	
 	public void jumpToLand(Land land, int playerRow, int playerCol) {
@@ -120,7 +120,7 @@ public class Game extends Thread {
 
 	}
 	
-	public void queueMessage(Action msg) {
+	public void queueMessage(Interaction msg) {
 		msgQueue.push(msg);
 	}
 
@@ -153,7 +153,7 @@ public class Game extends Thread {
 
 	private void dispatchMessages() {
 		while(!msgQueue.isEmpty()) {
-			Action msg = msgQueue.pop();
+			Interaction msg = msgQueue.pop();
 			switch (msg.getType()) { // FIXME Move this logic inside the components
 				case HUD_DISPOSED:
 					//player.getPhysicsComponent().setFrozen(false); // FIXME This should be responsibility of the Game world
@@ -165,7 +165,7 @@ public class Game extends Thread {
 					hud.displayText(msgText);
 					break;
 				default:
-				case ACTION_PERFORMED:
+				case ACTION_A_PERFORMED:
 					break;
 				
 			}

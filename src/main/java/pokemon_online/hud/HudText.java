@@ -3,8 +3,8 @@
  */
 package pokemon_online.hud;
 
-import pokemon_online.game.Controller;
-import pokemon_online.game.Controller.Control;
+import pokemon_online.game.GameActionsState;
+import pokemon_online.game.GameActionsState.GameAction;
 
 /**
  * @author Cecchi
@@ -28,8 +28,8 @@ public class HudText { // FIXME Better HudMessage?
 		return text;
 	}
 
-	public void handleInput(Controller controller) {
-		if (controller.isStatusChanged(Control.ACTION_1) && controller.isActive(Control.ACTION_1))
+	public void handleInput(GameActionsState controller) {
+		if (controller.isStatusChanged(GameAction.ACTION_1) && controller.isActive(GameAction.ACTION_1))
 			disposed = true;
 	}
 	

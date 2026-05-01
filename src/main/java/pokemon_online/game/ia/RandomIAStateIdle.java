@@ -3,9 +3,9 @@
  */
 package pokemon_online.game.ia;
 
-import pokemon_online.game.Controller;
+import pokemon_online.game.GameActionsState;
 import pokemon_online.game.GameObject;
-import pokemon_online.game.Controller.Control;
+import pokemon_online.game.GameActionsState.GameAction;
 import pokemon_online.game.utils.GameUtils;
 import pokemon_online.physics.CardinalDirection;
 
@@ -25,11 +25,11 @@ public class RandomIAStateIdle extends RandomIAState {
 	public RandomIAState updateState(GameObject obj) {
 		
 		// Reset controller state
-		Controller ctrl = obj.getController();
-		ctrl.setDeactivated(Control.MOVE_RIGHT);
-		ctrl.setDeactivated(Control.MOVE_DWN);
-		ctrl.setDeactivated(Control.MOVE_LEFT);
-		ctrl.setDeactivated(Control.MOVE_UP);
+		GameActionsState ctrl = obj.getController();
+		ctrl.setDeactivated(GameAction.MOVE_RIGHT);
+		ctrl.setDeactivated(GameAction.MOVE_DWN);
+		ctrl.setDeactivated(GameAction.MOVE_LEFT);
+		ctrl.setDeactivated(GameAction.MOVE_UP);
 		
 		// Change direction?
 		if (GameUtils.eventOccur(AdvancedRandomIAComponent.PROB_CHANGE_DIR_WHEN_STOPPED)) {
@@ -39,16 +39,16 @@ public class RandomIAStateIdle extends RandomIAState {
 			CardinalDirection newDirection = CardinalDirection.degree2direction(newDirDegree);
 			switch(newDirection)  {
 			case DIR_DOWN:
-				ctrl.setActivated(Control.MOVE_DWN);
+				ctrl.setActivated(GameAction.MOVE_DWN);
 				break;
 			case DIR_LEFT:
-				ctrl.setActivated(Control.MOVE_LEFT);
+				ctrl.setActivated(GameAction.MOVE_LEFT);
 				break;
 			case DIR_RIGHT:
-				ctrl.setActivated(Control.MOVE_RIGHT);
+				ctrl.setActivated(GameAction.MOVE_RIGHT);
 				break;
 			case DIR_UP:
-				ctrl.setActivated(Control.MOVE_UP);
+				ctrl.setActivated(GameAction.MOVE_UP);
 				break;
 			default:
 				break;

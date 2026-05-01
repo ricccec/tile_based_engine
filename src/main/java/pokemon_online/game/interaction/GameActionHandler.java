@@ -3,7 +3,7 @@
  */
 package pokemon_online.game.interaction;
 
-import pokemon_online.game.Controller.Control;
+import pokemon_online.game.GameActionsState.GameAction;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 
@@ -16,9 +16,9 @@ import pokemon_online.game.GameWorld;
  * @author Cecchi
  *
  */
-public abstract class ControlHandler {
+public abstract class GameActionHandler {
 
-	public abstract boolean handleControl(GameWorld world, GameObject controlled, Control cntrl);
+	public abstract boolean handleAction(GameWorld world, GameObject controlled, GameAction action);
 	
 	protected Collection<GameObject> getActionTargets(GameWorld world, GameObject obj) {
 		// Get the object the action has been performed onto

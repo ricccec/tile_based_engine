@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pokemon_online.game.Component;
-import pokemon_online.game.Controller;
-import pokemon_online.game.Controller.Control;
+import pokemon_online.game.GameActionsState;
+import pokemon_online.game.GameActionsState.GameAction;
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
-import pokemon_online.game.interaction.actions.Action;
-import pokemon_online.game.interaction.actions.ActionHandler;
+import pokemon_online.game.interaction.interactions.Interaction;
+import pokemon_online.game.interaction.interactions.InteractionHandler;
 import pokemon_online.physics.PhysicsComponent;
 import pokemon_online.physics.PokemonPhysicsComponent;
 import pokemon_online.game.GameWorld;
@@ -22,7 +22,7 @@ import pokemon_online.game.GameWorld;
  *
  * <p>Two registries are maintained:
  * <ul>
- *   <li><b>controlHandlers</b> — keyed on {@link Control}; polled every tick by
+ *   <li><b>controlHandlers</b> — keyed on {@link GameAction}; polled every tick by
  *       {@link #updateInteraction}. A handler fires when its control transitions
  *       to the active state (edge-triggered, not level-triggered).</li>
  *   <li><b>msgHandlers</b> — invoked immediately when another object calls
@@ -36,9 +36,9 @@ import pokemon_online.game.GameWorld;
  */
 public class InteractionComponent extends Component {
 
-	public final Map<Control, ControlHandler> controlHandlers;
+	public final Map<GameAction, GameActionHandler> actionHandlers;
 	
-	private final Collection<ActionHandler> actionHandlers;
+	private final Collection<InteractionHandler> interactionHandlers;
 	
 	/**
 	 * Constructs an {@code InteractionComponent} for the given owner.
@@ -48,34 +48,34 @@ public class InteractionComponent extends Component {
 	public InteractionComponent(GameObject obj) {
 		super(obj);
 		
-		controlHandlers = new HashMap<>();
-		actionHandlers = new ArrayList<>();
+		actionHandlers = new HashMap<>();
+		interactionHandlers = new ArrayList<>();
 	}
 	
 	/**
-	 * Registers a handler for the given {@link Control}.
+	 * Registers a handler for the given {@link GameAction}.
 	 * Replaces any previously registered handler for the same control.
 	 *
 	 * @param cntrl the control input to listen for
 	 * @param hndlr the handler to invoke on a rising-edge activation
 	 */
-	public void addControlHandler(Control cntrl, ControlHandler hndlr) {
-		controlHandlers.put(cntrl, hndlr);
+	public void addGameActionHandler(GameAction cntrl, GameActionHandler hndlr) {
+		actionHandlers.put(cntrl, hndlr);
 	}
 	
 	/**
-	 * Registers an {@link ActionHandler} to be called when {@link #notifyEvent}
+	 * Registers an {@link InteractionHandler} to be called when {@link #notifyEvent}
 	 * is invoked on this component. Multiple handlers are supported and are
 	 * invoked in insertion order.
 	 *
 	 * @param handler the event handler to register
 	 */
-	public void addActionHandler(ActionHandler handler) {
-		actionHandlers.add(handler);
+	public void addInteractionHandler(InteractionHandler handler) {
+		interactionHandlers.add(handler);
 	}
 	
 	/**
-	 * Delivers an {@link Action} to this component's registered event handlers
+	 * Delivers an {@link Interaction} to this component's registered event handlers
 	 * <em>synchronously</em>, within the same frame the event is generated.
 	 *
 	 * <p>This is a direct, frame-synchronous call path. It is used for interactions
@@ -84,18 +84,18 @@ public class InteractionComponent extends Component {
 	 * than deferring through the future {@code EventBus}.
 	 *
 	 * @param world the current {@link GameWorld}
-	 * @param action   the {@link Action} to deliver
+	 * @param action   the {@link Interaction} to deliver
 	 */
-	public void notifyAction(GameWorld world, Action action) {
+	public void notifyInteraction(GameWorld world, Interaction action) {
 		// Pass event to handlers (if any) to process it during the current frame
-		for (ActionHandler handler : actionHandlers) {
-			handler.handleAction(world, obj, action);
+		for (InteractionHandler handler : interactionHandlers) {
+			handler.handleInteraction(world, obj, action);
 		}
 	}
 
 	/**
-	 * Per-tick update: polls the owner's {@link Controller} for active controls
-	 * and fires any matching {@link ControlHandler} on a rising edge (i.e. only
+	 * Per-tick update: polls the owner's {@link GameActionsState} for active controls
+	 * and fires any matching {@link GameActionHandler} on a rising edge (i.e. only
 	 * when a control's status has changed <em>and</em> is currently active).
 	 *
 	 * <p>The update is skipped when:
@@ -124,11 +124,11 @@ public class InteractionComponent extends Component {
 			}
 		}
 		
-		Controller ctrlr = obj.getController();
+		GameActionsState ctrlr = obj.getController();
 		
-		for (Control ctrl : controlHandlers.keySet()) {
+		for (GameAction ctrl : actionHandlers.keySet()) {
 			if (ctrlr.isStatusChanged(ctrl) && ctrlr.isActive(ctrl)) {
-				controlHandlers.get(ctrl).handleControl(world, obj, ctrl);
+				actionHandlers.get(ctrl).handleAction(world, obj, ctrl);
 			}
 		}
 		

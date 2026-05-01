@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import pokemon_online.Configuration;
 import pokemon_online.ResourcesManager;
 import pokemon_online.game.ia.IAComponent;
-import pokemon_online.game.interaction.actions.Action;
+import pokemon_online.game.interaction.interactions.Interaction;
 import pokemon_online.game.rendering.GraphicsComponent;
 import pokemon_online.game.rendering.Viewport;
 import pokemon_online.land.Land;
@@ -41,7 +41,7 @@ public class GameWorld {
 	
 	private final GameObjectsContainer objContainer;
 	
-	private final Map<Action.Type, Set<GameObject>> msgListeners;
+	private final Map<Interaction.Type, Set<GameObject>> msgListeners;
 
 	private Land currLand;
 	
@@ -65,12 +65,12 @@ public class GameWorld {
 		}
 	}
 
-	public void sendMessage(Action msg) { // FIXME Use "event" instead?
+	public void sendMessage(Interaction msg) { // FIXME Use "event" instead?
 		 game.queueMessage(msg);
 	}
 	
 	// FIXME sendMessage and sendMessageToObjects 
-	public void sendMessageToObjects(Action msg) {
+	public void sendMessageToObjects(Interaction msg) {
 		if (msgListeners.containsKey(msg.getType())) {
 			Collection<GameObject> listeners = new ArrayList<GameObject>(msgListeners.get(msg.getType())); // Create a copy 'cause during notifyEvent the listener could remove inself
 			for (GameObject listener : listeners) {
@@ -94,10 +94,10 @@ public class GameWorld {
 		for (GameObject obj : getAllObjects()) { // FIXME Only active objects
 			
 			// Prepare the objects's event queue
-			Deque<Action> evtQueue = obj.getPendingEventsQueue();
+			Deque<Interaction> evtQueue = obj.getPendingEventsQueue();
 			
 			// Remove events generated at frame i-2
-			Action currEvent = null;
+			Interaction currEvent = null;
 			while(!evtQueue.isEmpty()) {
 				currEvent = evtQueue.pollFirst();
 				if (currEvent == GameObject.EVT_QUEUE_END) {
@@ -147,9 +147,9 @@ public class GameWorld {
 	public void updateControllers() {
 		for (GameObject obj : getAllObjects()) {
 			// FIXME Only update active objects
-			Controller controller = obj.getController();
+			GameActionsState controller = obj.getController();
 			if (controller != null) {
-				controller.updateController();
+				controller.updateState();
 			}
 		}
 	}
@@ -291,14 +291,14 @@ public class GameWorld {
 		return objContainer.getObjects(row, col);
 	}
 
-	public void addMessageListener(Action.Type msgType, GameObject listener) {
+	public void addMessageListener(Interaction.Type msgType, GameObject listener) {
 		if (!msgListeners.containsKey(msgType)) {
 			msgListeners.put(msgType, new HashSet<>());
 		}
 		msgListeners.get(msgType).add(listener);
 	}
 	
-	public void removeMessageListener(Action.Type msgType, GameObject listener) {
+	public void removeMessageListener(Interaction.Type msgType, GameObject listener) {
 		if (msgListeners.containsKey(msgType)) {
 			msgListeners.get(msgType).remove(listener);
 		}

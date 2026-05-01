@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.actions;
+package pokemon_online.game.interaction.interactions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,31 +9,32 @@ import java.util.List;
 import pokemon_online.game.GameObject;
 
 /**
+ * Represents one {@link GameObject} performing an interaction onto another — push, dialogue trigger, action button press, etc. 
  * @author Cecchi
  *
  */
-public class Action {
+public class Interaction {
 
-	public static final Action newActionPerformed(GameObject sender) {
-		Action result = new Action(Type.ACTION_PERFORMED);
+	public static final Interaction newActionAPerformed(GameObject sender) {
+		Interaction result = new Interaction(Type.ACTION_A_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Action newActionBPerformed(GameObject sender) {
-		Action result = new Action(Type.ACTION_B_PERFORMED);
+	public static final Interaction newActionBPerformed(GameObject sender) {
+		Interaction result = new Interaction(Type.ACTION_B_PERFORMED);
 		result.addArgument(sender);
 		return result;
 	}
 	
-	public static final Action newHudDisplayText(String text) {
-		Action result = new Action(Type.HUD_DISPLAY_TEXT);
+	public static final Interaction newHudDisplayText(String text) {
+		Interaction result = new Interaction(Type.HUD_DISPLAY_TEXT);
 		result.addArgument(text);
 		return result;
 	}
 	
 	public enum Type {
-		ACTION_PERFORMED,
+		ACTION_A_PERFORMED,
 		ACTION_B_PERFORMED,
 		HUD_DISPLAY_TEXT,
 		HUD_DISPOSED,
@@ -44,7 +45,7 @@ public class Action {
 	
 	private final List<Object> args;
 	
-	public Action(Type type) {
+	public Interaction(Type type) {
 		this.type = type;
 		this.args = new ArrayList<>();
 	}

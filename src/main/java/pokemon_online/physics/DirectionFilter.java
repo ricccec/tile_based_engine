@@ -3,12 +3,12 @@
  */
 package pokemon_online.physics;
 
-import static pokemon_online.game.Controller.Control.MOVE_DWN;
-import static pokemon_online.game.Controller.Control.MOVE_LEFT;
-import static pokemon_online.game.Controller.Control.MOVE_RIGHT;
-import static pokemon_online.game.Controller.Control.MOVE_UP;
+import static pokemon_online.game.GameActionsState.GameAction.MOVE_DWN;
+import static pokemon_online.game.GameActionsState.GameAction.MOVE_LEFT;
+import static pokemon_online.game.GameActionsState.GameAction.MOVE_RIGHT;
+import static pokemon_online.game.GameActionsState.GameAction.MOVE_UP;
 
-import pokemon_online.game.Controller;
+import pokemon_online.game.GameActionsState;
 
 /**
  * In case you want a controller with at most one active directional control at
@@ -21,9 +21,9 @@ public class DirectionFilter {
 
 	private CardinalDirection controllerDirection;
 	
-	private final Controller ctrl;
+	private final GameActionsState ctrl;
 	
-	public DirectionFilter(Controller controller) {
+	public DirectionFilter(GameActionsState controller) {
 		ctrl = controller;
 	}
 	
@@ -74,7 +74,7 @@ public class DirectionFilter {
 		} 
 	}
 	
-	private CardinalDirection getHighestPriorityActiveCntrl(Controller ctrl) {
+	private CardinalDirection getHighestPriorityActiveCntrl(GameActionsState ctrl) {
 		if (ctrl.isActive(MOVE_RIGHT)) {
 			return CardinalDirection.DIR_RIGHT;
 		}

@@ -1,11 +1,11 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.actions;
+package pokemon_online.game.interaction.interactions;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
-import pokemon_online.game.interaction.actions.Action.Type;
+import pokemon_online.game.interaction.interactions.Interaction.Type;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.utils.GameObjectUtils;
 
@@ -13,19 +13,19 @@ import pokemon_online.game.utils.GameObjectUtils;
  * @author Cecchi
  *
  */
-public class TextActionHandler extends ActionHandler { // FIXME Better "TextEventHandler"?
+public class TextInteractionHandler extends InteractionHandler { // FIXME Better "TextEventHandler"?
 	
 	private final String text;
 	
-	public TextActionHandler(String text) {
+	public TextInteractionHandler(String text) {
 		this.text = text;
 	}
 
 	@Override
-	public boolean handleAction(GameWorld world, GameObject receiver, Action evt) {
+	public boolean handleInteraction(GameWorld world, GameObject receiver, Interaction evt) {
 		
 		switch(evt.getType()) {
-			case ACTION_PERFORMED:
+			case ACTION_A_PERFORMED:
 				GameObject sender = (GameObject)evt.getArguments().get(0);
 				if (receiver.getState() == State.ACTIVE) {
 					sendHudTextDisplayReqs(world, sender, receiver);
@@ -64,7 +64,7 @@ public class TextActionHandler extends ActionHandler { // FIXME Better "TextEven
 		GameObjectUtils.lookToward(receiver, sender.getX(), sender.getY());
 		sender.setState(State.FROZEN);
 		receiver.setState(State.FROZEN); // Ignore any other events
-		world.sendMessage(Action.newHudDisplayText(text));
+		world.sendMessage(Interaction.newHudDisplayText(text));
 		
 		// Sender and receiver waits for the HUD to be disposed
 		world.addMessageListener(Type.HUD_DISPOSED, receiver);

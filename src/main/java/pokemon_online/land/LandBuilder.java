@@ -13,8 +13,8 @@ import org.json.simple.JSONObject;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.interaction.InteractionComponent;
-import pokemon_online.game.interaction.actions.ActionHandler;
-import pokemon_online.game.interaction.actions.TextActionHandler;
+import pokemon_online.game.interaction.interactions.InteractionHandler;
+import pokemon_online.game.interaction.interactions.TextInteractionHandler;
 
 /**
  * @author Cecchi
@@ -122,7 +122,7 @@ public class LandBuilder {
 			GameObject text = new GameObject();
 			
 			InteractionComponent intrComp = new InteractionComponent(text);
-			intrComp.addActionHandler(new TextActionHandler(textMsg));
+			intrComp.addInteractionHandler(new TextInteractionHandler(textMsg));
 			text.setInteractionComponent(intrComp);
 			
 			land.addObject(text, initRow, initCol);

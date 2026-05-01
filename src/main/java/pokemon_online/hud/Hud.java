@@ -10,10 +10,10 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
-import pokemon_online.game.Controller;
+import pokemon_online.game.GameActionsState;
 import pokemon_online.game.Game;
-import pokemon_online.game.interaction.actions.Action;
-import pokemon_online.game.interaction.actions.Action.Type;
+import pokemon_online.game.interaction.interactions.Interaction;
+import pokemon_online.game.interaction.interactions.Interaction.Type;
 
 /**
  * @author Cecchi
@@ -45,7 +45,7 @@ public class Hud {
 		}
 	}
 
-	public void update(Controller controller) {
+	public void update(GameActionsState controller) {
 		if (elements.isEmpty()) {
 			return;
 		}
@@ -55,7 +55,7 @@ public class Hud {
 		if (!activeElement.isDisposed()) {
 			elements.push(activeElement);
 		} else if (elements.isEmpty()) {
-			game.queueMessage(new Action(Type.HUD_DISPOSED));
+			game.queueMessage(new Interaction(Type.HUD_DISPOSED));
 		}
 		
 		

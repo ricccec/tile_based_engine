@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pokemon_online.game.interaction.actions;
+package pokemon_online.game.interaction.interactions;
 
 import pokemon_online.game.GameObject;
 import pokemon_online.game.GameWorld;
@@ -11,10 +11,10 @@ import pokemon_online.game.GameObject.State;
  * @author Cecchi
  *
  */
-public class HudActionHandler extends ActionHandler {
+public class HudInteractionHandler extends InteractionHandler {
 
 	@Override
-	public boolean handleAction(GameWorld world, GameObject receiver, Action evt) {
+	public boolean handleInteraction(GameWorld world, GameObject receiver, Interaction evt) {
 		switch(evt.getType()) {
 			case HUD_DISPOSED:
 				receiver.setState(State.ACTIVE);

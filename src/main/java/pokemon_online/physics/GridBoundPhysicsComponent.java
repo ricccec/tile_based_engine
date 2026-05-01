@@ -8,8 +8,8 @@ import pokemon_online.game.GameObject;
 import pokemon_online.game.GameObject.State;
 import pokemon_online.game.GameWorld;
 import pokemon_online.game.GameWorld.Cell;
-import pokemon_online.game.interaction.actions.Action;
-import pokemon_online.game.interaction.actions.Action.Type;
+import pokemon_online.game.interaction.interactions.Interaction;
+import pokemon_online.game.interaction.interactions.Interaction.Type;
 import pokemon_online.game.utils.GameObjectUtils;
 import pokemon_online.game.utils.GameUtils;
 
@@ -97,7 +97,7 @@ public class GridBoundPhysicsComponent extends PhysicsComponent {
 				setSpeedX(0);
 				setSpeedY(0);
 				obj.setState(State.ACTIVE);
-				obj.notifyEvent(world, new Action(Type.PUSH_COMPLETED));
+				obj.notifyEvent(world, new Interaction(Type.PUSH_COMPLETED));
 				return;
 			} else {
 				// Moving has just started

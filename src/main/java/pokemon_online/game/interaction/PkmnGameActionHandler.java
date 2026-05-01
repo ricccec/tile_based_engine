@@ -3,8 +3,8 @@
  */
 package pokemon_online.game.interaction;
 
-import pokemon_online.game.Controller.Control;
-import pokemon_online.game.interaction.actions.Action;
+import pokemon_online.game.GameActionsState.GameAction;
+import pokemon_online.game.interaction.interactions.Interaction;
 
 import java.util.Collection;
 
@@ -15,20 +15,20 @@ import pokemon_online.game.GameWorld;
  * @author Cecchi
  *
  */
-public class PkmnControlHandler extends ControlHandler {
+public class PkmnGameActionHandler extends GameActionHandler {
 
-	private static final PkmnControlHandler INSTANCE = new PkmnControlHandler();
+	private static final PkmnGameActionHandler INSTANCE = new PkmnGameActionHandler();
 	
 	public static InteractionComponent getInteractionComponent(GameObject obj) {
 		InteractionComponent result = new InteractionComponent(obj);
-		result.addControlHandler(Control.ACTION_1, INSTANCE);
-		result.addControlHandler(Control.ACTION_2, INSTANCE);
+		result.addGameActionHandler(GameAction.ACTION_1, INSTANCE);
+		result.addGameActionHandler(GameAction.ACTION_2, INSTANCE);
 		
 		return result;
 	}
 	
 	@Override
-	public boolean handleControl(GameWorld world, GameObject controlled, Control cntrl) {
+	public boolean handleAction(GameWorld world, GameObject controlled, GameAction cntrl) {
 		
 		// Get the objects the action has been performed onto
 		Collection<GameObject> objects = getActionTargets(world, controlled);
@@ -39,10 +39,10 @@ public class PkmnControlHandler extends ControlHandler {
 				
 		switch(cntrl) {
 		case ACTION_1:
-			target.notifyEvent(world, Action.newActionPerformed(controlled));
+			target.notifyEvent(world, Interaction.newActionAPerformed(controlled));
 			return true;
 		case ACTION_2:
-			target.notifyEvent(world, Action.newActionBPerformed(controlled));
+			target.notifyEvent(world, Interaction.newActionBPerformed(controlled));
 			return true;
 		default:
 			return false;
