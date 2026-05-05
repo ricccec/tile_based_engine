@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JSON handling
+    api 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    // Utilities
+    api 'commons-lang:commons-lang:2.6'
+    api 'commons-io:commons-io:2.6'
+
+    // Logging
+    api 'log4j:log4j:1.2.17'
+
+    // Database
+    api 'org.hibernate:hibernate-core:6.4.1.Final'
+    // SQLite JDBC - add if needed
+    // implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+}
